@@ -21,7 +21,7 @@
     "language-tex:grammar-used",
     "language-latexsimple:grammar-used"
   ],
-  "repository": "https://github.com/James-Yu/Atom-Toolbox",
+  "repository": "https://github.com/James-Yu/Atom-LaTeX",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
