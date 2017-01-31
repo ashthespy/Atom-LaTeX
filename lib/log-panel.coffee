@@ -1,5 +1,6 @@
 { Disposable } = require 'atom'
-{ MessagePanelView, LineMessageView } = require 'atom-message-panel'
+{ MessagePanelView, LineMessageView, View } = require 'atom-message-panel'
+{ $$ } = require 'atom-space-pen-views'
 
 module.exports =
 class LogPanel extends Disposable
@@ -8,6 +9,8 @@ class LogPanel extends Disposable
     @latex = latex
     @logPanelView = new LogPanelView(@title)
     @logPanelView.attach()
+
+    @logPanelView.showLogBtn.click () => @showLog()
 
   showText: (icon, text, timeout, hide) ->
     clearTimeout(@timeout) if @timeout
@@ -31,6 +34,15 @@ class LogPanel extends Disposable
       title += """<span class="atom-latex-title"> Status: #{text}</span>"""
     @logPanelView.heading.html title
 
+  showLog: () ->
+    cmd = @latex?.builder.execCmds?[@latex?.builder.execCmds?.length - 1]
+    log = @latex?.builder.buildLogs?[@latex?.builder.buildLogs?.length - 1]
+    if cmd?
+      atom.workspace.open().then(
+        (editor) ->
+          editor.setText("""> #{cmd}\n\n#{log}""")
+      )
+
   show: () ->
     @logPanelView.attach()
   toggle: () ->
@@ -43,3 +55,11 @@ class LogPanelView extends MessagePanelView
     super title: title
     @addClass 'atom-latex'
     @heading.parent().css({'padding': 5})
+
+    @showLogBtn = $$(() ->
+      this.div
+        class: 'heading-show-in-tab inline-block icon-file-text',
+        style: 'cursor: pointer;',
+        title: 'Show log in new tab'
+    )
+    @showLogBtn.insertBefore(@btnAutoScroll)

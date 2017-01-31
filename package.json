@@ -28,6 +28,7 @@
     "ws": "^1.1.1",
     "hasbin": "^1.2.3",
     "open": "^0.0.5",
-    "atom-message-panel": "^1.3.0"
+    "atom-message-panel": "^1.3.0",
+    "atom-space-pen-views": "^2.2.0"
   }
 }
