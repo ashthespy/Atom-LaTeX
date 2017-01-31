@@ -2,7 +2,7 @@
   "menu": [{
     "label": "Packages",
     "submenu": [{
-      "label": "Atom LaTeX",
+      "label": "Atom-LaTeX",
       "submenu": [{
         "label": "Build LaTeX",
         "command": "Atom-LaTeX:build"
@@ -12,6 +12,9 @@
       }, {
         "label": "Kill Compiler",
         "command": "Atom-LaTeX:kill"
+      }, {
+        "label": "Show Atom-LaTeX Log",
+        "command": "Atom-LaTeX:show-log"
       }]
     }]
   }]

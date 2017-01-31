@@ -1,5 +1,6 @@
 { Disposable } = require 'atom'
-{ MessagePanelView, LineMessageView, View } = require 'atom-message-panel'
+{ MessagePanelView, LineMessageView,
+  PlainMessageView, View } = require 'atom-message-panel'
 { $$ } = require 'atom-space-pen-views'
 
 module.exports =
@@ -7,10 +8,13 @@ class LogPanel extends Disposable
   constructor: (latex) ->
     super () => @disposables.dispose()
     @latex = latex
-    @logPanelView = new LogPanelView(@title)
+    @logPanelView = new LogPanelView
     @logPanelView.attach()
 
     @logPanelView.showLogBtn.click () => @showLog()
+
+  showPanel: () ->
+    @logPanelView.attach()
 
   showText: (icon, text, timeout, hide) ->
     clearTimeout(@timeout) if @timeout
@@ -43,16 +47,37 @@ class LogPanel extends Disposable
           editor.setText("""> #{cmd}\n\n#{log}""")
       )
 
+  addStepLog: (id, cmd) ->
+    msg = new PlainMessageView message: """Step #{id}> #{cmd}"""
+    @logPanelView.add msg
+    @logPanelView.updateScroll()
+    @logPanelView.setSummary msg.getSummary()
+
+  addPlainLog: (msg) ->
+    msg = new PlainMessageView message: msg
+    @logPanelView.add msg
+    @logPanelView.updateScroll()
+    @logPanelView.setSummary summary: ''
+
+  addParserLog: (item) ->
+    msg = new LogMessageView item
+    @logPanelView.add msg
+    @logPanelView.updateScroll()
+    @logPanelView.setSummary summary: ''
+
   show: () ->
     @logPanelView.attach()
   toggle: () ->
     @logPanelView.toggle()
   unfold: () ->
     @logPanelView.unfold()
+  clear: () ->
+    @logPanelView.clear()
 
 class LogPanelView extends MessagePanelView
-  constructor: (title) ->
-    super title: title
+  constructor: () ->
+    super
+      autoScroll: true
     @addClass 'atom-latex'
     @heading.parent().css({'padding': 5})
 
@@ -63,3 +88,18 @@ class LogPanelView extends MessagePanelView
         title: 'Show log in new tab'
     )
     @showLogBtn.insertBefore(@btnAutoScroll)
+
+class LogMessageView extends LineMessageView
+  constructor: (item) ->
+    super
+      line: item.line
+      message: item.text
+      file: item.file
+
+    @logType = $$(() ->
+      this.div
+        class: """message inline-block atom-latex-parser-message \
+                  atom-latex-#{item.type}"""
+    )
+    @logType.text item.type.charAt(0).toUpperCase() + item.type.slice(1)
+    @logType.insertBefore(@position)

@@ -33,3 +33,7 @@ class Manager extends Disposable
           @latex.mainFile = filePath
           return true
     return false
+
+  findRelative: (file) ->
+    @findMain()
+    return path.resolve(path.dirname(@latex.mainFile), file)
