@@ -1,0 +1,18 @@
+{
+  "menu": [{
+    "label": "Packages",
+    "submenu": [{
+      "label": "Atom LaTeX",
+      "submenu": [{
+        "label": "Build LaTeX",
+        "command": "Atom-LaTeX:build"
+      }, {
+        "label": "Preview PDF",
+        "command": "Atom-LaTeX:preview"
+      }, {
+        "label": "Kill Compiler",
+        "command": "Atom-LaTeX:kill"
+      }]
+    }]
+  }]
+}
