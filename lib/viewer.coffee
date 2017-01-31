@@ -7,6 +7,22 @@ class Viewer extends Disposable
   constructor: (latex) ->
     super () => @disposables.dispose()
     @latex = latex
+    @client = {}
+
+  wsHandler: (ws, msg) ->
+    data = JSON.parse msg
+    switch data.type
+      when 'open'
+        @client.ws?.close()
+        @client.ws = ws
+      when 'loaded'
+        if @client.position
+          @client.ws.send JSON.stringify @client.position
+      when 'position'
+        @client.position = data
+
+  refresh: () ->
+    @client.ws.send JSON.stringify type:"refresh"
 
   openViewerTab: ->
     if !@latex.manager.findMain()

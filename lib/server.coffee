@@ -19,7 +19,10 @@ class Server extends Disposable
         else if @latex.server.openTab
           @latex.viewer.openViewerTab()
 
-    @ws = ws.createServer({ server: @http })
+    @ws = ws.createServer server: @http
+    @ws.on "connection", (ws) =>
+      ws.on "message", (msg) => @latex.viewer.wsHandler(ws, msg)
+      ws.on "close", () => @latex.viewer.wsHandler(ws, '{"type":"close"}')
 
   httpHandler: (request, response) ->
     if request.url.indexOf('viewer.html') > -1
