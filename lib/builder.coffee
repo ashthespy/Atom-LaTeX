@@ -25,12 +25,14 @@ class Builder extends Disposable
   buildProcess: ->
     cmd = @cmds.shift()
     if cmd == undefined
-      @latex.logPanel.showText """Successfully built LaTeX.""", 3000
+      @latex.logPanel.showText icon: 'check',
+        """Successfully built LaTeX.""", 3000
       console.debug @buildLogs
       return
 
     @buildLogs.push ''
-    @latex.logPanel.showText """Building LaTeX: Step #{@buildLogs.length}."""
+    @latex.logPanel.showText icon: 'sync', spin: true,
+      """Building LaTeX: Step #{@buildLogs.length}."""
     @process = cp.exec(
       cmd, {cwd: path.dirname @latex.mainFile}, (err, stdout, stderr) =>
         @process = undefined
@@ -39,7 +41,8 @@ class Builder extends Disposable
         else
           @cmds = []
           global.err = err
-          @latex.logPanel.showText """Failed building LaTeX.""", 3000
+          @latex.logPanel.showText icon: 'x',
+            """Failed building LaTeX.""", 3000
           atom.notifications.addError(
             """Failed Building LaTeX (code #{err.code}).""",
             {"detail": err.message}

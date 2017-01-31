@@ -18,7 +18,7 @@ module.exports =
       'Atom-LaTeX:preview': () => this.latex.viewer.openViewerTab(),
       'Atom-LaTeX:kill': () => this.latex.builder.killProcess(),
 
-    @latex.logPanel.showText 'Activated.', 5000, true
+    @latex.logPanel.showText icon: 'check', 'Activated.', 5000, true
 
   deactivate: ->
     return @disposables.dispose()

@@ -1,0 +1,37 @@
+// The ui-variables file is provided by base themes provided by Atom.
+//
+// See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
+// for a full listing of what's available.
+@import "ui-variables";
+
+.atom-latex-title, #atom-latex-log-icon::before {
+  font-size: 14px;
+  margin-right: 0px;
+}
+
+#atom-latex-log-icon {
+  display: inline-block;
+  padding-top: 2px;
+  color: lightgreen;
+}
+
+#atom-latex-log-icon.icon-x {
+  color: red;
+}
+
+#atom-latex-log-icon.icon-sync {
+  color: orange;
+}
+
+.icon-spin {
+  -webkit-animation: spin 1s infinite linear;
+}
+
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
