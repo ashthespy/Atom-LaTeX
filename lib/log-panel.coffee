@@ -6,20 +6,30 @@ class LogPanel extends Disposable
   constructor: (latex) ->
     super () => @disposables.dispose()
     @latex = latex
-    @title = 'Atom-LaTeX'
     @logPanelView = new LogPanelView(@title)
     @logPanelView.attach()
-    @logPanelView.toggle()
 
-  showText: (text, timeout, hide) ->
+  showText: (icon, text, timeout, hide) ->
     clearTimeout(@timeout) if @timeout
     @logPanelView.attach()
-    @logPanelView.heading.text """#{@title} Status: #{text}"""
+    @setTitle(icon, text)
     if timeout?
       @timeout = setTimeout (() =>
-        @logPanelView.heading.text @title
+        @setTitle(icon)
         @logPanelView.close() if hide
       ), timeout
+
+  setTitle: (icon, text) ->
+    classes = ['icon', """icon-#{icon.icon}"""]
+    if icon.spin
+      classes.push 'icon-spin'
+    title = """<div id="atom-latex-log-icon"\
+                    class="#{classes.join ' '}">\
+               </div>\
+               <span class="atom-latex-title">Atom-LaTeX</span>"""
+    if text
+      title += """<span class="atom-latex-title"> Status: #{text}</span>"""
+    @logPanelView.heading.html title
 
   show: () ->
     @logPanelView.attach()
@@ -32,3 +42,4 @@ class LogPanelView extends MessagePanelView
   constructor: (title) ->
     super title: title
     @addClass 'atom-latex'
+    @heading.parent().css({'padding': 5})
