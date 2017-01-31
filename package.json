@@ -6,7 +6,9 @@
   "license": "MIT",
   "keywords": [
     "tex",
-    "latex"
+    "latex",
+    "compile",
+    "preview"
   ],
   "activationCommands": {
     "atom-workspace": [
