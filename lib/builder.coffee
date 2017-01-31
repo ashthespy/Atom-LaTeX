@@ -18,6 +18,7 @@ class Builder extends Disposable
     @killProcess()
     @setCmds()
     @buildLogs = []
+    @execCmds = []
     @buildProcess()
 
     return true
@@ -25,12 +26,11 @@ class Builder extends Disposable
   buildProcess: ->
     cmd = @cmds.shift()
     if cmd == undefined
-      @latex.logPanel.showText icon: 'check',
-        """Successfully built LaTeX.""", 3000
-      console.debug @buildLogs
+      @postBuild()
       return
 
     @buildLogs.push ''
+    @execCmds.push cmd
     @latex.logPanel.showText icon: 'sync', spin: true,
       """Building LaTeX: Step #{@buildLogs.length}."""
     @process = cp.exec(
@@ -40,7 +40,6 @@ class Builder extends Disposable
           @buildProcess()
         else
           @cmds = []
-          global.err = err
           @latex.logPanel.showText icon: 'x',
             """Failed building LaTeX.""", 3000
           atom.notifications.addError(
@@ -51,6 +50,10 @@ class Builder extends Disposable
 
     @process.stdout.on 'data', (data) =>
       @buildLogs[@buildLogs.length - 1] += data
+
+  postBuild: ->
+    @latex.logPanel.showText icon: 'check',
+      """Successfully built LaTeX.""", 3000
 
   killProcess: ->
     @cmds = []
