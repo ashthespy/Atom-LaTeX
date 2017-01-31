@@ -57,6 +57,7 @@ class Builder extends Disposable
     @latex.logPanel.showText icon: 'check', 'Success.', 3000
     @latex.logPanel.addPlainLog 'Successfully built LaTeX:'
     @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
+    @latex.viewer.refresh()
 
   killProcess: ->
     @cmds = []

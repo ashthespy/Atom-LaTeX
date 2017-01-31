@@ -23,24 +23,24 @@ socket.addEventListener("message", (event) => {
             var container = document.getElementById('viewerContainer');
             container.scrollTop = document.getElementsByClassName('page')[0].offsetHeight * data.data.page  - pos[1];
             break;
-        case "get_position":
-            socket.send(JSON.stringify({type:"position", 
-                                        scale:PDFViewerApplication.pdfViewer.currentScaleValue, 
-                                        scrollTop:document.getElementById('viewerContainer').scrollTop, 
+        case "refresh":
+            socket.send(JSON.stringify({type:"position",
+                                        scale:PDFViewerApplication.pdfViewer.currentScaleValue,
+                                        scrollTop:document.getElementById('viewerContainer').scrollTop,
                                         scrollLeft:document.getElementById('viewerContainer').scrollLeft}));
+            socket.onclose = () => {}
+            location.reload();
             break;
         case "position":
             PDFViewerApplication.pdfViewer.currentScaleValue = data.scale;
             document.getElementById('viewerContainer').scrollTop = data.scrollTop;
             document.getElementById('viewerContainer').scrollLeft = data.scrollLeft;
             break;
-        case "refresh":
-            location.reload();
-            break;
         default:
             break;
     }
 });
+socket.onclose = () => {window.close();}
 
 document.addEventListener('pagesinit', (e) => {
     socket.send(JSON.stringify({type:"loaded"}));
