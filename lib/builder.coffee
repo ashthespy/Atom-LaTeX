@@ -19,6 +19,7 @@ class Builder extends Disposable
     @setCmds()
     @buildLogs = []
     @execCmds = []
+    @latex.logPanel.clear()
     @buildProcess()
 
     return true
@@ -31,29 +32,31 @@ class Builder extends Disposable
 
     @buildLogs.push ''
     @execCmds.push cmd
-    @latex.logPanel.showText icon: 'sync', spin: true,
-      """Building LaTeX: Step #{@buildLogs.length}."""
+    @latex.logPanel.showText icon: 'sync', spin: true, 'Building LaTeX.'
+    @latex.logPanel.addStepLog(@buildLogs.length, cmd)
     @process = cp.exec(
       cmd, {cwd: path.dirname @latex.mainFile}, (err, stdout, stderr) =>
         @process = undefined
         if !err
           @buildProcess()
         else
-          @cmds = []
-          @latex.logPanel.showText icon: 'x',
-            """Failed building LaTeX.""", 3000
           atom.notifications.addError(
             """Failed Building LaTeX (code #{err.code}).""",
             {"detail": err.message}
           )
+          @cmds = []
+          @latex.logPanel.showText icon: 'x', 'Error.', 3000
+          @latex.logPanel.addPlainLog 'Error occurred while building LaTeX:'
+          @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
     )
 
     @process.stdout.on 'data', (data) =>
       @buildLogs[@buildLogs.length - 1] += data
 
   postBuild: ->
-    @latex.logPanel.showText icon: 'check',
-      """Successfully built LaTeX.""", 3000
+    @latex.logPanel.showText icon: 'check', 'Success.', 3000
+    @latex.logPanel.addPlainLog 'Successfully built LaTeX:'
+    @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
 
   killProcess: ->
     @cmds = []
