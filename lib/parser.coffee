@@ -17,7 +17,6 @@ class Parser extends Disposable
 
   parseLatex: (log) ->
     log = log.replace(/(.{78}(\w|\s|\d|\\|\/))(\r\n|\n)/g, '$1')
-    console.debug log
     lines = log.replace(/(\r\n)|\r/g, '\n').split('\n')
     items = []
     for line in lines
