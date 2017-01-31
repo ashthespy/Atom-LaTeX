@@ -23,7 +23,7 @@ class Server extends Disposable
 
   httpHandler: (request, response) ->
     if request.url.indexOf('viewer.html') > -1
-      response.writeHead 200, { 'Content-Type': 'text/html' }
+      response.writeHead 200, 'Content-Type': 'text/html'
       response.end fs.readFileSync("""#{@httpRoot}/viewer.html"""), 'utf-8'
       return
 
@@ -36,10 +36,9 @@ class Server extends Disposable
       pdfPath = """#{@latex.mainFile.substr(
         0, @latex.mainFile.lastIndexOf('.'))}.pdf"""
       pdfSize = fs.statSync(pdfPath).size
-      response.writeHead 200, {
+      response.writeHead 200,
         'Content-Type': 'application/pdf',
-        'Content-Length': pdfSize,
-      }
+        'Content-Length': pdfSize
       fs.createReadStream(pdfPath).pipe(response)
       return
 
@@ -66,5 +65,5 @@ class Server extends Disposable
           response.writeHead 500
         response.end()
       else
-        response.writeHead 200, { 'Content-Type': contentType }
+        response.writeHead 200, 'Content-Type': contentType
         response.end content, 'utf-8'

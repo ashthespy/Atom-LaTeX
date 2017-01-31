@@ -24,13 +24,6 @@
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-  "consumedServices": {
-    "status-bar": {
-      "versions": {
-        "^1.0.0": "consumeStatusBar"
-      }
-    }
-  },
   "dependencies": {
     "ws": "^1.1.1",
     "hasbin": "^1.2.3",

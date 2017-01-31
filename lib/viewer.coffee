@@ -5,7 +5,7 @@ fs = require 'fs'
 module.exports =
 class Viewer extends Disposable
   constructor: (latex) ->
-    super(() => @disposables.dispose())
+    super () => @disposables.dispose()
     @latex = latex
 
   openViewerTab: ->
