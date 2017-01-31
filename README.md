@@ -9,11 +9,11 @@ Unification provides seamless experience. Aiming to make it work and work perfec
 ## Features
 
 - [x] Compile LaTeX with BibTeX
-- [x] Preview PDF
+- [x] Preview PDF with in-browser viewer
+- [x] Log parser
 - [ ] Support direct and reverse SyncTex
 - [ ] Autocomplete
 - [ ] Colorize
-- [ ] Log parser
 
 ## Requirements
 
@@ -22,7 +22,7 @@ Unification provides seamless experience. Aiming to make it work and work perfec
 
 ## Installation
 
-Installing LaTeX Toolbox is simple. You can find it in [the atom.io package registry](https://atom.io/packages/Atom-Toolbox), or simply run `apm install Atom-Toolbox` in command line.
+Installing Atom-LaTeX is simple. You can find it in [the atom.io package registry](https://atom.io/packages/atom-latex), or simply run `apm install atom-latex` in command line.
 
 Alternatively, you can check out this repository and copy it to the Atom package folder:
 - Windows `%USERPROFILE%\.atom\packages`
@@ -30,10 +30,17 @@ Alternatively, you can check out this repository and copy it to the Atom package
 
 ## Usage
 
-- Compile: Use command `Atom-Toolbox:build` for now. Will have alternative ways.
-- In-browser Preview: Use command `Atom-Toolbox:preview` for now. Will have alternative ways.
+All commands can be invoked from `Package`-`Atom-LaTeX` menu or by command palette. Alternatively, keybinds are provided.
 
-## Commands
+| Command               | Default Keybind                             | Function |
+|-----------------------|---------------------------------------------|----------|
+| `atom-latex:build`    | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>B</kbd> | Build LaTeX file. |
+| `atom-latex:preview`  | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>P</kbd> | Preview generated PDF file with in-browser viewer. |
+| `atom-latex:kill`     | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>K</kbd> | Terminate current LaTeX building process. |
+| `atom-latex:show-log` | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>L</kbd> | Show Atom-LaTeX log panel. |
 
-- `Atom-Toolbox:build`: Compile LaTeX to PDF.
-- `Atom-Toolbox:preview`: Open a live preview column for LaTeX.
+## Contributing
+
+- Submit issues for bugs
+- Fork and PR for fixes
+- Thank you so much!
