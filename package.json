@@ -1,0 +1,40 @@
+{
+  "name": "Atom-LaTeX",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "The LaTeX package you will need",
+  "license": "MIT",
+  "keywords": [
+    "tex",
+    "latex"
+  ],
+  "activationCommands": {
+    "atom-workspace": [
+      "Atom-LaTeX:build",
+      "Atom-Toolbox:preview",
+      "Atom-Toolbox:kill"
+    ]
+  },
+  "activationHooks": [
+    "language-latex:grammar-used",
+    "language-tex:grammar-used",
+    "language-latexsimple:grammar-used"
+  ],
+  "repository": "https://github.com/James-Yu/Atom-Toolbox",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    }
+  },
+  "dependencies": {
+    "ws": "^1.1.1",
+    "hasbin": "^1.2.3",
+    "open": "^0.0.5",
+    "atom-message-panel": "^1.3.0"
+  }
+}
