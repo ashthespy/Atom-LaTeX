@@ -41,9 +41,10 @@ class Builder extends Disposable
           @buildProcess()
         else
           atom.notifications.addError(
-            """Failed Building LaTeX (code #{err.code}).""",
-            {"detail": err.message}
-          )
+            """Failed Building LaTeX (code #{err.code}).""", {
+              detail: err.message
+              dismissable: true
+            })
           @cmds = []
           @latex.logPanel.showText icon: 'x', 'Error.', 3000
           @latex.logPanel.addPlainLog 'Error occurred while building LaTeX.'
