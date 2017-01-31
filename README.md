@@ -8,7 +8,7 @@ Unification provides seamless experience. Aiming to make it work and work perfec
 
 ## Features
 
-- [x] Compile LaTeX with BibTeX to PDF
+- [x] Compile LaTeX with BibTeX
 - [x] Preview PDF
 - [ ] Support direct and reverse SyncTex
 - [ ] Autocomplete

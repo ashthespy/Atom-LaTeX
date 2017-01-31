@@ -46,7 +46,7 @@ class Builder extends Disposable
           )
           @cmds = []
           @latex.logPanel.showText icon: 'x', 'Error.', 3000
-          @latex.logPanel.addPlainLog 'Error occurred while building LaTeX:'
+          @latex.logPanel.addPlainLog 'Error occurred while building LaTeX.'
           @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
     )
 
@@ -55,9 +55,13 @@ class Builder extends Disposable
 
   postBuild: ->
     @latex.logPanel.showText icon: 'check', 'Success.', 3000
-    @latex.logPanel.addPlainLog 'Successfully built LaTeX:'
+    @latex.logPanel.addPlainLog 'Successfully built LaTeX.'
     @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
-    @latex.viewer.refresh()
+    if atom.config.get('atom-latex.preview_after_build') and
+        @latex.viewer.client.ws == undefined
+      @latex.viewer.openViewerTab()
+    else if @latex.viewer.client.ws?
+      @latex.viewer.refresh()
 
   killProcess: ->
     @cmds = []
@@ -76,15 +80,30 @@ class Builder extends Disposable
     return true
 
   setCmds: ->
-    texCompiler = 'pdflatex'
-    bibCompiler = 'bibtex'
-    args = '-synctex=1 -interaction=nonstopmode -file-line-error'
-    toolchain = [
-      '%TEX %ARG %DOC',
-      '%BIB %DOC',
-      '%TEX %ARG %DOC',
-      '%TEX %ARG %DOC',
+    if atom.config.get('atom-latex.toolchain') == 'auto'
+      if !@latexmk_toolchain()
+        @custom_toolchain()
+    else if atom.config.get('atom-latex.toolchain') == 'latexmk toolchain'
+      @latexmk_toolchain()
+    else if atom.config.get('atom-latex.toolchain') == 'custom toolchain'
+      @custom_toolchain()
+
+  latexmk_toolchain: ->
+    @cmds = [
+      """latexmk \
+      #{atom.config.get('atom-latex.latexmk_param')} \
+      #{path.basename(@latex.mainFile, '.tex')}"""
     ]
+    if !@binCheck('latexmk') or !@binCheck('perl')
+      return false
+    return true
+
+  custom_toolchain: ->
+    texCompiler = atom.config.get('atom-latex.compiler')
+    bibCompiler = atom.config.get('atom-latex.bibtex')
+    args = atom.config.get('atom-latex.compiler_param')
+    toolchain = atom.config.get('atom-latex.custom_toolchain').split('&&')
+    toolchain = toolchain.map((cmd) -> cmd.trim())
     @cmds = []
     result = []
     for toolPrototype in toolchain
@@ -94,5 +113,3 @@ class Builder extends Disposable
       cmd = cmd.split('%ARG').join(args)
       cmd = cmd.split('%DOC').join(path.basename(@latex.mainFile, '.tex'))
       @cmds.push cmd
-
-    return true

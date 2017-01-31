@@ -1,5 +1,5 @@
 {
-  "name": "Atom-LaTeX",
+  "name": "atom-latex",
   "main": "./lib/main",
   "version": "0.0.0",
   "description": "The LaTeX package you will need",
@@ -10,9 +10,10 @@
   ],
   "activationCommands": {
     "atom-workspace": [
-      "Atom-LaTeX:build",
-      "Atom-Toolbox:preview",
-      "Atom-Toolbox:kill"
+      "atom-latex:build",
+      "atom-latex:preview",
+      "atom-latex:kill",
+      "atom-latex:show-log"
     ]
   },
   "activationHooks": [
