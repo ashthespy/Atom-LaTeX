@@ -6,7 +6,7 @@ hb = require 'hasbin'
 module.exports =
 class Builder extends Disposable
   constructor: (latex) ->
-    super(() => @disposables.dispose())
+    super () => @disposables.dispose()
     @latex = latex
 
   build: ->
@@ -25,12 +25,12 @@ class Builder extends Disposable
   buildProcess: ->
     cmd = @cmds.shift()
     if cmd == undefined
-      @latex.status.showText """Successfully built LaTeX.""", 3000
+      @latex.logPanel.showText """Successfully built LaTeX.""", 3000
       console.debug @buildLogs
       return
 
     @buildLogs.push ''
-    @latex.status.showText """Building LaTeX: Step #{@buildLogs.length}."""
+    @latex.logPanel.showText """Building LaTeX: Step #{@buildLogs.length}."""
     @process = cp.exec(
       cmd, {cwd: path.dirname @latex.mainFile}, (err, stdout, stderr) =>
         @process = undefined
@@ -39,7 +39,7 @@ class Builder extends Disposable
         else
           @cmds = []
           global.err = err
-          @latex.status.showText """Failed building LaTeX.""", 3000
+          @latex.logPanel.showText """Failed building LaTeX.""", 3000
           atom.notifications.addError(
             """Failed Building LaTeX (code #{err.code}).""",
             {"detail": err.message}
