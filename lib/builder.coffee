@@ -6,7 +6,6 @@ hb = require 'hasbin'
 module.exports =
 class Builder extends Disposable
   constructor: (latex) ->
-    super () => @disposables.dispose()
     @latex = latex
 
   build: ->

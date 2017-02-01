@@ -40,7 +40,6 @@ module.exports =
 
 class AtomLaTeX extends Disposable
   constructor: ->
-    super () => @disposables.dispose()
     @disposables = new CompositeDisposable
 
     @builder = new Builder(this)
