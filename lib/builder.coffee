@@ -59,7 +59,7 @@ class Builder extends Disposable
     @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
     if atom.config.get('atom-latex.preview_after_build') and
         @latex.viewer.client.ws == undefined
-      @latex.viewer.openViewerTab()
+      @latex.viewer.openViewerNewWindow()
     else if @latex.viewer.client.ws?
       @latex.viewer.refresh()
 

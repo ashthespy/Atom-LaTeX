@@ -16,7 +16,7 @@ class Server extends Disposable
         if err
           e(err)
         else if @latex.server.openTab
-          @latex.viewer.openViewerTab()
+          @latex.viewer.openViewerNewWindow()
 
     @ws = ws.createServer server: @http
     @ws.on "connection", (ws) =>

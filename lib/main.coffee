@@ -20,7 +20,7 @@ module.exports =
 
     @disposables.add atom.commands.add 'atom-workspace',
       'atom-latex:build': () => this.latex.builder.build()
-      'atom-latex:preview': () => this.latex.viewer.openViewerTab()
+      'atom-latex:preview': () => this.latex.viewer.openViewerNewWindow()
       'atom-latex:kill': () => this.latex.builder.killProcess()
       'atom-latex:show-log': () => this.latex.logPanel.showPanel()
 

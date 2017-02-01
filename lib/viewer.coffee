@@ -1,5 +1,5 @@
 { Disposable } = require 'atom'
-open = require 'open'
+BrowserWindow = require('electron').remote.BrowserWindow
 fs = require 'fs'
 
 module.exports =
@@ -7,6 +7,10 @@ class Viewer extends Disposable
   constructor: (latex) ->
     @latex = latex
     @client = {}
+
+  dispose: ->
+    if @window? and !@window.isDestroyed()
+      @window.destroy()
 
   wsHandler: (ws, msg) ->
     data = JSON.parse msg
@@ -25,7 +29,7 @@ class Viewer extends Disposable
   refresh: () ->
     @client.ws?.send JSON.stringify type:"refresh"
 
-  openViewerTab: ->
+  openViewerNewWindow: ->
     if !@latex.manager.findMain()
       return
 
@@ -34,8 +38,16 @@ class Viewer extends Disposable
     if !fs.existsSync pdfPath
       return
 
-    if @getUrl()
-      open(@url)
+    if !@getUrl()
+      return
+
+    if !@window? or @window.isDestroyed()
+      @window = new BrowserWindow()
+    else
+      @window.show()
+      @window.focus()
+
+    @window.loadURL(@url)
 
   getUrl: ->
     try
