@@ -15,9 +15,13 @@ class Citation extends Disposable
     suggestions = []
     for item in items
       if prefix.length is 0 or item.key.indexOf(prefix) > -1
+        description = item.title
+        if item.author?
+          description += """ - #{item.author.split(' and ').join('; ')}"""
         suggestions.push
           text: item.key
           type: 'tag'
+          description: description
     return suggestions
 
   getBibFiles: ->
