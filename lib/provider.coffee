@@ -16,6 +16,9 @@ class Provider extends Disposable
         line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])
         citeReg = /(?:\\[a-zA-Z]*cite[a-zA-Z]*(?:\[[^\[\]]*\])?){([^}]*)$/
         result = line.match(citeReg)
+        if line[line.length - 1] is '{'
+          atom.packages.getActivePackage('autocomplete-plus')\
+            .mainModule.autocompleteManager.shouldDisplaySuggestions = true
         if result
           prefix = result[1]
           allKeys = prefix.split(',')
