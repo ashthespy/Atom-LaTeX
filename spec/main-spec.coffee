@@ -1,6 +1,7 @@
+path = require 'path'
 pkg = require '../lib/main'
 helper = require './helper'
-path = require 'path'
+
 
 describe 'Atom-LaTeX', ->
   beforeEach ->
@@ -19,6 +20,11 @@ describe 'Atom-LaTeX', ->
         expect(pkg.latex.parser).toBeDefined()
 
   describe 'Builder', ->
+    beforeEach ->
+      project = """#{path.dirname(__filename)}#{path.sep}latex_project"""
+      atom.project.setPaths [project]
+      pkg.latex.mainFile = """#{project}#{path.sep}main.tex"""
+
     describe 'build-after-save feature', ->
       builder = builder_ = undefined
 
@@ -26,10 +32,6 @@ describe 'Atom-LaTeX', ->
         builder = jasmine.createSpyObj 'Builder', ['build']
         builder_ = pkg.latex.builder
         pkg.latex.builder = builder
-
-        project = """#{path.dirname(__filename)}#{path.sep}latex_project"""
-        atom.project.setPaths [project]
-        pkg.latex.mainFile = """#{project}#{path.sep}main.tex"""
 
       afterEach ->
         pkg.latex.builder = builder_
@@ -55,7 +57,7 @@ describe 'Atom-LaTeX', ->
         helper.setConfig 'atom-latex.build_after_save', true
         project = """#{path.dirname(__filename)}#{path.sep}latex_project"""
         waitsForPromise -> atom.workspace.open(
-          """#{project}#{path.sep}non_tex.file""").then (editor) ->
+          """#{project}#{path.sep}dummy.file""").then (editor) ->
             editor.save()
             expect(builder.build).not.toHaveBeenCalled()
 
@@ -65,10 +67,6 @@ describe 'Atom-LaTeX', ->
       beforeEach ->
         binCheck_ = pkg.latex.builder.binCheck
         spyOn(pkg.latex.builder, 'binCheck')
-
-        project = """#{path.dirname(__filename)}#{path.sep}latex_project"""
-        atom.project.setPaths [project]
-        pkg.latex.mainFile = """#{project}#{path.sep}main.tex"""
 
       afterEach ->
         pkg.latex.builder.binCheck = binCheck_
@@ -114,6 +112,48 @@ describe 'Atom-LaTeX', ->
           -interaction=nonstopmode -file-line-error main')
         expect(pkg.latex.builder.cmds[1]).toBe('bibtex main')
 
+    describe '::build', ->
+      execCmd = execCmd_ = open = open_ = undefined
+
+      beforeEach ->
+        open = jasmine.createSpy('open')
+        stdout = jasmine.createSpy('stdout')
+        execCmd = jasmine.createSpy('execCmd').andCallFake((cmd, cwd, fn) ->
+          fn()
+          return stdout:
+            on: (data, fn) ->
+              stdout(data, fn)
+        )
+        open_ = pkg.latex.viewer.openViewerNewWindow
+        pkg.latex.viewer.openViewerNewWindow = open
+        execCmd_ = pkg.latex.builder.execCmd
+        pkg.latex.builder.execCmd = execCmd
+
+      afterEach ->
+        pkg.latex.viewer.openViewerNewWindow = open_
+        pkg.latex.builder.execCmd = execCmd_
+        helper.restoreConfigs()
+
+      it 'should execute all commands sequentially', ->
+        helper.setConfig 'atom-latex.toolchain', 'custom toolchain'
+        helper.unsetConfig 'atom-latex.compiler'
+        helper.unsetConfig 'atom-latex.bibtex'
+        helper.unsetConfig 'atom-latex.compiler_param'
+        helper.unsetConfig 'atom-latex.custom_toolchain'
+        helper.setConfig 'atom-latex.preview_after_build', false
+        pkg.latex.builder.build()
+        expect(execCmd.callCount).toBe(4)
+        expect(open).not.toHaveBeenCalled()
+
+      it 'should open preview when ready if enabled', ->
+        helper.setConfig 'atom-latex.toolchain', 'custom toolchain'
+        helper.unsetConfig 'atom-latex.compiler'
+        helper.unsetConfig 'atom-latex.bibtex'
+        helper.unsetConfig 'atom-latex.compiler_param'
+        helper.unsetConfig 'atom-latex.custom_toolchain'
+        helper.setConfig 'atom-latex.preview_after_build', true
+        pkg.latex.builder.build()
+        expect(open).toHaveBeenCalled()
 
   describe 'Manager', ->
     describe '::fileMain', ->

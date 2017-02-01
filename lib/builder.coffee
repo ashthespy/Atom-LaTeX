@@ -28,6 +28,9 @@ class Builder extends Disposable
 
     return true
 
+  execCmd: (cmd, env, cb) ->
+    return cp.exec(cmd, env, cb)
+
   buildProcess: ->
     cmd = @cmds.shift()
     if cmd == undefined
@@ -38,7 +41,7 @@ class Builder extends Disposable
     @execCmds.push cmd
     @latex.logPanel.showText icon: 'sync', spin: true, 'Building LaTeX.'
     @latex.logPanel.addStepLog(@buildLogs.length, cmd)
-    @process = cp.exec(
+    @process = @execCmd(
       cmd, {cwd: path.dirname @latex.mainFile}, (err, stdout, stderr) =>
         @process = undefined
         if !err
