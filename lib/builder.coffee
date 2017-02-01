@@ -9,9 +9,14 @@ class Builder extends Disposable
     @latex = latex
 
   build: ->
-    if !@binCheck()
-      return false
     if !@latex.manager.findMain()
+      atom.notifications.addError(
+        """Cannot find a LaTeX file with the following command to start.""", {
+          detail: '`\\begin{document}`'
+          dismissable: true
+          message: 'Please make sure your LaTeX main file with the above \
+                    command is in the root folder of the opened Atom project.'
+        })
       return false
 
     @killProcess()
@@ -68,16 +73,9 @@ class Builder extends Disposable
     @process?.kill()
 
   binCheck: (binary) ->
-    if binary
-      if hb.sync binary
-        return true
-      return false
-
-    if !hb.sync 'pdflatex'
-      return false
-    if !hb.sync 'bibtex'
-      return false
-    return true
+    if hb.sync binary
+      return true
+    return false
 
   setCmds: ->
     if atom.config.get('atom-latex.toolchain') == 'auto'
