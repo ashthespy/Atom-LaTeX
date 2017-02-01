@@ -26,9 +26,7 @@ module.exports =
 
     @disposables.add atom.workspace.observeTextEditors (editor) =>
       @disposables.add editor.onDidSave () =>
-        activeEditor = atom.workspace.getActiveTextEditor()
-        if editor == activeEditor and \
-            atom.config.get('atom-latex.build_after_save') and \
+        if atom.config.get('atom-latex.build_after_save') and \
             editor.buffer.file?.path and \
             path.extname(editor.buffer.file?.path) == '.tex'
           @latex.builder.build()
