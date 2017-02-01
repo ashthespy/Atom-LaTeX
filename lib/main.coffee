@@ -6,6 +6,7 @@ Server = require './server'
 Viewer = require './viewer'
 Parser = require './parser'
 LogPanel = require './log-panel'
+Provider = require './provider'
 
 module.exports =
   config: require './config'
@@ -36,6 +37,9 @@ module.exports =
   deactivate: ->
     return @disposables.dispose()
 
+  provide: ->
+    return @latex.provider.provider
+
 class AtomLaTeX extends Disposable
   constructor: ->
     @disposables = new CompositeDisposable
@@ -46,8 +50,10 @@ class AtomLaTeX extends Disposable
     @server = new Server(this)
     @logPanel = new LogPanel(this)
     @parser = new Parser(this)
+    @provider = new Provider(this)
 
-    @disposables.add @builder, @manager, @server, @viewer, @logPanel
+    @disposables.add @builder, @manager, @server, @viewer, @logPanel, @parser,
+      @provider
 
   dispose: ->
     @disposables.dispose()
