@@ -4,14 +4,18 @@ module.exports =
     packages = ['atom-latex']
     activationPromise = Promise.all packages.map (pkg) ->
       atom.packages.activatePackage pkg
-    atom.commands.dispatch(workspaceElement, 'atom-latex:kill')
+    atom.commands.dispatch workspaceElement, 'atom-latex:kill'
     return activationPromise
 
   setConfig: (keyPath, value) ->
     @originalConfigs ?= {}
-    @originalConfigs[keyPath] ?=
-      if atom.config.isDefault keyPath then null else atom.config.get keyPath
+    @originalConfigs[keyPath] ?= atom.config.get keyPath
     atom.config.set keyPath, value
+
+  unsetConfig: (keyPath) ->
+    @originalConfigs ?= {}
+    @originalConfigs[keyPath] ?= atom.config.get keyPath
+    atom.config.unset keyPath
 
   restoreConfigs: ->
     if @originalConfigs
