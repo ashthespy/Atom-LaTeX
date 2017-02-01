@@ -5989,12 +5989,12 @@ var pdfjsWebLibs;
      }
      var parameters = Object.create(null), scale;
      if (typeof file === 'string') {
-      this.setTitleUsingUrl(file);
+      // this.setTitleUsingUrl(file);
       parameters.url = file;
      } else if (file && 'byteLength' in file) {
       parameters.data = file;
      } else if (file.url && file.originalUrl) {
-      this.setTitleUsingUrl(file.originalUrl);
+      // this.setTitleUsingUrl(file.originalUrl);
       parameters.url = file.url;
      }
      if (args) {
@@ -6277,7 +6277,7 @@ var pdfjsWebLibs;
        pdfTitle = info['Title'];
       }
       if (pdfTitle) {
-       self.setTitle(pdfTitle + ' - ' + document.title);
+      // self.setTitle(pdfTitle + ' - ' + document.title);
       }
       if (info.IsAcroFormPresent) {
        console.warn('Warning: AcroForm/XFA is not supported');
@@ -6580,7 +6580,7 @@ var pdfjsWebLibs;
    var webViewerOpenFileViaURL;
    webViewerOpenFileViaURL = function webViewerOpenFileViaURL(file) {
     if (file && file.lastIndexOf('file:', 0) === 0) {
-     PDFViewerApplication.setTitleUsingUrl(file);
+     // PDFViewerApplication.setTitleUsingUrl(file);
      var xhr = new XMLHttpRequest();
      xhr.onload = function () {
       PDFViewerApplication.open(new Uint8Array(xhr.response));
@@ -6730,7 +6730,7 @@ var pdfjsWebLibs;
      };
      fileReader.readAsArrayBuffer(file);
     }
-    PDFViewerApplication.setTitleUsingUrl(file.name);
+    // PDFViewerApplication.setTitleUsingUrl(file.name);
     var appConfig = PDFViewerApplication.appConfig;
     appConfig.toolbar.viewBookmark.setAttribute('hidden', 'true');
     appConfig.secondaryToolbar.viewBookmarkButton.setAttribute('hidden', 'true');

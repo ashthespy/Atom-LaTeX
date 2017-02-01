@@ -48,6 +48,8 @@ class Viewer extends Disposable
       @window.focus()
 
     @window.loadURL(@url)
+    @window.setMenu(null)
+    @window.setTitle("""Atom-LaTeX PDF Viewer - #{@latex.mainFile}""")
 
   getUrl: ->
     try
