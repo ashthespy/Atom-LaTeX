@@ -5,16 +5,16 @@
       "label": "Atom-LaTeX",
       "submenu": [{
         "label": "Build LaTeX",
-        "command": "Atom-LaTeX:build"
+        "command": "atom-latex:build"
       }, {
         "label": "Preview PDF",
-        "command": "Atom-LaTeX:preview"
+        "command": "atom-latex:preview"
       }, {
         "label": "Kill Compiler",
-        "command": "Atom-LaTeX:kill"
+        "command": "atom-latex:kill"
       }, {
         "label": "Show Atom-LaTeX Log",
-        "command": "Atom-LaTeX:show-log"
+        "command": "atom-latex:show-log"
       }]
     }]
   }]
