@@ -7,7 +7,6 @@ path = require 'path'
 module.exports =
 class Server extends Disposable
   constructor: (latex) ->
-    super(() => @disposables.dispose())
     @latex = latex
 
     @http = http.createServer (req, res) => @httpHandler(req, res)

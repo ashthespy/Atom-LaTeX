@@ -6,7 +6,6 @@
 module.exports =
 class LogPanel extends Disposable
   constructor: (latex) ->
-    super () => @disposables.dispose()
     @latex = latex
     @logPanelView = new LogPanelView
     @logPanelView.attach()

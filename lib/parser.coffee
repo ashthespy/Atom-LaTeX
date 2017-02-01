@@ -8,7 +8,6 @@ latexWarn = /^((?:(?:Class|Package) \S+)|LaTeX) (Warning|Info):\s+(.*?)(?: on in
 module.exports =
 class Parser extends Disposable
   constructor: (latex) ->
-    super () => @disposables.dispose()
     @latex = latex
 
   parse: (log) ->
@@ -26,8 +25,7 @@ class Parser extends Disposable
           type: 'error',
           text: if result[3] and result[3] != 'LaTeX' then \
                 """#{result[3]}: #{result[4]}""" else result[4],
-          file: if result[1] then @latex.manager.findRelative(result[1]) \
-                else @latex.mainFile
+          file: if result[1] then result[1] else @latex.mainFile
           line: if result[2] then parseInt result[2], 10 else undefined
         continue
       result = line.match latexBox

@@ -5,7 +5,6 @@ path = require 'path'
 module.exports =
 class Manager extends Disposable
   constructor: (latex) ->
-    super(() => @disposables.dispose())
     @latex = latex
 
   findMain: ->
@@ -33,7 +32,3 @@ class Manager extends Disposable
           @latex.mainFile = filePath
           return true
     return false
-
-  findRelative: (file) ->
-    @findMain()
-    return path.resolve(path.dirname(@latex.mainFile), file)
