@@ -8,11 +8,12 @@ class Citation extends Disposable
     @latex = latex
 
   provide: (prefix) ->
-    items = []
-    bibs = @getBibPaths()
-    for bib in bibs
-      items = items.concat @getBibItems bib
     suggestions = []
+    if !@latex.manager.findAll()
+      return suggestions
+    items = []
+    for bib in @latex.bibFiles
+      items = items.concat @getBibItems bib
     for item in items
       if prefix.length is 0 or item.key.indexOf(prefix) > -1
         description = item.title
@@ -23,26 +24,6 @@ class Citation extends Disposable
           type: 'tag'
           description: description
     return suggestions
-
-  getBibFiles: ->
-    bibs = []
-    @latex.manager.findMain()
-    if @latex.mainFile is undefined
-      return bibs
-    content = fs.readFileSync @latex.mainFile, 'utf-8'
-    bibReg = /\\bibliography(?:\[[^\[\]]*\])?{([\w\d\s,]+)}/g
-    result = bibReg.exec content
-    while result
-      bibs = bibs.concat result[1].split(',').map((bib) -> bib.trim())
-      result = bibReg.exec content
-    return bibs
-
-  getBibPaths: ->
-    bibs = @getBibFiles()
-    baseDir = path.dirname(@latex.mainFile)
-    return bibs.map((bib) ->
-      path.resolve path.join baseDir, path.basename(bib, '.bib') + '.bib'
-    )
 
   getBibItems: (bib) ->
     items = []
