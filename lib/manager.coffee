@@ -36,28 +36,30 @@ class Manager extends Disposable
   findAll: ->
     if !@findMain()
       return false
-    @latex.latexFiles = [ @latex.mainFile ]
+    @latex.texFiles = [ @latex.mainFile ]
     @latex.bibFiles = []
     @findDependentFiles(@latex.mainFile)
 
   findDependentFiles: (file) ->
     content = fs.readFileSync file, 'utf-8'
-    inputReg = /(?:\\input(?:\[[^\[\]\{\}]*\])?){([^}]*)}/g
-    result = inputReg.exec content
     baseDir = path.dirname(@latex.mainFile)
-    while result
+    
+    inputReg = /(?:\\input(?:\[[^\[\]\{\}]*\])?){([^}]*)}/g
+    loop
+      result = inputReg.exec content
+      break if !result?
       inputFile = result[1]
       if path.extname(inputFile) is ''
         inputFile += '.tex'
       filePath = path.resolve(path.join(baseDir, inputFile))
-      if @latex.latexFiles.indexOf(filePath) < 0
-        @latex.latexFiles.push(filePath)
+      if @latex.texFiles.indexOf(filePath) < 0
+        @latex.texFiles.push(filePath)
         @findDependentFiles(filePath)
-      result = inputReg.exec content
 
-    bibReg = /\\bibliography(?:\[[^\[\]]*\])?{([\w\d\s,]+)}/g
-    result = bibReg.exec content
-    while result
+    bibReg = /(?:\\bibliography(?:\[[^\[\]\{\}]*\])?){([\w\d\s,]+)}/g
+    loop
+      result = bibReg.exec content
+      break if !result?
       bibs = result[1].split(',').map((bib) -> bib.trim())
       paths = bibs.map((bib) =>
         if path.extname(bib) is ''
@@ -66,5 +68,4 @@ class Manager extends Disposable
         if @latex.bibFiles.indexOf(bib) < 0
           @latex.bibFiles.push(bib)
       )
-      result = bibReg.exec content
     return true
