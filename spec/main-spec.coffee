@@ -173,3 +173,12 @@ describe 'Atom-LaTeX', ->
         relative = path.relative(project, pkg.latex.mainFile)
         expect(result).toBe(true)
         expect(pkg.latex.mainFile).toBe("""#{project}#{path.sep}main.tex""")
+
+    describe '::findAll', ->
+      it 'should return all input files recursively', ->
+        project = """#{path.dirname(__filename)}#{path.sep}latex_project"""
+        atom.project.setPaths [project]
+        pkg.latex.mainFile = """#{project}#{path.sep}main.tex"""
+        result = pkg.latex.manager.findAll()
+        expect(pkg.latex.latexFiles.length).toBe(2)
+        expect(pkg.latex.bibFiles.length).toBe(0)
