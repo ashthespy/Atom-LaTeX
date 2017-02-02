@@ -180,5 +180,5 @@ describe 'Atom-LaTeX', ->
         atom.project.setPaths [project]
         pkg.latex.mainFile = """#{project}#{path.sep}main.tex"""
         result = pkg.latex.manager.findAll()
-        expect(pkg.latex.latexFiles.length).toBe(2)
+        expect(pkg.latex.texFiles.length).toBe(2)
         expect(pkg.latex.bibFiles.length).toBe(0)
