@@ -6,19 +6,26 @@ module.exports =
 class Reference extends Disposable
   constructor: (latex) ->
     @latex = latex
+    @suggestions = []
 
   provide: (prefix) ->
     suggestions = []
+    if prefix.length > 0
+      for item in @suggestions
+        if item.text.indexOf(prefix) > -1
+          suggestions.push item
+      return suggestions
     if !@latex.manager.findAll()
       return suggestions
     items = []
     for tex in @latex.texFiles
       items = items.concat @getRefItems tex
     for item in items
-      if prefix.length is 0 or item.indexOf(prefix) > -1
-        suggestions.push
-          text: item
-          type: 'tag'
+      suggestions.push
+        text: item
+        type: 'tag'
+        replacementPrefix: prefix
+    @suggestions = suggestions
     return suggestions
 
   getRefItems: (tex) ->

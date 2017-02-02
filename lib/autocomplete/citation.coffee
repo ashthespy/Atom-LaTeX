@@ -6,23 +6,30 @@ module.exports =
 class Citation extends Disposable
   constructor: (latex) ->
     @latex = latex
+    @suggestions = []
 
   provide: (prefix) ->
     suggestions = []
+    if prefix.length > 0
+      for item in @suggestions
+        if item.text.indexOf(prefix) > -1
+          suggestions.push item
+      return suggestions
     if !@latex.manager.findAll()
       return suggestions
     items = []
     for bib in @latex.bibFiles
       items = items.concat @getBibItems bib
     for item in items
-      if prefix.length is 0 or item.key.indexOf(prefix) > -1
-        description = item.title
-        if item.author?
-          description += """ - #{item.author.split(' and ').join('; ')}"""
-        suggestions.push
-          text: item.key
-          type: 'tag'
-          description: description
+      description = item.title
+      if item.author?
+        description += """ - #{item.author.split(' and ').join('; ')}"""
+      suggestions.push
+        text: item.key
+        type: 'tag'
+        description: description
+        replacementPrefix: prefix
+    @suggestions = suggestions
     return suggestions
 
   getBibItems: (bib) ->
