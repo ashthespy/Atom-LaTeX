@@ -1,4 +1,4 @@
-## [0.2.2] - 2017-02-03
+## [0.2.3] - 2017-02-03
 ### Changed
 * Use cached results for autocomplete when already typed some characters to reduce I/O operations.
 ### Fixed
