@@ -1,3 +1,9 @@
+## [0.2.1] - 2017-02-02
+### Added
+* Auto-complete for cross-references.
+### Changes
+* Now Atom-LaTeX will search all tex files recursively from the main file with `\input{}` commands.
+
 ## [0.2.0] - 2017-02-01
 ### Added
 * Auto-complete for citations.
