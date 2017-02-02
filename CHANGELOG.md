@@ -1,3 +1,9 @@
+## [0.2.2] - 2017-02-03
+### Changed
+* Use cached results for autocomplete when already typed some characters to reduce I/O operations.
+### Fixed
+* Autocomplete prefix is not removed after confirming a suggestion.
+
 ## [0.2.2] - 2017-02-02
 ### Added
 * Screencasts of some select features.
@@ -5,7 +11,7 @@
 ## [0.2.1] - 2017-02-02
 ### Added
 * Auto-complete for cross-references.
-### Changes
+### Changed
 * Now Atom-LaTeX will search all tex files recursively from the main file with `\input{}` commands.
 
 ## [0.2.0] - 2017-02-01

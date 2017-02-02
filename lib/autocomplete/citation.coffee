@@ -13,6 +13,7 @@ class Citation extends Disposable
     if prefix.length > 0
       for item in @suggestions
         if item.text.indexOf(prefix) > -1
+          item.replacementPrefix = prefix
           suggestions.push item
       return suggestions
     if !@latex.manager.findAll()
@@ -28,7 +29,6 @@ class Citation extends Disposable
         text: item.key
         type: 'tag'
         description: description
-        replacementPrefix: prefix
     @suggestions = suggestions
     return suggestions
 

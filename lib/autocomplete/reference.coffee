@@ -13,6 +13,7 @@ class Reference extends Disposable
     if prefix.length > 0
       for item in @suggestions
         if item.text.indexOf(prefix) > -1
+          item.replacementPrefix = prefix
           suggestions.push item
       return suggestions
     if !@latex.manager.findAll()
@@ -24,7 +25,6 @@ class Reference extends Disposable
       suggestions.push
         text: item
         type: 'tag'
-        replacementPrefix: prefix
     @suggestions = suggestions
     return suggestions
 
