@@ -28,6 +28,7 @@ class Citation extends Disposable
       suggestions.push
         text: item.key
         type: 'tag'
+        latexType: 'citation'
         description: description
     @suggestions = suggestions
     return suggestions

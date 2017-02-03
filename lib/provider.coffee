@@ -1,6 +1,7 @@
 { Disposable } = require 'atom'
 Citation = require './autocomplete/citation'
 Reference = require './autocomplete/reference'
+Environment = require './autocomplete/environment'
 
 module.exports =
 class Provider extends Disposable
@@ -8,6 +9,7 @@ class Provider extends Disposable
     @latex = latex
     @citation = new Citation(@latex)
     @reference = new Reference(@latex)
+    @environment = new Environment(@latex)
 
   provider:
     selector: '.text.tex.latex'
@@ -20,13 +22,21 @@ class Provider extends Disposable
           atom.packages.getActivePackage('autocomplete-plus')\
             .mainModule.autocompleteManager.shouldDisplaySuggestions = true
 
-        suggestions = atom_latex.provider.completeCommand(line, 'citation')
-        resolve(suggestions) if suggestions?
-
-        suggestions = atom_latex.provider.completeCommand(line, 'reference')
-        resolve(suggestions) if suggestions?
+        for command in ['citation', 'reference', 'environment']
+          suggestions = atom_latex.provider.completeCommand(line, command)
+          resolve(suggestions) if suggestions?
 
         resolve(suggestions)
+
+    onDidInsertSuggestion: ({editor, triggerPosition, suggestion}) ->
+      if suggestion.latexType is 'environment'
+        spaces = editor.buffer.lines[triggerPosition.row].match(/^(\s)*/)[0]
+        editor.buffer.insert({row: triggerPosition.row + 1, column: 0},
+          """#{spaces}\\end{#{suggestion.text}}\n""")
+        if suggestion.additionalInsert?
+          for content, i in suggestion.additionalInsert
+            editor.buffer.insert({row: triggerPosition.row + i + 1, column: 0},
+              """#{spaces}#{content}\n""")
 
   completeCommand: (line, type) ->
     switch type
@@ -36,6 +46,9 @@ class Provider extends Disposable
       when 'reference'
         reg = /(?:\\[a-zA-Z]*ref[a-zA-Z]*(?:\[[^\[\]]*\])?){([^}]*)$/
         provider = @reference
+      when 'environment'
+        reg = /(?:\\begin(?:\[[^\[\]]*\])?){([^}]*)$/
+        provider = @environment
 
     result = line.match(reg)
     if result

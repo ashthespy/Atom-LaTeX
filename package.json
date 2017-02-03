@@ -20,9 +20,7 @@
     ]
   },
   "activationHooks": [
-    "language-latex:grammar-used",
-    "language-tex:grammar-used",
-    "language-latexsimple:grammar-used"
+    "language-latex:grammar-used"
   ],
   "repository": "https://github.com/James-Yu/Atom-LaTeX",
   "engines": {

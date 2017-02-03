@@ -25,6 +25,7 @@ class Reference extends Disposable
       suggestions.push
         text: item
         type: 'tag'
+        latexType: 'reference'
     @suggestions = suggestions
     return suggestions
 

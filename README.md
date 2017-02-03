@@ -23,11 +23,10 @@ Unification provides seamless experience. Aiming to make it work and work perfec
 
 - LaTeX distribution in system PATH. For example, [TeX Live](https://www.tug.org/texlive/).
   - [MiKTeX](https://miktex.org/) does not ship with SyncTeX, but basic build and preview and non-SyncTeX related features work fine.
+- Install [`Language-LaTeX`](https://atom.io/packages/language-latex) package.
 - `[Optional]` Add the folder with your main LaTeX file as Atom project folder.
   - Main LaTeX file is the LaTeX file with the `\begin{document}` command. Atom-LaTeX will automatically detect on the first time of calling `atom-latex:build`.
   - You can also open your main LaTeX file and use `atom-latex:build-here` to manually set your main.
-- `[Optional]` Install [`Language-LaTeX`](https://atom.io/packages/language-latex) package.
-  - This package provides awesome LaTeX syntax highlighting. Optional but recommended.
 
 ## Installation
 
