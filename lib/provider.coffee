@@ -12,6 +12,7 @@ class Provider extends Disposable
   provider:
     selector: '.text.tex.latex'
     inclusionPriority: 1
+    suggestionPriority: 2
     getSuggestions: ({editor, bufferPosition}) ->
       new Promise (resolve) ->
         line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition])

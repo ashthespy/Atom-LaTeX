@@ -2,26 +2,31 @@
 
 Atom-LaTeX is an extension for [Atom.io](https://atom.io/), aiming to provide all-in-one features and utilities for latex typesetting with Atom.
 
+## Features
+
+Atom-LaTeX is currently under active development. More features coming soon.
+Some features have screencasts available in the `Screencasts` section. Have a check!
+
+- [x] Compile LaTeX with BibTeX
+- [x] Preview PDF with in-browser viewer
+- [x] Parse LaTeX compiling log
+- [x] Autocomplete
+- [ ] Direct and reverse SyncTeX
+
+If you figured out some features neat but not included, [create an issue](https://github.com/James-Yu/Atom-LaTeX/issues/new)!
+
 ## Why another LaTeX package?
 
 Unification provides seamless experience. Aiming to make it work and work perfectly.
 
-## Features
-
-Atom-LaTeX is currently under active development. More features coming soon.
-Some features have screencasts available at the `Screencast` section. Have a check!
-
-- [x] Compile LaTeX with BibTeX
-- [x] Preview PDF with in-browser viewer
-- [x] Log parser
-- [x] Autocomplete
-- [ ] Support direct and reverse SyncTex
-- [ ] Colorize
-
 ## Requirements
 
 - LaTeX distribution in system PATH. For example, [TeX Live](https://www.tug.org/texlive/).
-  - [MiKTeX](https://miktex.org/) does not ship with SyncTex.
+  - [MiKTeX](https://miktex.org/) does not ship with SyncTeX, but basic build and preview and non-SyncTeX related features work fine.
+- Add the folder with your main LaTeX file as Atom project folder.
+  - Main LaTeX file is the LaTeX file with the `\begin{document}` command.
+- `[Optional]` Install [`Language-LaTeX`](https://atom.io/packages/language-latex) package.
+  - This package provides awesome LaTeX syntax highlighting. Optional but recommended.
 
 ## Installation
 
@@ -57,6 +62,6 @@ Screencasts may be generated with different platforms. Some may demonstrate feat
 
 ## Contributing
 
-- Submit issues for bugs
-- Fork and PR for fixes
+- [Creat issues](https://github.com/James-Yu/Atom-LaTeX/issues) for bugs
+- [Fork and PR](https://github.com/James-Yu/Atom-LaTeX/pulls) for fixes
 - Thank you so much!
