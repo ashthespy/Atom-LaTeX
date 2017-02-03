@@ -1,7 +1,7 @@
 {
   "name": "atom-latex",
   "main": "./lib/main",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "The LaTeX package you need.",
   "license": "MIT",
   "keywords": [
