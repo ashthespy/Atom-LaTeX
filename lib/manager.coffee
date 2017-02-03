@@ -7,20 +7,21 @@ class Manager extends Disposable
   constructor: (latex) ->
     @latex = latex
 
-  findMain: ->
-    if @latex.mainFile != undefined
+  findMain: (here) ->
+    if here or !@latex.mainFile?
+      docRegex = /\\begin{document}/
+      editor = atom.workspace.getActivePaneItem()
+      currentPath = editor?buffer.file?.path
+      currentContent = editor?.getText()
+
+      if currentPath and currentContent
+        if ((path.extname currentPath) == '.tex') and
+            (currentContent.match docRegex)
+          @latex.mainFile = currentPath
+          return true
+
+    if @latex.mainFile?
       return true
-
-    docRegex = /\\begin{document}/
-    editor = atom.workspace.getActivePaneItem()
-    currentPath = editor?buffer.file?.path
-    currentContent = editor?.getText()
-
-    if currentPath and currentContent
-      if ((path.extname currentPath) == '.tex') and
-          (currentContent.match docRegex)
-        @latex.mainFile = currentPath
-        return true
 
     for rootDir in atom.project.getPaths()
       for file in fs.readdirSync rootDir
@@ -43,7 +44,7 @@ class Manager extends Disposable
   findDependentFiles: (file) ->
     content = fs.readFileSync file, 'utf-8'
     baseDir = path.dirname(@latex.mainFile)
-    
+
     inputReg = /(?:\\input(?:\[[^\[\]\{\}]*\])?){([^}]*)}/g
     loop
       result = inputReg.exec content

@@ -1,3 +1,7 @@
+## [0.2.4] - 2017-02-03
+### Added
+* A new `Build LaTeX from Active Editor` command to set main LaTeX file to current active editor if it contains `\begin{document}`, and start building.
+
 ## [0.2.3] - 2017-02-03
 ### Changed
 * Use cached results for autocomplete when already typed some characters to reduce I/O operations.

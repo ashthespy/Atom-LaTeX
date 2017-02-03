@@ -23,8 +23,9 @@ Unification provides seamless experience. Aiming to make it work and work perfec
 
 - LaTeX distribution in system PATH. For example, [TeX Live](https://www.tug.org/texlive/).
   - [MiKTeX](https://miktex.org/) does not ship with SyncTeX, but basic build and preview and non-SyncTeX related features work fine.
-- Add the folder with your main LaTeX file as Atom project folder.
-  - Main LaTeX file is the LaTeX file with the `\begin{document}` command.
+- `[Optional]` Add the folder with your main LaTeX file as Atom project folder.
+  - Main LaTeX file is the LaTeX file with the `\begin{document}` command. Atom-LaTeX will automatically detect on the first time of calling `atom-latex:build`.
+  - You can also open your main LaTeX file and use `atom-latex:build-here` to manually set your main.
 - `[Optional]` Install [`Language-LaTeX`](https://atom.io/packages/language-latex) package.
   - This package provides awesome LaTeX syntax highlighting. Optional but recommended.
 
@@ -42,10 +43,11 @@ All commands can be invoked from `Package`-`Atom-LaTeX` menu or by command palet
 
 | Command               | Default Keybind                             | Function |
 |-----------------------|---------------------------------------------|----------|
-| `atom-latex:build`    | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>B</kbd> | Build LaTeX file. |
-| `atom-latex:preview`  | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>P</kbd> | Preview generated PDF file with in-browser viewer. |
-| `atom-latex:kill`     | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>K</kbd> | Terminate current LaTeX building process. |
-| `atom-latex:show-log` | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>L</kbd> | Show Atom-LaTeX log panel. |
+| `atom-latex:build`      | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>B</kbd> | Build LaTeX file. |
+| `atom-latex:build-here` | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>H</kbd> | Build LaTeX using active text editor file if possible. |
+| `atom-latex:preview`    | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>P</kbd> | Preview generated PDF file with in-browser viewer. |
+| `atom-latex:kill`       | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>K</kbd> | Terminate current LaTeX building process. |
+| `atom-latex:show-log`   | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>L</kbd> | Show Atom-LaTeX log panel. |
 
 ## Screencasts
 

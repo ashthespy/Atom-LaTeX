@@ -8,8 +8,8 @@ class Builder extends Disposable
   constructor: (latex) ->
     @latex = latex
 
-  build: ->
-    if !@latex.manager.findMain()
+  build: (here) ->
+    if !@latex.manager.findMain(here)
       atom.notifications.addError(
         """Cannot find a LaTeX file with the following command to start.""", {
           detail: '`\\begin{document}`'

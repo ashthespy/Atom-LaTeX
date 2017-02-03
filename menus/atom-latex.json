@@ -7,6 +7,9 @@
         "label": "Build LaTeX",
         "command": "atom-latex:build"
       }, {
+        "label": "Build LaTeX from Active Editor",
+        "command": "atom-latex:build-here"
+      }, {
         "label": "Preview PDF",
         "command": "atom-latex:preview"
       }, {

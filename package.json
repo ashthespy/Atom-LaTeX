@@ -13,6 +13,7 @@
   "activationCommands": {
     "atom-workspace": [
       "atom-latex:build",
+      "atom-latex:build-here",
       "atom-latex:preview",
       "atom-latex:kill",
       "atom-latex:show-log"
