@@ -1,3 +1,9 @@
+## [0.2.5]  2017-02-03
+### Added
+* Autocomplete for commands and environments.
+  * Commands are gathered from all LaTeX source files in the project, and some predefined ones.
+  * Environments are predefined.
+
 ## [0.2.4] - 2017-02-03
 ### Added
 * A new `Build LaTeX from Active Editor` command to set main LaTeX file to current active editor if it contains `\begin{document}`, and start building.
