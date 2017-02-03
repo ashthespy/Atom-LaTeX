@@ -1,5 +1,6 @@
 { Disposable } = require 'atom'
 fs = require 'fs'
+latexSymbols = require('latex-symbols-list')
 
 module.exports =
 class Command extends Disposable
@@ -8,14 +9,7 @@ class Command extends Disposable
     @additionalSuggestions = []
 
   provide: (prefix) ->
-    suggestions = []
-    for env of @suggestions.latex
-      item = @suggestions.latex[env]
-      if prefix.length is 0 or env.indexOf(prefix) > -1
-        item.replacementPrefix = prefix
-        item.type = 'function'
-        item.latexType = 'command'
-        suggestions.push item
+    suggestions = @predefinedCommands(prefix)
     if prefix.length > 0
       for item in @additionalSuggestions
         if item.displayText.indexOf(prefix) > -1
@@ -36,10 +30,33 @@ class Command extends Disposable
       for pkg of @suggestions
         if !(key of @suggestions[pkg])
           @additionalSuggestions.push items[key]
+
     suggestions = suggestions.concat @additionalSuggestions
     suggestions.sort((a, b) ->
       return -1 if a.displayText < b.displayText
       return 1)
+    return suggestions
+
+  predefinedCommands: (prefix) ->
+    suggestions = []
+    for env of @suggestions.latex
+      item = @suggestions.latex[env]
+      if prefix.length is 0 or env.indexOf(prefix) > -1
+        item.replacementPrefix = prefix
+        item.type = 'function'
+        item.latexType = 'command'
+        suggestions.push item
+    for symbol in latexSymbols
+      if prefix.length is 0 or symbol.indexOf(prefix) > -1
+        if symbol[0] isnt '\\'
+          continue
+        suggestions.push
+          displayText: symbol.slice(1)
+          snippet: symbol.slice(1)
+          chainComplete: false
+          replacementPrefix: prefix
+          type: 'function'
+          latexType: 'command'
     return suggestions
 
   getCommands: (tex) ->

@@ -1,3 +1,7 @@
+## [0.2.6]  2017-02-03
+### Added
+* Use npm package `latex-symbols-list` to develop more autocomplete symbols.
+
 ## [0.2.5]  2017-02-03
 ### Added
 * Autocomplete for commands and environments.
