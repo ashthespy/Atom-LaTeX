@@ -2,6 +2,7 @@
 Citation = require './autocomplete/citation'
 Reference = require './autocomplete/reference'
 Environment = require './autocomplete/environment'
+Command = require './autocomplete/command'
 
 module.exports =
 class Provider extends Disposable
@@ -10,6 +11,7 @@ class Provider extends Disposable
     @citation = new Citation(@latex)
     @reference = new Reference(@latex)
     @environment = new Environment(@latex)
+    @command = new Command(@latex)
 
   provider:
     selector: '.text.tex.latex'
@@ -22,21 +24,22 @@ class Provider extends Disposable
           atom.packages.getActivePackage('autocomplete-plus')\
             .mainModule.autocompleteManager.shouldDisplaySuggestions = true
 
-        for command in ['citation', 'reference', 'environment']
+        for command in ['citation', 'reference', 'environment', 'command']
           suggestions = atom_latex.provider.completeCommand(line, command)
           resolve(suggestions) if suggestions?
 
-        resolve(suggestions)
+        resolve([])
 
     onDidInsertSuggestion: ({editor, triggerPosition, suggestion}) ->
+      if suggestion.chainComplete
+        setTimeout(( -> atom.packages.getActivePackage('autocomplete-plus')\
+          .mainModule.autocompleteManager.findSuggestions()), 100)
       if suggestion.latexType is 'environment'
-        spaces = editor.buffer.lines[triggerPosition.row].match(/^(\s)*/)[0]
-        editor.buffer.insert({row: triggerPosition.row + 1, column: 0},
-          """#{spaces}\\end{#{suggestion.text}}\n""")
         if suggestion.additionalInsert?
-          for content, i in suggestion.additionalInsert
-            editor.buffer.insert({row: triggerPosition.row + i + 1, column: 0},
-              """#{spaces}#{content}\n""")
+          row = triggerPosition.row - 1
+          col = editor.buffer.lines[row].length
+          editor.buffer.insert(
+            {row: row, column: col}, suggestion.additionalInsert)
 
   completeCommand: (line, type) ->
     switch type
@@ -47,13 +50,19 @@ class Provider extends Disposable
         reg = /(?:\\[a-zA-Z]*ref[a-zA-Z]*(?:\[[^\[\]]*\])?){([^}]*)$/
         provider = @reference
       when 'environment'
-        reg = /(?:\\begin(?:\[[^\[\]]*\])?){([^}]*)$/
+        reg = /(?:\\(?:begin|end)(?:\[[^\[\]]*\])?){([^}]*)$/
         provider = @environment
+      when 'command'
+        reg = /\\([a-zA-Z]*)$/
+        provider = @command
 
     result = line.match(reg)
     if result
       prefix = result[1]
-      allKeys = prefix.split(',')
-      currentPrefix = allKeys[allKeys.length - 1].trim()
+      if ['environment', 'command'].indexOf(type) > -1
+        currentPrefix = prefix
+      else
+        allKeys = prefix.split(',')
+        currentPrefix = allKeys[allKeys.length - 1].trim()
       suggestions = provider.provide(currentPrefix)
     return suggestions

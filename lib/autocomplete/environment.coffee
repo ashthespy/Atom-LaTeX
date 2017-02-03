@@ -13,8 +13,6 @@ class Environment extends Disposable
         item.replacementPrefix = prefix
         item.type = 'tag'
         item.latexType = 'environment'
-        if !item.additionalInsert?
-          item.additionalInsert = ['  ']
         suggestions.push item
     return suggestions
 
@@ -22,19 +20,19 @@ class Environment extends Disposable
     latex:
       figure:
         text: 'figure'
-        additionalInsert: ['  % body of the figure', '  \\caption{title}']
+        additionalInsert: '\\caption{title}'
       table:
         text: 'table'
-        additionalInsert: ['  % body of the table', '  \\caption{title}']
+        additionalInsert: '\\caption{title}'
       description:
         text: 'description'
-        additionalInsert: ['  \\item [label] ']
+        additionalInsert: '\\item [label] '
       enumerate:
         text: 'enumerate'
-        additionalInsert: ['  \\item ']
+        additionalInsert: '\\item '
       itemize:
         text: 'itemize'
-        additionalInsert: ['  \\item ']
+        additionalInsert: '\\item '
       math:
         text: 'math'
       displaymath:
