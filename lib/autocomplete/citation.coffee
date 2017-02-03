@@ -15,6 +15,8 @@ class Citation extends Disposable
         if item.text.indexOf(prefix) > -1
           item.replacementPrefix = prefix
           suggestions.push item
+      suggestions.sort((a, b) ->
+        return a.text.indexOf(prefix) - b.text.indexOf(prefix))
       return suggestions
     if !@latex.manager.findAll()
       return suggestions
@@ -30,6 +32,9 @@ class Citation extends Disposable
         type: 'tag'
         latexType: 'citation'
         description: description
+    suggestions.sort((a, b) ->
+      return -1 if a.text < b.text
+      return 1)
     @suggestions = suggestions
     return suggestions
 

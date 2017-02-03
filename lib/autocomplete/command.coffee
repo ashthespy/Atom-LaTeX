@@ -21,6 +21,8 @@ class Command extends Disposable
         if item.displayText.indexOf(prefix) > -1
           item.replacementPrefix = prefix
           suggestions.push item
+      suggestions.sort((a, b) ->
+        return a.displayText.indexOf(prefix) - b.displayText.indexOf(prefix))
       return suggestions
     if !@latex.manager.findAll()
       return suggestions
@@ -34,7 +36,11 @@ class Command extends Disposable
       for pkg of @suggestions
         if !(key of @suggestions[pkg])
           @additionalSuggestions.push items[key]
-    return suggestions.concat @additionalSuggestions
+    suggestions = suggestions.concat @additionalSuggestions
+    suggestions.sort((a, b) ->
+      return -1 if a.displayText < b.displayText
+      return 1)
+    return suggestions
 
   getCommands: (tex) ->
     items = {}

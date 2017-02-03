@@ -14,6 +14,9 @@ class Environment extends Disposable
         item.type = 'tag'
         item.latexType = 'environment'
         suggestions.push item
+    suggestions.sort((a, b) ->
+      return -1 if a.text < b.text
+      return 1)
     return suggestions
 
   suggestions:

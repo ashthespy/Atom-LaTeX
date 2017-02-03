@@ -3,6 +3,8 @@
 * Autocomplete for commands and environments.
   * Commands are gathered from all LaTeX source files in the project, and some predefined ones.
   * Environments are predefined.
+### Changed
+* Now autocomplete will sort according to prefix and displayed text.
 
 ## [0.2.4] - 2017-02-03
 ### Added
