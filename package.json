@@ -2,7 +2,7 @@
   "name": "atom-latex",
   "main": "./lib/main",
   "version": "0.2.6",
-  "description": "The LaTeX package you need.",
+  "description": "The only LaTeX package you need for typesetting with Atom.",
   "license": "MIT",
   "keywords": [
     "tex",

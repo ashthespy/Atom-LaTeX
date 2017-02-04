@@ -1,3 +1,10 @@
+## [0.2.7]  2017-02-04
+### Added
+* Syntax highlight using textmate latex bundle.
+### Changed
+* Lazy load package to reduce activation time.
+* Readme figures are not included to reduce the package size.
+
 ## [0.2.6]  2017-02-03
 ### Added
 * Use npm package `latex-symbols-list` to develop more autocomplete symbols.
