@@ -12,13 +12,13 @@ module.exports =
       return if @activated
       editor.observeGrammar (grammar) =>
         if (grammar.packageName is 'atom-latex') or
-          (grammar.scopeName.indexOf 'text.tex.latex' > -1) or
-          (grammar.name is 'LaTeX')
-            promise = new Promise (resolve, reject) =>
-              @lazyLoad()
-              resolve()
-            promise.then( =>
-              @latex.logPanel.showText icon: 'check', 'Activated.', 5000, true)
+            (grammar.scopeName.indexOf('text.tex.latex') > -1) or
+            (grammar.name is 'LaTeX')
+          promise = new Promise (resolve, reject) =>
+            @lazyLoad()
+            resolve()
+          promise.then( =>
+            @latex.logPanel.showText icon: 'check', 'Activated.', 5000, true)
 
   lazyLoad: ->
     @activated = true
