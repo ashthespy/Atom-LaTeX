@@ -11,7 +11,7 @@ class Manager extends Disposable
     if here or !@latex.mainFile?
       docRegex = /\\begin{document}/
       editor = atom.workspace.getActivePaneItem()
-      currentPath = editor?buffer.file?.path
+      currentPath = editor?.buffer.file?.path
       currentContent = editor?.getText()
 
       if currentPath and currentContent

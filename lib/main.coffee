@@ -1,23 +1,32 @@
 { CompositeDisposable, Disposable } = require 'atom'
 path = require 'path'
-Builder = require './builder'
-Manager = require './manager'
-Server = require './server'
-Viewer = require './viewer'
-Parser = require './parser'
-LogPanel = require './log-panel'
-Provider = require './provider'
 
 module.exports =
   config: require './config'
 
   activate: ->
     @disposables = new CompositeDisposable
+    @activated = false
+    global.atom_latex = this
+    @disposables.add atom.workspace.observeTextEditors (editor) =>
+      return if @activated
+      editor.observeGrammar (grammar) =>
+        if (grammar.packageName is 'atom-latex') or
+          (grammar.scopeName is 'text.tex.latex') or
+          (grammar.name is 'LaTeX')
+            promise = new Promise (resolve, reject) => @lazyLoad()
+
+  lazyLoad: ->
+    @activated = true
 
     @latex = new AtomLaTeX
-    global.atom_latex = @latex
+
+    @provide()
+    @provider.lazyLoad(@latex)
+    @latex.provider = @provider
     @latex.package = this
-    @disposables.add @latex
+
+    @disposables.add @latex, @provider
 
     @disposables.add atom.commands.add 'atom-workspace',
       'atom-latex:build': () => this.latex.builder.build()
@@ -39,11 +48,20 @@ module.exports =
     return @disposables.dispose()
 
   provide: ->
-    return @latex.provider.provider
+    if !@provider?
+      Provider = require './provider'
+      @provider = new Provider()
+    return @provider.provider
 
 class AtomLaTeX extends Disposable
   constructor: ->
     @disposables = new CompositeDisposable
+    Builder = require './builder'
+    Manager = require './manager'
+    Server = require './server'
+    Viewer = require './viewer'
+    Parser = require './parser'
+    LogPanel = require './log-panel'
 
     @builder = new Builder(this)
     @manager = new Manager(this)
@@ -51,10 +69,8 @@ class AtomLaTeX extends Disposable
     @server = new Server(this)
     @logPanel = new LogPanel(this)
     @parser = new Parser(this)
-    @provider = new Provider(this)
 
-    @disposables.add @builder, @manager, @server, @viewer, @logPanel, @parser,
-      @provider
+    @disposables.add @builder, @manager, @server, @viewer, @logPanel, @parser
 
   dispose: ->
     @disposables.dispose()

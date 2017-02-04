@@ -4,7 +4,7 @@ module.exports =
     packages = ['atom-latex']
     activationPromise = Promise.all packages.map (pkg) ->
       atom.packages.activatePackage pkg
-    atom.commands.dispatch workspaceElement, 'atom-latex:kill'
+    atom_latex.lazyLoad()
     return activationPromise
 
   setConfig: (keyPath, value) ->

@@ -1,13 +1,19 @@
 { Disposable } = require 'atom'
-Citation = require './autocomplete/citation'
-Reference = require './autocomplete/reference'
-Environment = require './autocomplete/environment'
-Command = require './autocomplete/command'
 
 module.exports =
 class Provider extends Disposable
-  constructor: (latex) ->
+  constructor: ->
+
+  deactivate: ->
+    return @disposables.dispose()
+
+  lazyLoad: (latex) ->
     @latex = latex
+
+    Citation = require './autocomplete/citation'
+    Reference = require './autocomplete/reference'
+    Environment = require './autocomplete/environment'
+    Command = require './autocomplete/command'
     @citation = new Citation(@latex)
     @reference = new Reference(@latex)
     @environment = new Environment(@latex)
@@ -25,7 +31,7 @@ class Provider extends Disposable
             .mainModule.autocompleteManager.shouldDisplaySuggestions = true
 
         for command in ['citation', 'reference', 'environment', 'command']
-          suggestions = atom_latex.provider.completeCommand(line, command)
+          suggestions = atom_latex.latex.provider.completeCommand(line, command)
           resolve(suggestions) if suggestions?
 
         resolve([])

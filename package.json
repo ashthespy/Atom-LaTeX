@@ -10,18 +10,6 @@
     "compile",
     "preview"
   ],
-  "activationCommands": {
-    "atom-workspace": [
-      "atom-latex:build",
-      "atom-latex:build-here",
-      "atom-latex:preview",
-      "atom-latex:kill",
-      "atom-latex:show-log"
-    ]
-  },
-  "activationHooks": [
-    "language-latex:grammar-used"
-  ],
   "repository": "https://github.com/James-Yu/Atom-LaTeX",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"

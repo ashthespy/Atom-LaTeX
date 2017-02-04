@@ -1,0 +1,5 @@
+'scopeName': 'text.tex.latex'
+'name': 'LaTeX'
+'fileTypes': [
+  'tex'
+]
