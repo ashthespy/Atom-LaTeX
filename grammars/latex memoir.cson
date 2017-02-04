@@ -1,0 +1,118 @@
+fileTypes: []
+firstLineMatch: "^\\\\documentclass(\\[.*\\])?\\{memoir\\}"
+name: "LaTeX Memoir"
+patterns: [
+  {
+    begin: "(?:\\s*)((\\\\)begin)(\\{)(framed|shaded|leftbar)(\\})"
+    captures:
+      "1":
+        name: "support.function.be.latex"
+      "2":
+        name: "punctuation.definition.function.latex"
+      "3":
+        name: "punctuation.definition.arguments.begin.latex"
+      "4":
+        name: "variable.parameter.function.latex"
+      "5":
+        name: "punctuation.definition.arguments.end.latex"
+    end: "((\\\\)end)(\\{)(\\4)(\\})"
+    name: "meta.function.memoir-fbox.latex"
+    patterns: [
+      {
+        include: "$self"
+      }
+    ]
+  }
+  {
+    begin: "(?:\\s*)((\\\\)begin)(\\{)((?:fboxv|boxedv|V)erbatim)(\\})"
+    captures:
+      "1":
+        name: "support.function.be.latex"
+      "2":
+        name: "punctuation.definition.function.latex"
+      "3":
+        name: "punctuation.definition.arguments.begin.latex"
+      "4":
+        name: "variable.parameter.function.latex"
+      "5":
+        name: "punctuation.definition.arguments.end.latex"
+    contentName: "markup.raw.verbatim.latex"
+    end: "((\\\\)end)(\\{)(\\4)(\\})"
+    name: "meta.function.memoir-verbatim.latex"
+  }
+  {
+    begin: "(?:\\s*)((\\\\)begin)(\\{)(alltt)(\\})"
+    captures:
+      "1":
+        name: "support.function.be.latex"
+      "2":
+        name: "punctuation.definition.function.latex"
+      "3":
+        name: "punctuation.definition.arguments.begin.latex"
+      "4":
+        name: "variable.parameter.function.latex"
+      "5":
+        name: "punctuation.definition.arguments.end.latex"
+    contentName: "markup.raw.verbatim.latex"
+    end: "((\\\\)end)(\\{)(alltt)(\\})"
+    name: "meta.function.memoir-alltt.latex"
+    patterns: [
+      {
+        captures:
+          "1":
+            name: "punctuation.definition.function.tex"
+        match: "(\\\\)[A-Za-z]+"
+        name: "support.function.general.tex"
+      }
+    ]
+  }
+  {
+    begin: '''
+      (?x)
+      				(													    # Capture 1
+      					(\\\\)											  # Marker
+      					(
+      						(?:sub){0,2}section			  # Functions
+      					  | (?:sub)?paragraph
+      					  | chapter|part|addpart
+      					  | addchap|addsec|minisec
+      					)
+      					(?:\\*)?											# Optional Unnumbered
+      				)
+      				(?:
+      					(\\[)([^\\[]*?)(\\])						# Options for TOC- and Header-Name
+      				){0,2}?
+      				(\\{)												  # Opening Bracket
+      				
+    '''
+    beginCaptures:
+      "1":
+        name: "support.function.section.latex"
+      "2":
+        name: "punctuation.definition.function.latex"
+      "4":
+        name: "punctuation.definition.arguments.optional.begin.latex"
+      "5":
+        name: "entity.name.section.latex"
+      "6":
+        name: "punctuation.definition.arguments.optional.end.latex"
+      "7":
+        name: "punctuation.definition.arguments.begin.latex"
+    comment: "This definition is a copy of the one for the main LaTeX grammar. The only difference is that the Memoir document class supports *two optional arguments* instead of only one."
+    contentName: "entity.name.section.latex"
+    end: "\\}"
+    endCaptures:
+      "0":
+        name: "punctuation.definition.arguments.end.latex"
+    name: "meta.function.section.$3.latex"
+    patterns: [
+      {
+        include: "$self"
+      }
+    ]
+  }
+  {
+    include: "text.tex.latex"
+  }
+]
+scopeName: "text.tex.latex.memoir"

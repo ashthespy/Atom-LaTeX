@@ -11,6 +11,7 @@ Some features have screencasts available in the `Screencasts` section. Have a ch
 - [x] Preview PDF with in-browser viewer
 - [x] Parse LaTeX compiling log
 - [x] Autocomplete
+- [x] Syntax highlight
 - [ ] Direct and reverse SyncTeX
 
 If you figured out some features neat but not included, [create an issue](https://github.com/James-Yu/Atom-LaTeX/issues/new)!
@@ -26,8 +27,6 @@ Unification provides seamless experience. Aiming to make it work and work perfec
 - `[Optional]` Add the folder with your main LaTeX file as Atom project folder.
   - Main LaTeX file is the LaTeX file with the `\begin{document}` command. Atom-LaTeX will automatically detect on the first time of calling `atom-latex:build`.
   - You can also open your main LaTeX file and use `atom-latex:build-here` to manually set your main.
-- `[Optional]` Install [`Language-LaTeX`](https://atom.io/packages/language-latex) package.
-  - It provides neat syntax highlights but may cause stuttering occasionally.
 
 ## Installation
 
