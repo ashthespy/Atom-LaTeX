@@ -14,7 +14,11 @@ module.exports =
         if (grammar.packageName is 'atom-latex') or
           (grammar.scopeName is 'text.tex.latex') or
           (grammar.name is 'LaTeX')
-            promise = new Promise (resolve, reject) => @lazyLoad()
+            promise = new Promise (resolve, reject) =>
+              @lazyLoad()
+              resolve()
+            promise.then( =>
+              @latex.logPanel.showText icon: 'check', 'Activated.', 5000, true)
 
   lazyLoad: ->
     @activated = true
@@ -41,8 +45,6 @@ module.exports =
             editor.buffer.file?.path and \
             path.extname(editor.buffer.file?.path) == '.tex'
           @latex.builder.build()
-
-    @latex.logPanel.showText icon: 'check', 'Activated.', 5000, true
 
   deactivate: ->
     return @disposables.dispose()
