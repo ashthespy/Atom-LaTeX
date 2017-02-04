@@ -11,6 +11,7 @@ class Parser extends Disposable
     @latex = latex
 
   parse: (log) ->
+    @status = 'check'
     if log.match latexPattern
       @parseLatex log
 
@@ -19,15 +20,6 @@ class Parser extends Disposable
     lines = log.replace(/(\r\n)|\r/g, '\n').split('\n')
     items = []
     for line in lines
-      result = line.match latexError
-      if result
-        items.push
-          type: 'error',
-          text: if result[3] and result[3] != 'LaTeX' then \
-                """#{result[3]}: #{result[4]}""" else result[4],
-          file: if result[1] then result[1] else @latex.mainFile
-          line: if result[2] then parseInt result[2], 10 else undefined
-        continue
       result = line.match latexBox
       if result
         items.push
@@ -38,11 +30,22 @@ class Parser extends Disposable
         continue
       result = line.match latexWarn
       if result
+        @status = 'alert' if @status isnt 'x'
         items.push
           type: 'warning',
           text: result[3]
           file: @latex.mainFile
           line: parseInt result[4]
+        continue
+      result = line.match latexError
+      if result
+        @status = 'x'
+        items.push
+          type: 'error',
+          text: if result[3] and result[3] != 'LaTeX' then \
+                """#{result[3]}: #{result[4]}""" else result[4],
+          file: if result[1] then result[1] else @latex.mainFile
+          line: if result[2] then parseInt result[2], 10 else undefined
         continue
     for item in items
       @latex.logPanel.addParserLog(item)

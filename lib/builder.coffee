@@ -53,18 +53,18 @@ class Builder extends Disposable
               dismissable: true
             })
           @cmds = []
-          @latex.logPanel.showText icon: 'x', 'Error.', 3000
-          @latex.logPanel.addPlainLog 'Error occurred while building LaTeX.'
           @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
+          @latex.logPanel.showText icon: @latex.parser.status, 'Error.', 3000
+          @latex.logPanel.addPlainLog 'Error occurred while building LaTeX.'
     )
 
     @process.stdout.on 'data', (data) =>
       @buildLogs[@buildLogs.length - 1] += data
 
   postBuild: ->
-    @latex.logPanel.showText icon: 'check', 'Success.', 3000
-    @latex.logPanel.addPlainLog 'Successfully built LaTeX.'
     @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
+    @latex.logPanel.addPlainLog 'Successfully built LaTeX.'
+    @latex.logPanel.showText icon: @latex.parser.status, 'Success.', 3000
     if atom.config.get('atom-latex.preview_after_build') and
         @latex.viewer.client.ws == undefined
       @latex.viewer.openViewerNewWindow()
