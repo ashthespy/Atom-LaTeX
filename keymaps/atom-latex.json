@@ -1,9 +1,0 @@
-{
-  "atom-text-editor[data-grammar~=\"latex\"]": {
-    "ctrl-alt-b": "Atom-LaTeX:build",
-    "ctrl-alt-h": "atom-latex:build-here",
-    "ctrl-alt-p": "Atom-LaTeX:preview",
-    "ctrl-alt-k": "Atom-LaTeX:kill",
-    "ctrl-alt-l": "Atom-LaTeX:show-log"
-  }
-}

@@ -34,6 +34,13 @@ class Manager extends Disposable
           return true
     return false
 
+  findPDF: ->
+    if !@findMain()
+      return false
+    return path.join(
+      path.dirname(@latex.mainFile),
+      path.basename(@latex.mainFile, '.tex') + '.pdf')
+
   findAll: ->
     if !@findMain()
       return false

@@ -1,0 +1,36 @@
+'menu': [ {
+  'label': 'Packages'
+  'submenu': [ {
+    'label': 'Atom-LaTeX'
+    'submenu': [
+      {
+        'label': 'Build LaTeX'
+        'command': 'atom-latex:build'
+      }
+      {
+        'label': 'Build LaTeX from Active Editor'
+        'command': 'atom-latex:build-here'
+      }
+      {
+        'label': 'Preview PDF'
+        'command': 'atom-latex:preview'
+      }
+      {
+        'label': 'Kill Compiler'
+        'command': 'atom-latex:kill'
+      }
+      {
+        'label': 'SyncTeX from here'
+        'command': 'atom-latex:synctex'
+      }
+      {
+        'label': 'Show Atom-LaTeX Log'
+        'command': 'atom-latex:show-log'
+      }
+    ]
+  } ]
+} ]
+'context-menu': 'atom-text-editor': [ {
+  'label': 'SyncTeX from here'
+  'command': 'atom-latex:synctex'
+} ]

@@ -38,6 +38,7 @@ module.exports =
       'atom-latex:preview': () => this.latex.viewer.openViewerNewWindow()
       'atom-latex:kill': () => this.latex.builder.killProcess()
       'atom-latex:show-log': () => this.latex.logPanel.showPanel()
+      'atom-latex:synctex': () => this.latex.locator.synctex()
 
     @disposables.add atom.workspace.observeTextEditors (editor) =>
       @disposables.add editor.onDidSave () =>
@@ -63,16 +64,19 @@ class AtomLaTeX extends Disposable
     Server = require './server'
     Viewer = require './viewer'
     Parser = require './parser'
+    Locator = require './locator'
     LogPanel = require './log-panel'
 
     @builder = new Builder(this)
     @manager = new Manager(this)
     @viewer = new Viewer(this)
     @server = new Server(this)
-    @logPanel = new LogPanel(this)
     @parser = new Parser(this)
+    @locator = new Locator(this)
+    @logPanel = new LogPanel(this)
 
-    @disposables.add @builder, @manager, @server, @viewer, @logPanel, @parser
+    @disposables.add @builder, @manager, @server, @viewer, @parser, @locator,
+      @logPanel
 
   dispose: ->
     @disposables.dispose()

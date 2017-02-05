@@ -23,11 +23,18 @@ class Viewer extends Disposable
           @client.ws.send JSON.stringify @client.position
       when 'position'
         @client.position = data
+      when 'click'
+        @latex.locator.locate(data)
       when 'close'
         @client.ws = undefined
 
   refresh: () ->
-    @client.ws?.send JSON.stringify type:"refresh"
+    @client.ws?.send JSON.stringify type: "refresh"
+
+  synctex: (record) ->
+    @client.ws?.send JSON.stringify
+      type: "synctex"
+      data: record
 
   openViewerNewWindow: ->
     if !@latex.manager.findMain()
