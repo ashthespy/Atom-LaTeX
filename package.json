@@ -8,7 +8,8 @@
     "tex",
     "latex",
     "compile",
-    "preview"
+    "preview",
+    "highlight"
   ],
   "repository": "https://github.com/James-Yu/Atom-LaTeX",
   "engines": {

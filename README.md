@@ -8,7 +8,7 @@ Atom-LaTeX is currently under active development. More features coming soon.
 Some features have screencasts available in the `Screencasts` section. Have a check!
 
 - [x] Compile LaTeX with BibTeX
-- [x] Preview PDF with in-browser viewer
+- [x] Preview PDF with build-in viewer
 - [x] Parse LaTeX compiling log
 - [x] Autocomplete
 - [x] Syntax highlight

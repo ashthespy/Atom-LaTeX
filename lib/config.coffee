@@ -58,7 +58,7 @@ module.exports =
   preview_after_build:
     title: 'Preview PDF after building process'
     order: 8
-    description: 'Open a webbrowser tab to preview the generated PDF file \
-                  after successfully building LaTeX.'
+    description: 'Use PDF viewer to preview the generated PDF file after \
+                  successfully building LaTeX.'
     type: 'boolean'
     default: true
