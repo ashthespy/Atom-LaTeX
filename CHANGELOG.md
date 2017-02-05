@@ -1,3 +1,7 @@
+## [0.3.1]  2017-02-05
+### Changed
+* Command autocomplete will guess the number of curly brackets needed.
+
 ## [0.3.0]  2017-02-05
 ### Added
 * Direct and reverse SyncTeX support.

@@ -5,10 +5,10 @@
   "description": "The only LaTeX package you need for typesetting with Atom.",
   "license": "MIT",
   "keywords": [
-    "tex",
     "latex",
     "compile",
     "preview",
+    "synctex",
     "highlight"
   ],
   "repository": "https://github.com/James-Yu/Atom-LaTeX",

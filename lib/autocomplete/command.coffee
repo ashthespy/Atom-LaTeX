@@ -64,14 +64,18 @@ class Command extends Disposable
     if !fs.existsSync(tex)
       return items
     content = fs.readFileSync tex, 'utf-8'
-    itemReg = /\\([a-zA-Z]+)(.?)/g
+    itemReg = /\\([a-zA-Z]+)({[^{}]*})?({[^{}]*})?({[^{}]*})?/g
     loop
       result = itemReg.exec content
       break if !result?
       if not (result[1] of items)
-        if result[2] is '{'
+        if result[2]
           chainComplete = true
           snippet = result[1] + '{$1}'
+          if result[3]
+            snippet += '{$2}'
+            if result[4]
+              snippet += '{$3}'
         else
           chainComplete = false
           snippet = result[1]
