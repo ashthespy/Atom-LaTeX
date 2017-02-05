@@ -1,9 +1,10 @@
-## [0.2.7]  2017-02-04
+## [0.3.0]  2017-02-05
 ### Added
-* Syntax highlight using textmate latex bundle.
+* Direct and reverse SyncTeX support.
 ### Changed
-* Lazy load package to reduce activation time.
-* Readme figures are not included to reduce the package size.
+* Status bar now alerts LaTeX building warninngs.
+### Fixed
+* Pre-mature activation of package leading to significant startup time.
 
 ## [0.2.6]  2017-02-03
 ### Added

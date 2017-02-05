@@ -7,12 +7,12 @@ Atom-LaTeX is an extension for [Atom.io](https://atom.io/), aiming to provide al
 Atom-LaTeX is currently under active development. More features coming soon.
 Some features have screencasts available in the `Screencasts` section. Have a check!
 
-- [x] Compile LaTeX with BibTeX
-- [x] Preview PDF with build-in viewer
-- [x] Parse LaTeX compiling log
-- [x] Autocomplete
-- [x] Syntax highlight
-- [ ] Direct and reverse SyncTeX
+- Compile LaTeX with BibTeX
+- Preview PDF with build-in viewer
+- Parse LaTeX compiling log
+- Autocomplete
+- Syntax highlight
+- Direct and reverse SyncTeX
 
 If you figured out some features neat but not included, [create an issue](https://github.com/James-Yu/Atom-LaTeX/issues/new)!
 
@@ -40,13 +40,18 @@ Alternatively, you can check out this repository and copy it to the Atom package
 
 All commands can be invoked from `Package`-`Atom-LaTeX` menu or by command palette. Alternatively, keybinds are provided.
 
+For reverse SyncTeX from PDF to LaTeX, use <kbd>ctrl</kbd>+<kbd>Mouse Left Click</kbd> in the PDF viewer to reveal the line in editor.
+
+Mac OS users can use <kbd>command</kbd> key as a replacement of <kbd>ctrl</kbd>.
+
 | Command               | Default Keybind                             | Function |
 |-----------------------|---------------------------------------------|----------|
-| `atom-latex:build`      | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>B</kbd> | Build LaTeX file. |
-| `atom-latex:build-here` | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>H</kbd> | Build LaTeX using active text editor file if possible. |
-| `atom-latex:preview`    | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>P</kbd> | Preview generated PDF file with in-browser viewer. |
-| `atom-latex:kill`       | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>K</kbd> | Terminate current LaTeX building process. |
-| `atom-latex:show-log`   | <kbd>ctrl</kbd>-<kbd>alt</kbd>-<kbd>L</kbd> | Show Atom-LaTeX log panel. |
+| `atom-latex:build`      | <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>B</kbd> | Build LaTeX file. |
+| `atom-latex:build-here` | <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>H</kbd> | Build LaTeX using active text editor file if possible. |
+| `atom-latex:preview`    | <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>P</kbd> | Preview generated PDF file with in-browser viewer. |
+| `atom-latex:kill`       | <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>K</kbd> | Terminate current LaTeX building process. |
+| `atom-latex:synctex`   | <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>S</kbd> | Direct SyncTeX from the current cursor position. |
+| `atom-latex:show-log`   | <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>L</kbd> | Show Atom-LaTeX log panel. |
 
 ## Screencasts
 
