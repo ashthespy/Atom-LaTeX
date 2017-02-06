@@ -28,7 +28,6 @@ class Locator extends Disposable
         return
       record = @parseResult(stdout)
       @latex.viewer.synctex(record)
-      console.debug cmd
     )
 
   parseResult: (out) ->
