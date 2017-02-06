@@ -1,3 +1,10 @@
+## [0.3.3]  2017-02-06
+### Added
+* Auto-enable word wrap.
+* Allow `ctrl`+`/` for auto comment.
+### Fixed
+* Wrong direct synctex position when word wrap is on
+
 ## [0.3.2]  2017-02-06
 ### Fixed
 * Unnecessary `\begin{\w+}` syntax highlight leading to typing lag.
