@@ -10,7 +10,7 @@ class Locator extends Disposable
   synctex: ->
     editor = atom.workspace.getActivePaneItem()
     currentPath = editor?.buffer.file?.path
-    currentPosition = editor?.cursors[0].getScreenPosition()
+    currentPosition = editor?.cursors[0].getBufferPosition()
 
     return if !currentPath? or path.extname(currentPath) isnt '.tex'
 
@@ -28,6 +28,7 @@ class Locator extends Disposable
         return
       record = @parseResult(stdout)
       @latex.viewer.synctex(record)
+      console.debug cmd
     )
 
   parseResult: (out) ->
