@@ -65,11 +65,13 @@ class Builder extends Disposable
     @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
     @latex.logPanel.addPlainLog 'Successfully built LaTeX.'
     @latex.logPanel.showText icon: @latex.parser.status, 'Success.', 3000
-    if atom.config.get('atom-latex.preview_after_build') and
-        @latex.viewer.client.ws == undefined
-      @latex.viewer.openViewerNewWindow()
-    else if @latex.viewer.client.ws?
+    if @latex.viewer.client.ws?
       @latex.viewer.refresh()
+    else if atom.config.get('atom-latex.preview_after_build')
+      if atom.config.get('preview_after_build_type') is 'New window'
+        @latex.viewer.openViewerNewWindow()
+      else
+        @latex.viewer.openViewerNewTab()
 
   killProcess: ->
     @cmds = []
