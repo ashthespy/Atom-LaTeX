@@ -36,6 +36,7 @@ module.exports =
       'atom-latex:build': () => this.latex.builder.build()
       'atom-latex:build-here': () => this.latex.builder.build(true)
       'atom-latex:preview': () => this.latex.viewer.openViewerNewWindow()
+      'atom-latex:preview-tab': () => this.latex.viewer.openViewerNewTab()
       'atom-latex:kill': () => this.latex.builder.killProcess()
       'atom-latex:show-log': () => this.latex.logPanel.showPanel()
       'atom-latex:synctex': () => this.latex.locator.synctex()

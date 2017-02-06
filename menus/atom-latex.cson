@@ -8,7 +8,7 @@
         'command': 'atom-latex:build'
       }
       {
-        'label': 'Build LaTeX from Active Editor'
+        'label': 'Build LaTeX from active editor'
         'command': 'atom-latex:build-here'
       }
       {
@@ -16,7 +16,11 @@
         'command': 'atom-latex:preview'
       }
       {
-        'label': 'Kill Compiler'
+        'label': 'Preview PDF in new tab'
+        'command': 'atom-latex:preview-tab'
+      }
+      {
+        'label': 'Kill compiler'
         'command': 'atom-latex:kill'
       }
       {
@@ -24,7 +28,7 @@
         'command': 'atom-latex:synctex'
       }
       {
-        'label': 'Show Atom-LaTeX Log'
+        'label': 'Show Atom-LaTeX log panel'
         'command': 'atom-latex:show-log'
       }
     ]
