@@ -74,7 +74,7 @@ patterns: [
       					(\\[)([^\\[]*?)(\\])								# Optional Title
       				)??
       				(\\{)												# Opening Bracket
-      				
+
     '''
     beginCaptures:
       "1":
@@ -292,7 +292,7 @@ patterns: [
       						)
       					(\\})										# Close Bracket
       					(\\s*\\n)?				# Match to end of line absent of content
-      				
+
     '''
     captures:
       "1":
@@ -314,7 +314,7 @@ patterns: [
       						(\\4)				# Previous capture from begin
       					(\\})										# Close Bracket
       					(?:\\s*\\n)?				# Match to end of line absent of content
-      				
+
     '''
     name: "meta.function.environment.math.latex"
     patterns: [
@@ -332,7 +332,7 @@ patterns: [
       						(array|tabular[xy*]?)
       					(\\})										# Close Bracket
       					(\\s*\\n)?				# Match to end of line absent of content
-      				
+
     '''
     captures:
       "1":
@@ -354,7 +354,7 @@ patterns: [
       						(\\4)				# Previous capture from begin
       					(\\})										# Close Bracket
       					(?:\\s*\\n)?				# Match to end of line absent of content
-      				
+
     '''
     name: "meta.function.environment.tabular.latex"
     patterns: [
@@ -430,27 +430,6 @@ patterns: [
     patterns: [
       {
         include: "text.tex.latex"
-      }
-    ]
-  }
-  {
-    begin: "(?:\\s*)((\\\\)begin)(\\{)(\\w+[*]?)(\\})"
-    captures:
-      "1":
-        name: "support.function.be.latex"
-      "2":
-        name: "punctuation.definition.function.latex"
-      "3":
-        name: "punctuation.definition.arguments.latex"
-      "4":
-        name: "variable.parameter.function.latex"
-      "5":
-        name: "punctuation.definition.arguments.latex"
-    end: "((\\\\)end)(\\{)(\\4)(\\})(?:\\s*\\n)?"
-    name: "meta.function.environment.general.latex"
-    patterns: [
-      {
-        include: "$base"
       }
     ]
   }
@@ -546,7 +525,7 @@ patterns: [
         name: "punctuation.definition.textit.begin.latex"
     comment: '''
       We put the keyword in a capture and name this capture, so that disabling spell checking for “keyword” won't be inherited by the argument to \\textit{...}.
-      
+
       Put specific matches for particular LaTeX keyword.functions before the last two more general functions
     '''
     contentName: "markup.italic.textit.latex"
@@ -625,7 +604,7 @@ patterns: [
       					(?:(\\[)[^\\]]*(\\]))?								# Optional
       					(?:(\\[)[^\\]]*(\\]))?								#   Arguments
       					(\\{)											# Opening Bracket
-      				
+
     '''
     captures:
       "1":
