@@ -58,6 +58,22 @@ class Viewer extends Disposable
     @window.setMenu(null)
     @window.setTitle("""Atom-LaTeX PDF Viewer - [#{@latex.mainFile}]""")
 
+  openViewerNewTab: ->
+    if !@latex.manager.findMain()
+      return
+
+    pdfPath = """#{@latex.mainFile.substr(
+      0, @latex.mainFile.lastIndexOf('.'))}.pdf"""
+    if !fs.existsSync pdfPath
+      return
+
+    if !@getUrl()
+      return
+
+    pane = atom.workspace.getActivePane().splitRight()
+    @tabView = new PDFView(@url)
+    pane.addItem(@tabView)
+
   getUrl: ->
     try
       { address, port } = @latex.server.http.address()
@@ -66,3 +82,23 @@ class Viewer extends Disposable
       @latex.server.openTab = true
       return false
     return true
+
+class PDFView
+  constructor: (url) ->
+    @element = document.createElement 'iframe'
+    @element.setAttribute 'src', url
+    @element.setAttribute 'width', '100%'
+    @element.setAttribute 'height', '100%'
+    @element.setAttribute 'frameborder', 0
+
+  getTitle: ->
+    return 'Atom-LaTeX PDF Viewer'
+
+  serialize: ->
+    return @element.getAttribute 'src'
+
+  destroy: ->
+    @element.remove()
+
+  getElement: ->
+    return @element
