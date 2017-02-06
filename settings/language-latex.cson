@@ -1,0 +1,6 @@
+'.text.tex.latex':
+  'editor':
+    'softTabs': true
+    'tabLength': 2
+    'softWrap': true
+    'commentStart': '% '
