@@ -82,6 +82,6 @@ class Citation extends Disposable
       value = segment.substring(eqSign + 1).trim()
       if value[0] is '{' and value[value.length - 1] is '}'
         value = value.substring(1, value.length - 1)
-      value = value.replace(/{{/g, '').replace(/}}/g, '')
+      value = value.replace(/(\\.)|({)/g, '$1').replace(/(\\.)|(})/g, '$1')
       bibItem[key] = value
     return bibItem
