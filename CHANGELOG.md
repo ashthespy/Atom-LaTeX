@@ -1,3 +1,8 @@
+## [0.3.2]  2017-02-06
+### Fixed
+* Unnecessary `\begin{\w+}` syntax highlight leading to typing lag.
+* Escaped curly brackets in citation title should not be removed.
+
 ## [0.3.1]  2017-02-05
 ### Changed
 * Command autocomplete will guess the number of curly brackets needed.

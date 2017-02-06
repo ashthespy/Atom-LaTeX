@@ -68,6 +68,11 @@ Screencasts may be generated with different platforms. Some may demonstrate feat
 ### Log Parser
 ![Log Parser](https://raw.githubusercontent.com/James-Yu/Atom-LaTeX/master/figures/log-parser.gif)
 
+## How To
+### Enable spell check
+- Open setting panel of build-in package `spell-check`.
+- Add `text.tex.latex` to the `Grammars` edit box.
+
 ## Contributing
 
 - [Creat issues](https://github.com/James-Yu/Atom-LaTeX/issues) for bugs
