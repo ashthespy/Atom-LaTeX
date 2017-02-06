@@ -48,6 +48,9 @@ class Viewer extends Disposable
     if !@getUrl()
       return
 
+    if @tabView?
+      atom.workspace.paneForItem(@tabView).destroyItem(@tabView)
+      @tabView = undefined
     if !@window? or @window.isDestroyed()
       @window = new BrowserWindow()
     else
@@ -70,9 +73,11 @@ class Viewer extends Disposable
     if !@getUrl()
       return
 
-    pane = atom.workspace.getActivePane().splitRight()
-    @tabView = new PDFView(@url)
-    pane.addItem(@tabView)
+    if @tabView?
+      atom.workspace.paneForItem(@tabView).activateItem(@tabView)
+    else
+      @tabView = new PDFView(@url)
+      atom.workspace.getActivePane().splitRight().addItem(@tabView)
 
   getUrl: ->
     try
