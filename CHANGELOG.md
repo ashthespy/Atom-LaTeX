@@ -1,3 +1,9 @@
+## [0.4.0]  2017-02-07
+### Added
+* Add a preview-in-tab PDF viewer.
+### Fixed
+* Remove console messages.
+
 ## [0.3.3]  2017-02-06
 ### Added
 * Auto-enable word wrap.
