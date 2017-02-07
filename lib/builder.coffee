@@ -67,11 +67,12 @@ class Builder extends Disposable
     @latex.logPanel.showText icon: @latex.parser.status, 'Success.', 3000
     if @latex.viewer.client.ws?
       @latex.viewer.refresh()
-    else if atom.config.get('atom-latex.preview_after_build')
-      if atom.config.get('preview_after_build_type') is 'New window'
-        @latex.viewer.openViewerNewWindow()
-      else
-        @latex.viewer.openViewerNewTab()
+    else if atom.config.get('atom-latex.preview_after_build') is\
+        'View in PDF viewer window'
+      @latex.viewer.openViewerNewWindow()
+    else if atom.config.get('atom-latex.preview_after_build') is\
+        'View in PDF viewer tab'
+      @latex.viewer.openViewerNewTab()
 
   killProcess: ->
     @cmds = []

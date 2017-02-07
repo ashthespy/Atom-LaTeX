@@ -60,16 +60,10 @@ module.exports =
     order: 8
     description: 'Use PDF viewer to preview the generated PDF file after \
                   successfully building LaTeX.'
-    type: 'boolean'
-    default: true
-  preview_after_build_type:
-    title: 'Type of PDF viewer to open after building process'
-    order: 9
-    description: 'Open a new window or new tab for PDF viewer to preview the \
-                  generated PDF file after successfully building LaTeX.'
     type: 'string'
-    default: 'New window'
+    default: 'View in PDF viewer window'
     enum: [
-      'New window'
-      'New tab'
+      'View in PDF viewer window'
+      'View in PDF viewer tab'
+      'Do nothing'
     ]
