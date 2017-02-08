@@ -10,13 +10,6 @@ class Builder extends Disposable
 
   build: (here) ->
     if !@latex.manager.findMain(here)
-      atom.notifications.addError(
-        """Cannot find a LaTeX file with `\\begin{document}` to start.""", {
-          dismissable: true
-          message: 'Please make sure your LaTeX main file with the above \
-                    command is in the root folder of the opened Atom project,\
-                    or open the main file and try again.'
-        })
       return false
 
     @killProcess()
@@ -47,11 +40,9 @@ class Builder extends Disposable
         if !err
           @buildProcess()
         else
-          atom.notifications.addError(
-            """Failed Building LaTeX (code #{err.code}).""", {
-              detail: err.message
-              dismissable: true
-            })
+          @latex.logger.processError(
+            """Failed Building LaTeX (code #{err.code}).""", err.message
+          )
           @cmds = []
           @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
           @latex.logPanel.showText icon: @latex.parser.status, 'Error.', 3000

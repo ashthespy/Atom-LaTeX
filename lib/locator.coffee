@@ -20,11 +20,9 @@ class Locator extends Disposable
              #{@latex.manager.findPDF()}\""""
     cp.exec(cmd, {cwd: path.dirname @latex.mainFile}, (err, stdout, stderr) =>
       if (err)
-        atom.notifications.addError(
-          """Failed SyncTeX (code #{err.code}).""", {
-            detail: err.message
-            dismissable: true
-          })
+        @latex.logger.processError(
+          """Failed SyncTeX (code #{err.code}).""", err.message
+        )
         return
       record = @parseResult(stdout)
       @latex.viewer.synctex(record)
@@ -51,11 +49,9 @@ class Locator extends Disposable
              #{@latex.manager.findPDF()}\""""
     cp.exec(cmd, {cwd: path.dirname @latex.mainFile}, (err, stdout, stderr) =>
       if (err)
-        atom.notifications.addError(
-          """Failed SyncTeX (code #{err.code}).""", {
-            detail: err.message
-            dismissable: true
-          })
+        @latex.logger.processError(
+          """Failed SyncTeX (code #{err.code}).""", err.message
+        )
         return
       record = @parseResult(stdout)
       if record['column'] < 0

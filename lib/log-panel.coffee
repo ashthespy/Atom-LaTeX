@@ -27,8 +27,6 @@ class LogPanel extends Disposable
 
   setTitle: (icon, text) ->
     classes = ['icon', """icon-#{icon.icon}"""]
-    if icon.spin
-      classes.push 'icon-spin'
     title = """<div id="atom-latex-log-icon"\
                     class="#{classes.join ' '}">\
                </div>\

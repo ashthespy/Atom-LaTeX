@@ -18,6 +18,7 @@ class Manager extends Disposable
         if ((path.extname currentPath) == '.tex') and
             (currentContent.match docRegex)
           @latex.mainFile = currentPath
+          @latex.logger.setMain()
           return true
 
     if @latex.mainFile?
@@ -31,7 +32,10 @@ class Manager extends Disposable
         fileContent = fs.readFileSync filePath, 'utf-8'
         if fileContent.match docRegex
           @latex.mainFile = filePath
+          @latex.logger.setMain()
           return true
+
+    @latex.logger.missingMain()
     return false
 
   findPDF: ->

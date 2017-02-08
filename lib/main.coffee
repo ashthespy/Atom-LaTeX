@@ -67,6 +67,7 @@ class AtomLaTeX extends Disposable
     Parser = require './parser'
     Locator = require './locator'
     LogPanel = require './log-panel'
+    Logger = require './logger'
 
     @builder = new Builder(this)
     @manager = new Manager(this)
@@ -75,9 +76,10 @@ class AtomLaTeX extends Disposable
     @parser = new Parser(this)
     @locator = new Locator(this)
     @logPanel = new LogPanel(this)
+    @logger = new Logger(this)
 
     @disposables.add @builder, @manager, @server, @viewer, @parser, @locator,
-      @logPanel
+      @logPanel, @logger
 
   dispose: ->
     @disposables.dispose()
