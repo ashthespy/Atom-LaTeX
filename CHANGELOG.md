@@ -1,3 +1,8 @@
+## [0.4.1]  2017-02-08
+### Added
+* Better logging for main file detection.
+* Two new methods to set LaTeX main file.
+
 ## [0.4.0]  2017-02-07
 ### Added
 * Add a preview-in-tab PDF viewer.
