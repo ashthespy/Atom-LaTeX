@@ -1,8 +1,8 @@
-'atom-text-editor[data-grammar~="latex"]':
-  'ctrl-alt-b': 'Atom-LaTeX:build'
+'atom-text-editor[data-grammar="text tex latex"]':
+  'ctrl-alt-b': 'atom-latex:build'
   'ctrl-alt-h': 'atom-latex:build-here'
-  'ctrl-alt-p': 'Atom-LaTeX:preview'
-  'ctrl-alt-t': 'Atom-LaTeX:preview-tab'
-  'ctrl-alt-k': 'Atom-LaTeX:kill'
+  'ctrl-alt-p': 'atom-latex:preview'
+  'ctrl-alt-t': 'atom-latex:preview-tab'
+  'ctrl-alt-k': 'atom-latex:kill'
   'ctrl-alt-s': 'atom-latex:synctex'
-  'ctrl-alt-l': 'Atom-LaTeX:show-log'
+  'ctrl-alt-l': 'atom-latex:show-log'
