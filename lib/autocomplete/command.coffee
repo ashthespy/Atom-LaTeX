@@ -35,6 +35,12 @@ class Command extends Disposable
     suggestions.sort((a, b) ->
       return -1 if a.displayText < b.displayText
       return 1)
+    suggestions.unshift(
+      text: '\n'
+      displayText: 'Press ENTER for new line.'
+      chainComplete: false
+      replacementPrefix: ''
+      latexType: 'command')
     return suggestions
 
   predefinedCommands: (prefix) ->
