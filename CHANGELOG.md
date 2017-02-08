@@ -1,3 +1,8 @@
+## [0.4.2]  2017-02-08
+### Fixed
+* Keymap not properly binded.
+* TabView Panel undefined preventing switching preview mode.
+
 ## [0.4.1]  2017-02-08
 ### Added
 * Better logging for main file detection.
