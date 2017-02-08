@@ -8,24 +8,63 @@ class Manager extends Disposable
     @latex = latex
 
   findMain: (here) ->
-    if here or !@latex.mainFile?
-      docRegex = /\\begin{document}/
-      editor = atom.workspace.getActivePaneItem()
-      currentPath = editor?.buffer.file?.path
-      currentContent = editor?.getText()
-
-      if currentPath and currentContent
-        if ((path.extname currentPath) == '.tex') and
-            (currentContent.match docRegex)
-          @latex.mainFile = currentPath
-          @latex.logger.setMain()
-          return true
+    if here
+      return true if @findMainSelfMagic()
+      return true if @findMainSelf()
 
     if @latex.mainFile?
       return true
 
+    return true if @findMainSelfMagic()
+    return true if @findMainSelf()
+    return true if @findMainAllRoot()
+
+    @latex.logger.missingMain()
+    return false
+
+  findMainSelf: ->
+    docRegex = /\\begin{document}/
+    editor = atom.workspace.getActivePaneItem()
+    currentPath = editor?.buffer.file?.path
+    currentContent = editor?.getText()
+
+    if currentPath and currentContent
+      if (path.extname(currentPath) == '.tex') and
+          (currentContent.match docRegex)
+        @latex.mainFile = currentPath
+        @latex.logger.setMain()
+        return true
+    return false
+
+  findMainSelfMagic: ->
+    magicRegex = /(?:%\s*!TEX\sroot\s*=\s*([^\s]*\.tex)$)/m
+    editor = atom.workspace.getActivePaneItem()
+    currentPath = editor?.buffer.file?.path
+    currentContent = editor?.getText()
+
+    if currentPath and currentContent
+      if path.extname(currentPath) == '.tex'
+        result = currentContent.match magicRegex
+        if result
+          @latex.mainFile = path.resolve(path.dirname(currentPath), result[1])
+          @latex.logger.setMain()
+          return true
+    return false
+
+  findMainAllRoot: ->
+    docRegex = /\\begin{document}/
     for rootDir in atom.project.getPaths()
       for file in fs.readdirSync rootDir
+        if file is '.latexcfg'
+          try
+            filePath = path.join rootDir, file
+            fileContent = fs.readFileSync filePath, 'utf-8'
+            config = JSON.parse fileContent
+            @latex.mainFile = path.resolve rootDir, config.root
+            @latex.logger.setMain()
+            return true
+          catch err
+
         if (path.extname file) != '.tex'
           continue
         filePath = path.join rootDir, file
@@ -34,8 +73,6 @@ class Manager extends Disposable
           @latex.mainFile = filePath
           @latex.logger.setMain()
           return true
-
-    @latex.logger.missingMain()
     return false
 
   findPDF: ->
