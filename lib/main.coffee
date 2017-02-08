@@ -33,13 +33,16 @@ module.exports =
     @disposables.add @latex, @provider
 
     @disposables.add atom.commands.add 'atom-workspace',
-      'atom-latex:build': () => this.latex.builder.build()
-      'atom-latex:build-here': () => this.latex.builder.build(true)
-      'atom-latex:preview': () => this.latex.viewer.openViewerNewWindow()
-      'atom-latex:preview-tab': () => this.latex.viewer.openViewerNewTab()
-      'atom-latex:kill': () => this.latex.builder.killProcess()
-      'atom-latex:show-log': () => this.latex.logPanel.showPanel()
-      'atom-latex:synctex': () => this.latex.locator.synctex()
+      'atom-latex:build': () => @latex.builder.build()
+      'atom-latex:build-here': () => @latex.builder.build(true)
+      'atom-latex:preview': () => @latex.viewer.openViewerNewWindow()
+      'atom-latex:preview-tab': () => @latex.viewer.openViewerNewTab()
+      'atom-latex:kill': () => @latex.builder.killProcess()
+      'atom-latex:show-log': () => @latex.logPanel.showPanel()
+      'atom-latex:synctex': () => @latex.locator.synctex()
+      'atom-latex:tools-dollarsign': () => @latex.provider.syntax.dollarsign()
+      'atom-latex:tools-backquote': () => @latex.provider.syntax.backquote()
+      'atom-latex:tools-doublequote': () => @latex.provider.syntax.doublequote()
 
     @disposables.add atom.workspace.observeTextEditors (editor) =>
       @disposables.add editor.onDidSave () =>

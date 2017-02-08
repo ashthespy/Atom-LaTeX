@@ -1,3 +1,8 @@
+"atom-text-editor[data-grammar~='latex']":
+  '$' : 'atom-latex:tools-dollarsign'
+  '`' : 'atom-latex:tools-backquote'
+  '"' : 'atom-latex:tools-doublequote'
+
 'atom-text-editor[data-grammar="text tex latex"]':
   'ctrl-l ctrl-b': 'atom-latex:build'
   'ctrl-l ctrl-h': 'atom-latex:build-here'

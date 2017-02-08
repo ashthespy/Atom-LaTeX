@@ -14,10 +14,12 @@ class Provider extends Disposable
     Reference = require './autocomplete/reference'
     Environment = require './autocomplete/environment'
     Command = require './autocomplete/command'
+    Syntax = require './autocomplete/syntax'
     @citation = new Citation(@latex)
     @reference = new Reference(@latex)
     @environment = new Environment(@latex)
     @command = new Command(@latex)
+    @syntax = new Syntax(@latex)
 
   provider:
     selector: '.text.tex.latex'
