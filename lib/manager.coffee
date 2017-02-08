@@ -16,6 +16,7 @@ class Manager extends Disposable
       return true
 
     return true if @findMainSelfMagic()
+    return true if @findMainConfig()
     return true if @findMainSelf()
     return true if @findMainAllRoot()
 
@@ -32,7 +33,7 @@ class Manager extends Disposable
       if (path.extname(currentPath) == '.tex') and
           (currentContent.match docRegex)
         @latex.mainFile = currentPath
-        @latex.logger.setMain()
+        @latex.logger.setMain('self')
         return true
     return false
 
@@ -47,12 +48,11 @@ class Manager extends Disposable
         result = currentContent.match magicRegex
         if result
           @latex.mainFile = path.resolve(path.dirname(currentPath), result[1])
-          @latex.logger.setMain()
+          @latex.logger.setMain('magic')
           return true
     return false
 
-  findMainAllRoot: ->
-    docRegex = /\\begin{document}/
+  findMainConfig: ->
     for rootDir in atom.project.getPaths()
       for file in fs.readdirSync rootDir
         if file is '.latexcfg'
@@ -61,17 +61,22 @@ class Manager extends Disposable
             fileContent = fs.readFileSync filePath, 'utf-8'
             config = JSON.parse fileContent
             @latex.mainFile = path.resolve rootDir, config.root
-            @latex.logger.setMain()
+            @latex.logger.setMain('config')
             return true
           catch err
+    return false
 
+  findMainAllRoot: ->
+    docRegex = /\\begin{document}/
+    for rootDir in atom.project.getPaths()
+      for file in fs.readdirSync rootDir
         if (path.extname file) != '.tex'
           continue
         filePath = path.join rootDir, file
         fileContent = fs.readFileSync filePath, 'utf-8'
         if fileContent.match docRegex
           @latex.mainFile = filePath
-          @latex.logger.setMain()
+          @latex.logger.setMain('all')
           return true
     return false
 
