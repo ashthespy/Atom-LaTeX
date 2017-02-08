@@ -18,11 +18,22 @@ class Reference extends Disposable
       suggestions.sort((a, b) ->
         return a.text.indexOf(prefix) - b.text.indexOf(prefix))
       return suggestions
+
     if !@latex.manager.findAll()
       return suggestions
+
     items = []
     for tex in @latex.texFiles
       items = items.concat @getRefItems tex
+
+    editor = atom.workspace.getActivePaneItem()
+    currentPath = editor?.buffer.file?.path
+    currentContent = editor?.getText()
+
+    if currentPath and currentContent
+      if (path.extname(currentPath) == '.tex')
+        items = items.concat @getItems currentContent
+
     for item in items
       suggestions.push
         text: item
@@ -34,11 +45,8 @@ class Reference extends Disposable
     @suggestions = suggestions
     return suggestions
 
-  getRefItems: (tex) ->
+  getItems: (content) ->
     items = []
-    if !fs.existsSync(tex)
-      return items
-    content = fs.readFileSync tex, 'utf-8'
     itemReg = /(?:\\label(?:\[[^\[\]\{\}]*\])?){([^}]*)}/g
     loop
       result = itemReg.exec content
@@ -46,3 +54,9 @@ class Reference extends Disposable
       if items.indexOf result[1] < 0
         items.push result[1]
     return items
+
+  getRefItems: (tex) ->
+    if !fs.existsSync(tex)
+      return []
+    content = fs.readFileSync tex, 'utf-8'
+    return @getItems(content)
