@@ -36,7 +36,7 @@ Alternatively, you can check out this repository and copy it to the Atom package
 
 ## Usage
 
-All commands can be invoked from `Package`-`Atom-LaTeX` menu or by command palette. Alternatively, keybinds are provided.
+All commands can be invoked from `Package`-`Atom-LaTeX` menu or by command palette. Alternatively, keybinds are provided. Each command is invoked if the two key combinations are pressed sequentially.
 
 For reverse SyncTeX from PDF to LaTeX, use <kbd>ctrl</kbd>+<kbd>Mouse Left Click</kbd> in the PDF viewer to reveal the line in editor.
 
@@ -44,12 +44,12 @@ Mac OS users can use <kbd>command</kbd> key as a replacement of <kbd>ctrl</kbd>.
 
 | Command               | Default Keybind                             | Function |
 |-----------------------|---------------------------------------------|----------|
-| `atom-latex:build`      | <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>B</kbd> | Build LaTeX file. |
-| `atom-latex:build-here` | <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>H</kbd> | Build LaTeX using active text editor file if possible. |
-| `atom-latex:preview`    | <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>P</kbd> | Preview generated PDF file with in-browser viewer. |
-| `atom-latex:kill`       | <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>K</kbd> | Terminate current LaTeX building process. |
-| `atom-latex:synctex`   | <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>S</kbd> | Direct SyncTeX from the current cursor position. |
-| `atom-latex:show-log`   | <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>L</kbd> | Show Atom-LaTeX log panel. |
+| `atom-latex:build`      | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>B</kbd> | Build LaTeX file. |
+| `atom-latex:build-here` | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>H</kbd> | Build LaTeX using active text editor file if possible. |
+| `atom-latex:preview`    | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>P</kbd> | Preview generated PDF file with in-browser viewer. |
+| `atom-latex:kill`       | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>K</kbd> | Terminate current LaTeX building process. |
+| `atom-latex:synctex`   | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>S</kbd> | Direct SyncTeX from the current cursor position. |
+| `atom-latex:show-log`   | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>L</kbd> | Show Atom-LaTeX log panel. |
 
 ## Screencasts
 
