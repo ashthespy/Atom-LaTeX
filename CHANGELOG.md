@@ -1,3 +1,13 @@
+## [0.4.3]  2017-02-09
+### Changed
+* Default command autocompletion is to create a new line.
+* All default key binds to avoid conflict
+
+### Fixed
+* Not including new references in unsaved buffer.
+* Not parsing fatal error LaTeX log.
+* Mispositioned environment autocompletion items.
+
 ## [0.4.2]  2017-02-08
 ### Fixed
 * Keymap not properly binded.
@@ -11,6 +21,7 @@
 ## [0.4.0]  2017-02-07
 ### Added
 * Add a preview-in-tab PDF viewer.
+
 ### Fixed
 * Remove console messages.
 
@@ -18,6 +29,7 @@
 ### Added
 * Auto-enable word wrap.
 * Allow `ctrl`+`/` for auto comment.
+
 ### Fixed
 * Wrong direct synctex position when word wrap is on
 
@@ -33,8 +45,10 @@
 ## [0.3.0]  2017-02-05
 ### Added
 * Direct and reverse SyncTeX support.
+
 ### Changed
 * Status bar now alerts LaTeX building warninngs.
+
 ### Fixed
 * Pre-mature activation of package leading to significant startup time.
 
@@ -47,6 +61,7 @@
 * Autocomplete for commands and environments.
   * Commands are gathered from all LaTeX source files in the project, and some predefined ones.
   * Environments are predefined.
+
 ### Changed
 * Now autocomplete will sort according to prefix and displayed text.
 
@@ -57,6 +72,7 @@
 ## [0.2.3] - 2017-02-03
 ### Changed
 * Use cached results for autocomplete when already typed some characters to reduce I/O operations.
+
 ### Fixed
 * Autocomplete prefix is not removed after confirming a suggestion.
 
@@ -67,6 +83,7 @@
 ## [0.2.1] - 2017-02-02
 ### Added
 * Auto-complete for cross-references.
+
 ### Changed
 * Now Atom-LaTeX will search all tex files recursively from the main file with `\input{}` commands.
 
@@ -74,6 +91,7 @@
 ### Added
 * Auto-complete for citations.
   * Atom-LaTeX will search all bibTeX files referenced in the main LaTeX file to develop bibitem keys.
+
 ### Fixed
 * Now alerts when no main LaTeX file can be detected.
   * It will try to check the current active editor first. If not, all root files are checked.
@@ -81,6 +99,7 @@
 ## [0.1.1] - 2017-02-01
 ### Changed
 * Create new Atom window to display PDF viewer.
+
 ### Fixed
 * Menu items not working.
 
