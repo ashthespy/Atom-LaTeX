@@ -1,6 +1,7 @@
 { Disposable } = require 'atom'
 
 latexPattern = /^Output\swritten\son\s(.*)\s\(.*\)\.$/gm
+latexFatalPattern = /Fatal error occurred, no output PDF file produced!/gm
 latexError = /^(?:(.*):(\d+):|!)(?: (.+) Error:)? (.+?)\.?$/
 latexBox = /^((?:Over|Under)full \\[vh]box \([^)]*\)) in paragraph at lines (\d+)--(\d+)$/
 latexWarn = /^((?:(?:Class|Package) \S+)|LaTeX) (Warning|Info):\s+(.*?)(?: on input line (\d+))?\.$/
@@ -12,7 +13,7 @@ class Parser extends Disposable
 
   parse: (log) ->
     @status = 'check'
-    if log.match latexPattern
+    if log.match(latexPattern) or log.match(latexFatalPattern)
       @parseLatex log
 
   parseLatex: (log) ->
