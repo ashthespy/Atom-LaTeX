@@ -1,3 +1,7 @@
+## [0.4.4]  2017-02-13
+### Changed
+* Way of showing error notification.
+
 ## [0.4.3]  2017-02-09
 ### Changed
 * Default command autocompletion is to create a new line.
