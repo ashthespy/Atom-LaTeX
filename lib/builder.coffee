@@ -41,7 +41,7 @@ class Builder extends Disposable
           @buildProcess()
         else
           @latex.logger.processError(
-            """Failed Building LaTeX (code #{err.code}).""", err.message
+            """Failed Building LaTeX (code #{err.code}).""", err.message, true
           )
           @cmds = []
           @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
@@ -54,6 +54,7 @@ class Builder extends Disposable
 
   postBuild: ->
     @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
+    @latex.logger.clearBuildError()
     @latex.logPanel.addPlainLog 'Successfully built LaTeX.'
     @latex.logPanel.showText icon: @latex.parser.status, 'Success.', 3000
     if @latex.viewer.client.ws?

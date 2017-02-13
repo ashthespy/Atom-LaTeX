@@ -55,8 +55,17 @@ class Logger extends Disposable
         }
       )
 
-  processError: (title, msg) ->
-    atom.notifications.addError(title, {
-      detail: msg
-      dismissable: true
-    })
+  processError: (title, msg, buildError) ->
+    if buildError
+      @clearBuildError()
+    error =
+      atom.notifications.addError(title, {
+        detail: msg
+        dismissable: true
+      })
+    if buildError
+      @buildError = error
+
+  clearBuildError: ->
+    if @buildError? and !@buildError.dismissed
+      @buildError.dismiss()
