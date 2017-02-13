@@ -72,7 +72,7 @@ LaTeX main file is essential to Atom-LaTeX. Building, preview, autocompletion, a
 
 1. Add a magic comment `% !TEX root = \path\to\main\file.tex` to your LaTeX source file. The path can be absolute or relative.
 2. Create a `.latexcfg` file at the root directory of your project. The file should contain a json object with `root` key set to the main file. An example:
-   ```json
+   ```
    { "root" : "\path\to\main\file.tex" }
    ```
 3. Open the main file and use `Build Here` command. Alternatively, use `Build LaTeX from active editor` menu item.
