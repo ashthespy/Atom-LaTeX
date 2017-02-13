@@ -41,7 +41,11 @@ class Builder extends Disposable
           @buildProcess()
         else
           @latex.logger.processError(
-            """Failed Building LaTeX (code #{err.code}).""", err.message, true
+            """Failed Building LaTeX (code #{err.code}).""", err.message, true,
+            [{
+              text: "Show build log"
+              onDidClick: => @latex.logPanel.showLog()
+            }]
           )
           @cmds = []
           @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
