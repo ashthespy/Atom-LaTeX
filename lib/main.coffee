@@ -28,9 +28,10 @@ module.exports =
     @provide()
     @provider.lazyLoad(@latex)
     @latex.provider = @provider
+    @latex.status = @status
     @latex.package = this
 
-    @disposables.add @latex, @provider
+    @disposables.add @latex
 
     @disposables.add atom.commands.add 'atom-workspace',
       'atom-latex:build': () => @latex.builder.build()
@@ -58,7 +59,14 @@ module.exports =
     if !@provider?
       Provider = require './provider'
       @provider = new Provider()
+      @disposables.add @provider
     return @provider.provider
+
+  consume: (statusBar) ->
+    if !@status?
+      Status = require './view/status'
+      @status = new Status
+    @status.attach statusBar
 
 class AtomLaTeX extends Disposable
   constructor: ->
