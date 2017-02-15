@@ -16,7 +16,11 @@ class Command extends Disposable
           item.replacementPrefix = prefix
           suggestions.push item
       suggestions.sort((a, b) ->
-        return a.displayText.indexOf(prefix) - b.displayText.indexOf(prefix))
+        if a.displayText.indexOf(prefix) isnt b.displayText.indexOf(prefix)
+          return a.displayText.indexOf(prefix) - b.displayText.indexOf(prefix)
+        else
+          return b.counts - a.counts
+      )
       return suggestions
     if !@latex.manager.findAll()
       return suggestions
@@ -33,7 +37,7 @@ class Command extends Disposable
 
     suggestions = suggestions.concat @additionalSuggestions
     suggestions.sort((a, b) ->
-      return -1 if a.displayText < b.displayText
+      return -1 if a.counts > b.counts
       return 1)
     suggestions.unshift(
       text: '\n'
@@ -63,6 +67,7 @@ class Command extends Disposable
           replacementPrefix: prefix
           type: 'function'
           latexType: 'command'
+          counts: 0
     return suggestions
 
   getCommands: (tex) ->
@@ -91,6 +96,9 @@ class Command extends Disposable
           type: 'function'
           latexType: 'command'
           chainComplete: chainComplete
+          counts: 1
+      else
+        items[result[1]].counts += 1
     return items
 
   suggestions:
