@@ -1,3 +1,7 @@
+## [0.4.5]  2017-02-15
+### Changed
+* LaTeX command autocompletion now also sort by the number of appearances.
+
 ## [0.4.4]  2017-02-13
 ### Changed
 * Way of showing error notification.
