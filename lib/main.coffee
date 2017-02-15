@@ -66,7 +66,9 @@ module.exports =
     if !@status?
       Status = require './view/status'
       @status = new Status
+      @disposables.add @status
     @status.attach statusBar
+    return new Disposable( => @status.detach())
 
 class AtomLaTeX extends Disposable
   constructor: ->
