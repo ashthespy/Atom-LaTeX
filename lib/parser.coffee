@@ -48,5 +48,5 @@ class Parser extends Disposable
           file: if result[1] then result[1] else @latex.mainFile
           line: if result[2] then parseInt result[2], 10 else undefined
         continue
-    for item in items
-      @latex.logPanel.addParserLog(item)
+    @latex.logger.log = @latex.logger.log.concat items
+    @latex.panel.view.update()

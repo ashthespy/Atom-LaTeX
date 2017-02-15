@@ -4,6 +4,7 @@ module.exports =
 class Logger extends Disposable
   constructor: (latex) ->
     @latex = latex
+    @log = []
 
   missingMain: ->
     if @missingMainNotification? and !@missingMainNotification.dismissed
