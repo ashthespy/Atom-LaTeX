@@ -3,17 +3,16 @@
 // See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
 // for a full listing of what's available.
 @import "ui-variables";
-@fa-font-path: "atom://atom-latex/fonts/fonts";
 
 @font-face {
-  font-family: 'Font Awesome';
+  font-family: 'FontAwesome';
   font-weight: normal;
   font-style: normal;
-  src: url('@{fa-font-path}/fontawesome-webfont.woff') format('woff')
+  src: url(atom://atom-latex/fonts/fontawesome-webfont.woff2);
 }
 
 .fa {
-  font-family: 'Font Awesome';
+  font-family: 'FontAwesome';
 }
 
 .atom-latex-title, #atom-latex-log-icon::before {
