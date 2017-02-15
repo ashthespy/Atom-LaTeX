@@ -3,6 +3,18 @@
 // See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
 // for a full listing of what's available.
 @import "ui-variables";
+@fa-font-path: "atom://atom-latex/fonts/fonts";
+
+@font-face {
+  font-family: 'Font Awesome';
+  font-weight: normal;
+  font-style: normal;
+  src: url('@{fa-font-path}/fontawesome-webfont.woff') format('woff')
+}
+
+.fa {
+  font-family: 'Font Awesome';
+}
 
 .atom-latex-title, #atom-latex-log-icon::before {
   font-size: 14px;
@@ -27,10 +39,28 @@
   margin-right: 3px;
 }
 
-#status-bar-atom-latex {
+#atom-latex-status-bar {
   margin: 0 10px;
 }
 
-#status-bar-atom-latex .inline-block {
+#atom-latex-status-bar .inline-block {
   margin-right: 5px;
+}
+
+.atom-latex-control-icon {
+  font-size: 18px !important;
+  margin: 4px 10px;
+  display: inline-block;
+}
+
+.atom-latex-control-separator, #atom-latex-root-text {
+  font-size: 14px;
+  display: inline-block;
+  vertical-align: text-bottom;
+  margin-left: 5px;
+  margin-right: 3px;
+}
+
+#atom-latex-root-text {
+  margin-left: -4px;
 }
