@@ -19,7 +19,7 @@ class Viewer extends Disposable
         @client.ws?.close()
         @client.ws = ws
       when 'loaded'
-        if @client.position
+        if @client.position and @client.ws?
           @client.ws.send JSON.stringify @client.position
       when 'position'
         @client.position = data

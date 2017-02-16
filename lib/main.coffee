@@ -26,7 +26,6 @@ module.exports =
     @provide()
     @provider.lazyLoad(@latex)
     @latex.provider = @provider
-    @latex.status = @status
     @latex.package = this
 
     @disposables.add @latex

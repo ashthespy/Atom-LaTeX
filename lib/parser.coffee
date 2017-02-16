@@ -13,9 +13,10 @@ class Parser extends Disposable
     @latex = latex
 
   parse: (log) ->
-    @status = 'check'
+    @latex.package.status.view.status = 'good'
     if log.match(latexPattern) or log.match(latexFatalPattern)
       @parseLatex log
+    @latex.package.status.view.update()
     @latex.panel.view.update()
 
   parseLatex: (log) ->
@@ -33,7 +34,6 @@ class Parser extends Disposable
         continue
       result = line.match latexWarn
       if result
-        @status = 'alert' if @status isnt 'x'
         items.push
           type: 'warning',
           text: result[3]
@@ -42,7 +42,6 @@ class Parser extends Disposable
         continue
       result = line.match latexError
       if result
-        @status = 'x'
         items.push
           type: 'error',
           text: if result[3] and result[3] != 'LaTeX' then \
@@ -52,4 +51,12 @@ class Parser extends Disposable
             @latex.mainFile
           line: if result[2] then parseInt result[2], 10 else undefined
         continue
+
+    types = items.map((item) -> item.type)
+    if types.indexOf('error') > -1
+      @latex.package.status.view.status = 'error'
+    else if types.indexOf('warning') > -1
+      @latex.package.status.view.status = 'warning'
+    else if types.indexOf('typesetting') > -1
+      @latex.package.status.view.status = 'typesetting'
     @latex.logger.log = @latex.logger.log.concat items

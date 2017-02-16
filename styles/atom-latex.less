@@ -15,25 +15,6 @@
   font-family: 'FontAwesome';
 }
 
-.atom-latex-title, #atom-latex-log-icon::before {
-  font-size: 14px;
-  margin-right: 2px;
-}
-
-#atom-latex-log-icon {
-  display: inline-block;
-  padding-top: 2px;
-  color: lightgreen;
-}
-
-#atom-latex-log-icon.icon-x, .atom-latex-error {
-  color: red;
-}
-
-#atom-latex-log-icon.icon-sync, #atom-latex-log-icon.icon-alert, .atom-latex-warning {
-  color: orange;
-}
-
 .atom-latex-parser-message {
   margin-right: 3px;
 }
@@ -92,14 +73,18 @@
   opacity: 0.3;
 }
 
-.atom-latex-log-icon.fa-times-circle {
+.atom-latex-log-icon.fa-times-circle, #atom-latex-status-bar-icon.fa-times-circle {
   color: red;
 }
 
-.atom-latex-log-icon.fa-exclamation-circle {
+.atom-latex-log-icon.fa-exclamation-circle, #atom-latex-status-bar-icon.fa-exclamation-circle, #atom-latex-status-bar-icon.fa-cog {
   color: orange;
 }
 
-.atom-latex-log-icon.fa-question-circle {
+.atom-latex-log-icon.fa-question-circle, #atom-latex-status-bar-icon.fa-question-circle {
   color: cyan;
+}
+
+#atom-latex-status-bar-icon.fa-check-circle {
+  color: green;
 }

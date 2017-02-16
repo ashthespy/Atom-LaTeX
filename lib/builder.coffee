@@ -16,6 +16,8 @@ class Builder extends Disposable
     @setCmds()
     @latex.logger.log = []
     @latex.panel.view.showLog = true
+    @latex.package.status.view.status = 'building'
+    @latex.package.status.view.update()
     @buildLogs = []
     @execCmds = []
     @buildProcess()

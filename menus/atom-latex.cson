@@ -28,8 +28,8 @@
         'command': 'atom-latex:synctex'
       }
       {
-        'label': 'Show Atom-LaTeX log panel'
-        'command': 'atom-latex:show-log'
+        'label': 'Toggle Atom-LaTeX panel'
+        'command': 'atom-latex:toggle-panel'
       }
     ]
   } ]
