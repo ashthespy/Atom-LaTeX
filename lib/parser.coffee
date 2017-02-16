@@ -15,6 +15,7 @@ class Parser extends Disposable
     @status = 'check'
     if log.match(latexPattern) or log.match(latexFatalPattern)
       @parseLatex log
+    @latex.panel.view.update()
 
   parseLatex: (log) ->
     log = log.replace(/(.{78}(\w|\s|\d|\\|\/))(\r\n|\n)/g, '$1')
@@ -49,4 +50,3 @@ class Parser extends Disposable
           line: if result[2] then parseInt result[2], 10 else undefined
         continue
     @latex.logger.log = @latex.logger.log.concat items
-    @latex.panel.view.update()

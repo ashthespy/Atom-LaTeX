@@ -8,6 +8,11 @@ class Manager extends Disposable
     @latex = latex
 
   findMain: (here) ->
+    result = @findMainSequence(here)
+    @latex.panel.view.update()
+    return result
+
+  findMainSequence: (here) ->
     if here
       return true if @findMainSelfMagic()
       return true if @findMainSelf()

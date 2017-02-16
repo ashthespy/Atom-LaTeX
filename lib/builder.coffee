@@ -14,6 +14,7 @@ class Builder extends Disposable
 
     @killProcess()
     @setCmds()
+    @latex.logger.log = []
     @buildLogs = []
     @execCmds = []
     @latex.logPanel.clear()
