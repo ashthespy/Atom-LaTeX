@@ -71,3 +71,12 @@ class Logger extends Disposable
   clearBuildError: ->
     if @buildError? and !@buildError.dismissed
       @buildError.dismiss()
+
+  showLog: () ->
+    cmd = @latex?.builder.execCmds?[@latex?.builder.execCmds?.length - 1]
+    log = @latex?.builder.buildLogs?[@latex?.builder.buildLogs?.length - 1]
+    if cmd?
+      atom.workspace.open().then(
+        (editor) ->
+          editor.setText("""> #{cmd}\n\n#{log}""")
+      )

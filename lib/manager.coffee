@@ -12,6 +12,12 @@ class Manager extends Disposable
     @latex.panel.view.update()
     return result
 
+  refindMain: () ->
+    @latex.mainFile = undefined
+    result = @findMainSequence(true)
+    @latex.panel.view.update()
+    return result
+
   findMainSequence: (here) ->
     if here
       return true if @findMainSelfMagic()

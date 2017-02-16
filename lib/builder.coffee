@@ -15,9 +15,9 @@ class Builder extends Disposable
     @killProcess()
     @setCmds()
     @latex.logger.log = []
+    @latex.panel.view.showLog = true
     @buildLogs = []
     @execCmds = []
-    @latex.logPanel.clear()
     @buildProcess()
 
     return true
@@ -64,12 +64,9 @@ class Builder extends Disposable
     @latex.logPanel.showText icon: @latex.parser.status, 'Success.', 3000
     if @latex.viewer.client.ws?
       @latex.viewer.refresh()
-    else if atom.config.get('atom-latex.preview_after_build') is\
-        'View in PDF viewer window'
-      @latex.viewer.openViewerNewWindow()
-    else if atom.config.get('atom-latex.preview_after_build') is\
-        'View in PDF viewer tab'
-      @latex.viewer.openViewerNewTab()
+    else if atom.config.get('atom-latex.preview_after_build') isnt\
+        'Do nothing'
+      @latex.viewer.openViewer()
 
   killProcess: ->
     @cmds = []

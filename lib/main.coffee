@@ -17,8 +17,6 @@ module.exports =
           promise = new Promise (resolve, reject) =>
             @lazyLoad()
             resolve()
-          promise.then( =>
-            @latex.logPanel.showText icon: 'check', 'Activated.', 5000, true)
 
   lazyLoad: ->
     @activated = true
@@ -39,7 +37,7 @@ module.exports =
       'atom-latex:preview': () => @latex.viewer.openViewerNewWindow()
       'atom-latex:preview-tab': () => @latex.viewer.openViewerNewTab()
       'atom-latex:kill': () => @latex.builder.killProcess()
-      'atom-latex:show-log': () => @latex.logPanel.showPanel()
+      'atom-latex:show-log': () => @latex.panel.showPanel()
       'atom-latex:synctex': () => @latex.locator.synctex()
       'atom-latex:tools-dollarsign': () => @latex.provider.syntax.dollarsign()
       'atom-latex:tools-backquote': () => @latex.provider.syntax.backquote()
@@ -79,7 +77,6 @@ class AtomLaTeX extends Disposable
     Viewer = require './viewer'
     Parser = require './parser'
     Locator = require './locator'
-    LogPanel = require './log-panel'
     Panel = require './view/panel'
     Logger = require './logger'
 
@@ -89,12 +86,11 @@ class AtomLaTeX extends Disposable
     @server = new Server(this)
     @parser = new Parser(this)
     @locator = new Locator(this)
-    @logPanel = new LogPanel(this)
     @panel = new Panel(this)
     @logger = new Logger(this)
 
     @disposables.add @builder, @manager, @server, @viewer, @parser, @locator,
-      @logPanel, @panel, @logger
+      @panel, @logger
 
   dispose: ->
     @disposables.dispose()

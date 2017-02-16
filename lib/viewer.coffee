@@ -36,6 +36,16 @@ class Viewer extends Disposable
       type: "synctex"
       data: record
 
+  openViewer: ->
+    if @client.ws?
+      @refresh()
+    else if atom.config.get('atom-latex.preview_after_build') is\
+        'View in PDF viewer window'
+      @openViewerNewWindow()
+    else if atom.config.get('atom-latex.preview_after_build') is\
+        'View in PDF viewer tab'
+      @openViewerNewTab()
+
   openViewerNewWindow: ->
     if !@latex.manager.findMain()
       return

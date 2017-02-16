@@ -16,7 +16,7 @@ describe 'Atom-LaTeX', ->
         expect(pkg.latex.manager).toBeDefined()
         expect(pkg.latex.viewer).toBeDefined()
         expect(pkg.latex.server).toBeDefined()
-        expect(pkg.latex.logPanel).toBeDefined()
+        expect(pkg.latex.panel).toBeDefined()
         expect(pkg.latex.parser).toBeDefined()
 
   describe 'Builder', ->
