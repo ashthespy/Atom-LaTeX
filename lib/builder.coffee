@@ -33,8 +33,11 @@ class Builder extends Disposable
 
     @buildLogs.push ''
     @execCmds.push cmd
-    @latex.logPanel.showText icon: 'sync', spin: true, 'Building LaTeX.'
-    @latex.logPanel.addStepLog(@buildLogs.length, cmd)
+    # @latex.logPanel.showText icon: 'sync', spin: true, 'Building LaTeX.'
+    @latex.logger.log.push({
+      type: 'status',
+      text: """Step #{@buildLogs.length}> #{cmd}"""
+    })
     @process = @execCmd(
       cmd, {cwd: path.dirname @latex.mainFile}, (err, stdout, stderr) =>
         @process = undefined
@@ -45,23 +48,29 @@ class Builder extends Disposable
             """Failed Building LaTeX (code #{err.code}).""", err.message, true,
             [{
               text: "Show build log"
-              onDidClick: => @latex.logPanel.showLog()
+              onDidClick: => @latex.logger.showLog()
             }]
           )
           @cmds = []
+          # @latex.logPanel.showText icon: @latex.parser.status, 'Error.', 3000
+          @latex.logger.log.push({
+            type: 'status',
+            text: 'Error occurred while building LaTeX.'
+          })
           @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
-          @latex.logPanel.showText icon: @latex.parser.status, 'Error.', 3000
-          @latex.logPanel.addPlainLog 'Error occurred while building LaTeX.'
     )
 
     @process.stdout.on 'data', (data) =>
       @buildLogs[@buildLogs.length - 1] += data
 
   postBuild: ->
-    @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
     @latex.logger.clearBuildError()
-    @latex.logPanel.addPlainLog 'Successfully built LaTeX.'
-    @latex.logPanel.showText icon: @latex.parser.status, 'Success.', 3000
+    # @latex.logPanel.showText icon: @latex.parser.status, 'Success.', 3000
+    @latex.logger.log.push({
+      type: 'status',
+      text: 'Successfully built LaTeX.'
+    })
+    @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
     if @latex.viewer.client.ws?
       @latex.viewer.refresh()
     else if atom.config.get('atom-latex.preview_after_build') isnt\

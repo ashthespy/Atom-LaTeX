@@ -49,7 +49,7 @@ Mac OS users can use <kbd>command</kbd> key as a replacement of <kbd>ctrl</kbd>.
 | `atom-latex:preview`    | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>P</kbd> | Preview generated PDF file with in-browser viewer. |
 | `atom-latex:kill`       | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>K</kbd> | Terminate current LaTeX building process. |
 | `atom-latex:synctex`   | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>S</kbd> | Direct SyncTeX from the current cursor position. |
-| `atom-latex:show-log`   | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>L</kbd> | Show Atom-LaTeX log panel. |
+| `atom-latex:toggle-panel`   | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>L</kbd> | Toggle Atom-LaTeX panel display. |
 
 ## Screencasts
 

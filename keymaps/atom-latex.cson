@@ -10,7 +10,7 @@
   'ctrl-l ctrl-t': 'atom-latex:preview-tab'
   'ctrl-l ctrl-k': 'atom-latex:kill'
   'ctrl-l ctrl-s': 'atom-latex:synctex'
-  'ctrl-l ctrl-l': 'atom-latex:show-log'
+  'ctrl-l ctrl-l': 'atom-latex:toggle-panel'
 
 'body.platform-darwin atom-text-editor[data-grammar="text tex latex"]':
   'cmd-l cmd-b': 'atom-latex:build'
