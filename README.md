@@ -5,7 +5,7 @@ Atom-LaTeX is an extension for [Atom.io](https://atom.io/), aiming to provide al
 ## Features
 
 Atom-LaTeX is currently under active development. More features coming soon.
-Some features have screencasts available in the `Screencasts` section. Have a check!
+Some features have screenshots/screencasts available [here](https://github.com/James-Yu/Atom-LaTeX/blob/master/GALLERY.md). Have a check!
 
 - Compile LaTeX with BibTeX
 - Preview PDF with build-in viewer
@@ -24,7 +24,7 @@ Unification provides seamless experience. Aiming to make it work and work perfec
 
 - LaTeX distribution in system PATH. For example, [TeX Live](https://www.tug.org/texlive/).
   - [MiKTeX](https://miktex.org/) does not ship with SyncTeX, but basic build and preview and non-SyncTeX related features work fine.
-- [Set LaTeX main file](#main_file).
+- [Set LaTeX root file](#root_file).
 
 ## Installation
 
@@ -51,34 +51,19 @@ Mac OS users can use <kbd>command</kbd> key as a replacement of <kbd>ctrl</kbd>.
 | `atom-latex:synctex`   | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>S</kbd> | Direct SyncTeX from the current cursor position. |
 | `atom-latex:toggle-panel`   | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>L</kbd> | Toggle Atom-LaTeX panel display. |
 
-## Screencasts
-
-Screencasts may be generated with different platforms. Some may demonstrate features in earlier versions which got updated.
-
-### Build and Preview
-![Build and Preview](https://raw.githubusercontent.com/James-Yu/Atom-LaTeX/master/figures/build.gif)
-
-### Autocomplete
-![Autocomplete](https://raw.githubusercontent.com/James-Yu/Atom-LaTeX/master/figures/command-autocomplete.gif)
-
-![Autocomplete](https://raw.githubusercontent.com/James-Yu/Atom-LaTeX/master/figures/reference-autocomplete.gif)
-
-### Log Parser
-![Log Parser](https://raw.githubusercontent.com/James-Yu/Atom-LaTeX/master/figures/log-parser.gif)
-
 ## How To
-### <a name="main_file"></a>Set LaTeX main file
-LaTeX main file is essential to Atom-LaTeX. Building, preview, autocompletion, and more features rely on its proper configuration. You can select to manually set the file, or let Atom-LaTeX automatically find it given proper project structures:
+### <a name="root_file"></a>Set LaTeX root file
+LaTeX root file is essential to Atom-LaTeX. Building, preview, autocompletion, and more features rely on its proper configuration. You can select to manually set the file, or let Atom-LaTeX automatically find it given proper project structures:
 
-1. Add a magic comment `% !TEX root = \path\to\main\file.tex` to your LaTeX source file. The path can be absolute or relative.
-2. Create a `.latexcfg` file at the root directory of your project. The file should contain a json object with `root` key set to the main file. An example:
+1. Add a magic comment `% !TEX root = \path\to\root\file.tex` to your LaTeX source file. The path can be absolute or relative.
+2. Create a `.latexcfg` file at the root directory of your project. The file should contain a json object with `root` key set to the root file. An example:
    ```
-   { "root" : "\path\to\main\file.tex" }
+   { "root" : "\path\to\root\file.tex" }
    ```
-3. Open the main file and use `Build Here` command. Alternatively, use `Build LaTeX from active editor` menu item.
-4. If all previous checks fail to find a main file, Atom-LaTeX will iterate through all LaTeX files in the root directory.
+3. Open the root file and use `Build Here` command. Alternatively, use `Build LaTeX from active editor` menu item.
+4. If all previous checks fail to find a root file, Atom-LaTeX will iterate through all LaTeX files in the root directory.
 
-You can choose one or multiple methods stated above to set the main file.
+You can choose one or multiple methods stated above to set the root file.
 
 ### Enable spell check
 - Open setting panel of build-in package `spell-check`.
