@@ -1,4 +1,5 @@
 { Disposable } = require 'atom'
+path = require 'path'
 
 latexPattern = /^Output\swritten\son\s(.*)\s\(.*\)\.$/gm
 latexFatalPattern = /Fatal error occurred, no output PDF file produced!/gm
@@ -46,7 +47,9 @@ class Parser extends Disposable
           type: 'error',
           text: if result[3] and result[3] != 'LaTeX' then \
                 """#{result[3]}: #{result[4]}""" else result[4],
-          file: if result[1] then result[1] else @latex.mainFile
+          file: if result[1] then \
+            path.resolve(path.dirname(@latex.mainFile), result[1]) else \
+            @latex.mainFile
           line: if result[2] then parseInt result[2], 10 else undefined
         continue
     @latex.logger.log = @latex.logger.log.concat items
