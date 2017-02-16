@@ -1,3 +1,8 @@
+## [0.5.0]  2017-02-16
+### Changed
+* Redesign Atom-LaTeX control panel.
+* Move screencasts to a new file to avoid lag while loading settings.
+
 ## [0.4.5]  2017-02-15
 ### Changed
 * LaTeX command autocompletion now also sort by the number of appearances.
