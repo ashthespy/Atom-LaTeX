@@ -3,7 +3,7 @@ module.exports =
     title: 'Toolchain to use'
     order: 1
     description: 'The toolchain to build LaTeX. `auto` tries `latexmk \
-                  toolchain` and fallbacks to the default `custom` toolchain.'
+                  toolchain` and fallbacks to the default `custom toolchain`.'
     type: 'string'
     default: 'auto'
     enum: [
@@ -67,3 +67,11 @@ module.exports =
       'View in PDF viewer tab'
       'Do nothing'
     ]
+  combine_typesetting_log:
+    title: 'Combine typesetting log messages'
+    order: 9
+    description: 'Combine typesetting log messages in log panel. Sometimes \
+                  typesetting messages may clutter the panel. Enable this \
+                  config to display one message for all typesetting entries.'
+    type: 'boolean'
+    default: true
