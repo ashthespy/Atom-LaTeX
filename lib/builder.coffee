@@ -49,6 +49,9 @@ class Builder extends Disposable
           @latex.logger.processError(
             """Failed Building LaTeX (code #{err.code}).""", err.message, true,
             [{
+              text: "Dismiss"
+              onDidClick: => @latex.logger.clearBuildError()
+            }, {
               text: "Show build log"
               onDidClick: => @latex.logger.showLog()
             }]

@@ -11,27 +11,33 @@ class Logger extends Disposable
       return
     @missingMainNotification =
       atom.notifications.addError(
-        """Cannot find the LaTeX main file with `\\begin{document}`.""", {
+        """Cannot find the LaTeX root file with `\\begin{document}`.""", {
           dismissable: true
           description:
-            """Please configure your LaTeX main file first. Multiple methods:
+            """Please configure your LaTeX root file first. Multiple methods:
                1. Add a magic comment \
-                  `% !TEX root = \\path\\to\\main\\file.tex` \
+                  `% !TEX root = \\path\\to\\root\\file.tex` \
                   to your LaTeX source file. The path can be absolute or \
                   relative.
                2. Create a `.latexcfg` file at the root directory of your\
                   project. The file should contain a json object with `root`\
-                  key set to the main file. An example:
+                  key set to the root file. An example:
                   ```
-                  { "root" : "\\path\\to\\main\\file.tex" }
+                  { "root" : "\\path\\to\\root\\file.tex" }
                   ```
-               3. Open the main file and use `Build Here` command. \
+               3. Open the root file and use `Build Here` command. \
                   Alternatively, use `Build LaTeX from active editor` menu item.
-               4. If all previous checks fail to find a main file, Atom-LaTeX \
+               4. If all previous checks fail to find a root file, Atom-LaTeX \
                   will iterate through all LaTeX files in the root directory.
                You can choose one or multiple methods stated above to set\
-               the main file.
+               the root file.
                """
+          buttons: [{
+            text: "Dismiss"
+            onDidClick: => @missingMainNotification.dismiss() \
+              if @missingMainNotification? and \
+                !@missingMainNotification.dismissed
+          }]
         })
 
   setMain: (method) ->
