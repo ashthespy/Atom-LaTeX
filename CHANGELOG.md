@@ -1,3 +1,7 @@
+## [0.5.1]  2017-02-17
+### Changed
+* Atom-LaTeX log area is now resizable.
+
 ## [0.5.0]  2017-02-16
 ### Changed
 * Redesign Atom-LaTeX control panel.
