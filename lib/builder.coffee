@@ -25,6 +25,7 @@ class Builder extends Disposable
     return true
 
   execCmd: (cmd, env, cb) ->
+    env.maxBuffer = Infinity
     return cp.exec(cmd, env, cb)
 
   buildProcess: ->

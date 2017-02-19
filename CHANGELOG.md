@@ -1,3 +1,7 @@
+## [0.5.2]  2017-02-19
+### Changed
+* [(#5)](https://github.com/James-Yu/Atom-LaTeX/issues/5) Remove default stdout buffer size limit.
+
 ## [0.5.1]  2017-02-17
 ### Changed
 * Atom-LaTeX log area is now resizable.
