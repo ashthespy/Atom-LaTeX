@@ -7,6 +7,10 @@ latexError = /^(?:(.*):(\d+):|!)(?: (.+) Error:)? (.+?)\.?$/
 latexBox = /^((?:Over|Under)full \\[vh]box \([^)]*\)) in paragraph at lines (\d+)--(\d+)$/
 latexWarn = /^((?:(?:Class|Package) \S+)|LaTeX) (Warning|Info):\s+(.*?)(?: on input line (\d+))?\.$/
 
+latexmkPattern = /^Latexmk:\sapplying\srule/gm
+latexmkPatternNoGM = /^Latexmk:\sapplying\srule/
+latexmkUpToDate = /^Latexmk: All targets \(.*\) are up-to-date/
+
 module.exports =
 class Parser extends Disposable
   constructor: (latex) ->
@@ -14,10 +18,32 @@ class Parser extends Disposable
 
   parse: (log) ->
     @latex.package.status.view.status = 'good'
+    @isLatexmkSkipped = false
+    if log.match(latexmkPattern)
+      log = @trimLatexmk log
     if log.match(latexPattern) or log.match(latexFatalPattern)
       @parseLatex log
+    else if @latexmkSkipped(log)
+      @latex.package.status.view.status = 'skipped'
+      @isLatexmkSkipped = true
     @latex.package.status.view.update()
-    @latex.panel.view.update()
+
+  trimLatexmk: (log) ->
+    log = log.replace(/(.{78}(\w|\s|\d|\\|\/))(\r\n|\n)/g, '$1')
+    lines = log.replace(/(\r\n)|\r/g, '\n').split('\n')
+    finalLine = -1
+    for index of lines
+      line = lines[index]
+      result = line.match latexmkPatternNoGM
+      if result
+        finalLine = index
+    return lines.slice(finalLine).join('\n')
+
+  latexmkSkipped: (log) ->
+    lines = log.replace(/(\r\n)|\r/g, '\n').split('\n')
+    if lines[0].match(latexmkUpToDate)
+      return true
+    return false
 
   parseLatex: (log) ->
     log = log.replace(/(.{78}(\w|\s|\d|\\|\/))(\r\n|\n)/g, '$1')

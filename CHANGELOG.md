@@ -1,3 +1,7 @@
+## [0.5.3]  2017-02-20
+### Changed
+* Better latexmk log message parsing.
+
 ## [0.5.2]  2017-02-19
 ### Changed
 * [(#5)](https://github.com/James-Yu/Atom-LaTeX/issues/5) Remove default stdout buffer size limit.

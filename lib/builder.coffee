@@ -71,12 +71,16 @@ class Builder extends Disposable
 
   postBuild: ->
     @latex.logger.clearBuildError()
-    # @latex.logPanel.showText icon: @latex.parser.status, 'Success.', 3000
+    @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
+    if @latex.parser.isLatexmkSkipped
+      logText = 'latexmk skipped building process.'
+    else
+      logText = 'Successfully built LaTeX.'
     @latex.logger.log.push({
       type: 'status',
-      text: 'Successfully built LaTeX.'
+      text: logText
     })
-    @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
+    @latex.panel.view.update()
     if @latex.viewer.client.ws?
       @latex.viewer.refresh()
     else if atom.config.get('atom-latex.preview_after_build') isnt\
