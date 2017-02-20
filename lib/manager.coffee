@@ -122,8 +122,11 @@ class Manager extends Disposable
         @findDependentFiles(filePath)
 
     bibReg = /(?:\\bibliography(?:\[[^\[\]\{\}]*\])?){([\w\d\s,]+)}/g
+    bibRegAlt = /(?:\\addbibresource(?:\[[^\[\]\{\}]*\])?){([\w\d\s,]+)}/g
     loop
       result = bibReg.exec content
+      if !result?
+        result = bibRegAlt.exec content
       break if !result?
       bibs = result[1].split(',').map((bib) -> bib.trim())
       paths = bibs.map((bib) =>
