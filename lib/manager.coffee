@@ -121,8 +121,8 @@ class Manager extends Disposable
         @latex.texFiles.push(filePath)
         @findDependentFiles(filePath)
 
-    bibReg = /(?:\\bibliography(?:\[[^\[\]\{\}]*\])?){([\w\d\s,]+)}/g
-    bibRegAlt = /(?:\\addbibresource(?:\[[^\[\]\{\}]*\])?){([\w\d\s,]+)}/g
+    bibReg = /(?:\\bibliography(?:\[[^\[\]\{\}]*\])?){([\w\d\s\.,]+)}/g
+    bibRegAlt = /(?:\\addbibresource(?:\[[^\[\]\{\}]*\])?){([\w\d\s\.,]+)}/g
     loop
       result = bibReg.exec content
       if !result?
