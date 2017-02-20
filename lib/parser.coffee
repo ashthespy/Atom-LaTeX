@@ -27,6 +27,7 @@ class Parser extends Disposable
       @latex.package.status.view.status = 'skipped'
       @isLatexmkSkipped = true
     @latex.package.status.view.update()
+    @latex.panel.view.update()
 
   trimLatexmk: (log) ->
     log = log.replace(/(.{78}(\w|\s|\d|\\|\/))(\r\n|\n)/g, '$1')

@@ -1,3 +1,7 @@
+## [0.5.4]  2017-02-20
+### Fixed
+* LaTeX error does not show in panel when latexmk toolchain is used.
+
 ## [0.5.3]  2017-02-20
 ### Changed
 * Better latexmk log message parsing.
