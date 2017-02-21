@@ -1,3 +1,7 @@
+## [0.5.7]  2017-02-21
+### Fixed
+* bibtex file cannot be located elsewhere than the root directory.
+
 ## [0.5.6]  2017-02-21
 ### Fixed
 * [(#6)](https://github.com/James-Yu/Atom-LaTeX/issues/6) bibtex file cannot include file extension.
