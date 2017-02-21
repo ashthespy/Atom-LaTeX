@@ -15,16 +15,16 @@ class Logger extends Disposable
           dismissable: true
           description:
             """Please configure your LaTeX root file first. Multiple methods:
-               1. Add a magic comment \
-                  `% !TEX root = \\path\\to\\root\\file.tex` \
-                  to your LaTeX source file. The path can be absolute or \
-                  relative.
-               2. Create a `.latexcfg` file at the root directory of your\
+               1. Create a `.latexcfg` file at the root directory of your\
                   project. The file should contain a json object with `root`\
                   key set to the root file. An example:
                   ```
                   { "root" : "\\path\\to\\root\\file.tex" }
                   ```
+               2. Add a magic comment \
+                  `% !TEX root = \\path\\to\\root\\file.tex` \
+                  to all of your LaTeX source file. The path can be absolute \
+                  or relative.
                3. Open the root file and use `Build Here` command. \
                   Alternatively, use `Build LaTeX from active editor` menu item.
                4. If all previous checks fail to find a root file, Atom-LaTeX \

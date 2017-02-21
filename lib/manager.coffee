@@ -26,8 +26,8 @@ class Manager extends Disposable
     if @latex.mainFile?
       return true
 
-    return true if @findMainSelfMagic()
     return true if @findMainConfig()
+    return true if @findMainSelfMagic()
     return true if @findMainSelf()
     return true if @findMainAllRoot()
 
