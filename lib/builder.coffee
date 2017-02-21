@@ -109,7 +109,7 @@ class Builder extends Disposable
     @cmds = [
       """latexmk \
       #{atom.config.get('atom-latex.latexmk_param')} \
-      #{path.basename(@latex.mainFile, '.tex')}"""
+      \"#{path.basename(@latex.mainFile, '.tex')}\""""
     ]
     if !@binCheck('latexmk') or !@binCheck('perl')
       return false
@@ -128,5 +128,7 @@ class Builder extends Disposable
       cmd = cmd.split('%TEX').join(texCompiler)
       cmd = cmd.split('%BIB').join(bibCompiler)
       cmd = cmd.split('%ARG').join(args)
-      cmd = cmd.split('%DOC').join(path.basename(@latex.mainFile, '.tex'))
+      cmd = cmd.split('%DOC').join(
+        '"' + path.basename(@latex.mainFile, '.tex') + '"'
+      )
       @cmds.push cmd
