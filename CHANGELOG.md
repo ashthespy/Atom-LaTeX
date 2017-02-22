@@ -1,3 +1,9 @@
+## [0.5.8]  2017-02-22
+### Changed
+* Now Atom-LaTeX prioritize `.latexcfg` file over magic comments.
+### Fixed
+* Root file cannot have spaces in file name.
+
 ## [0.5.7]  2017-02-21
 ### Fixed
 * bibtex file cannot be located elsewhere than the root directory.
