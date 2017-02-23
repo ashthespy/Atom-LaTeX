@@ -84,3 +84,10 @@ module.exports =
     type: 'string'
     default: 'aux,bbl,blg,idx,ind,lof,lot,out,toc,acn,acr,alg,glg,glo,gls,ist,\
               fls,log,fdb_latexmk'
+  clean_after_build:
+    title: 'Clean LaTeX auxillary files after building process'
+    order: 11
+    description: 'Clean all auxillary files after building LaTeX project by \
+                  the defined file extensions.'
+    type: 'boolean'
+    default: false

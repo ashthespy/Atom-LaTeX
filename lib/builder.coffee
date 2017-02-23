@@ -86,6 +86,8 @@ class Builder extends Disposable
     else if atom.config.get('atom-latex.preview_after_build') isnt\
         'Do nothing'
       @latex.viewer.openViewer()
+    if atom.config.get('atom-latex.clean_after_build')
+      @latex.cleaner.clean()
 
   killProcess: ->
     @cmds = []
