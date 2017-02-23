@@ -1,3 +1,9 @@
+## [0.6.0]  2017-02-23
+### Added
+* Clean LaTeX project command and auto-clean after build.
+### Changed
+* Also consider current buffer when generating command auto-complete.
+
 ## [0.5.8]  2017-02-22
 ### Changed
 * Now Atom-LaTeX prioritize `.latexcfg` file over magic comments.

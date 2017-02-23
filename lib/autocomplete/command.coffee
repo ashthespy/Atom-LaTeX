@@ -1,4 +1,5 @@
 { Disposable } = require 'atom'
+path = require 'path'
 fs = require 'fs'
 latexSymbols = require('latex-symbols-list')
 
@@ -30,6 +31,16 @@ class Command extends Disposable
       texItems = @getCommands(tex)
       for key of texItems
         items[key] = texItems[key] if not (key of items)
+
+    editor = atom.workspace.getActivePaneItem()
+    currentPath = editor?.buffer.file?.path
+    currentContent = editor?.getText()
+    if currentPath and currentContent
+      if (path.extname(currentPath) == '.tex')
+        texItems = @getCommandsFromContent currentContent
+        for key of texItems
+          items[key] = texItems[key] if not (key of items)
+
     for key of items
       for pkg of @suggestions
         if !(key of @suggestions[pkg])
@@ -71,10 +82,13 @@ class Command extends Disposable
     return suggestions
 
   getCommands: (tex) ->
-    items = {}
     if !fs.existsSync(tex)
-      return items
+      return {}
     content = fs.readFileSync tex, 'utf-8'
+    return @getCommandsFromContent(content)
+
+  getCommandsFromContent: (content) ->
+    items = {}
     itemReg = /\\([a-zA-Z]+)({[^{}]*})?({[^{}]*})?({[^{}]*})?/g
     loop
       result = itemReg.exec content
