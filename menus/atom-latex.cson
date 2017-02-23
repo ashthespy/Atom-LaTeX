@@ -12,6 +12,10 @@
         'command': 'atom-latex:build-here'
       }
       {
+        'label': 'Clean LaTeX auxillary files'
+        'command': 'atom-latex:clean'
+      }
+      {
         'label': 'Preview PDF'
         'command': 'atom-latex:preview'
       }

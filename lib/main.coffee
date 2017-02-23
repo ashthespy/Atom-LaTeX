@@ -33,6 +33,7 @@ module.exports =
     @disposables.add atom.commands.add 'atom-workspace',
       'atom-latex:build': () => @latex.builder.build()
       'atom-latex:build-here': () => @latex.builder.build(true)
+      'atom-latex:clean': () => @latex.cleaner.clean()
       'atom-latex:preview': () => @latex.viewer.openViewerNewWindow()
       'atom-latex:preview-tab': () => @latex.viewer.openViewerNewTab()
       'atom-latex:kill': () => @latex.builder.killProcess()
@@ -71,6 +72,7 @@ class AtomLaTeX extends Disposable
   constructor: ->
     @disposables = new CompositeDisposable
     Builder = require './builder'
+    Cleaner = require './cleaner'
     Manager = require './manager'
     Server = require './server'
     Viewer = require './viewer'
@@ -80,6 +82,7 @@ class AtomLaTeX extends Disposable
     Logger = require './logger'
 
     @builder = new Builder(this)
+    @cleaner = new Cleaner(this)
     @manager = new Manager(this)
     @viewer = new Viewer(this)
     @server = new Server(this)
@@ -88,8 +91,8 @@ class AtomLaTeX extends Disposable
     @panel = new Panel(this)
     @logger = new Logger(this)
 
-    @disposables.add @builder, @manager, @server, @viewer, @parser, @locator,
-      @panel, @logger
+    @disposables.add @builder, @cleaner, @manager, @server, @viewer, @parser,
+      @locator, @panel, @logger
 
   dispose: ->
     @disposables.dispose()

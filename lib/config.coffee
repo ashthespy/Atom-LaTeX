@@ -75,3 +75,12 @@ module.exports =
                   config to display one message for all typesetting entries.'
     type: 'boolean'
     default: true
+  file_ext_to_clean:
+    title: 'Files to clean'
+    order: 10
+    description: 'All files under the LaTeX project root directory with the set\
+                  extensions will be removed when cleaning LaTeX project. \
+                  Multiple file extensions are joint with commas.'
+    type: 'string'
+    default: 'aux,bbl,blg,idx,ind,lof,lot,out,toc,acn,acr,alg,glg,glo,gls,ist,\
+              fls,log,fdb_latexmk'

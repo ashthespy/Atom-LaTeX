@@ -6,6 +6,7 @@
 'atom-text-editor[data-grammar="text tex latex"]':
   'ctrl-l ctrl-b': 'atom-latex:build'
   'ctrl-l ctrl-h': 'atom-latex:build-here'
+  'ctrl-l ctrl-c': 'atom-latex:clean'
   'ctrl-l ctrl-p': 'atom-latex:preview'
   'ctrl-l ctrl-t': 'atom-latex:preview-tab'
   'ctrl-l ctrl-k': 'atom-latex:kill'
@@ -15,6 +16,7 @@
 'body.platform-darwin atom-text-editor[data-grammar="text tex latex"]':
   'cmd-l cmd-b': 'atom-latex:build'
   'cmd-l cmd-h': 'atom-latex:build-here'
+  'cmd-l cmd-c': 'atom-latex:clean'
   'cmd-l cmd-p': 'atom-latex:preview'
   'cmd-l cmd-t': 'atom-latex:preview-tab'
   'cmd-l cmd-k': 'atom-latex:kill'
