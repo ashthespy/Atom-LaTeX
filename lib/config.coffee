@@ -82,8 +82,9 @@ module.exports =
                   extensions will be removed when cleaning LaTeX project. \
                   Multiple file extensions are joint with commas.'
     type: 'string'
-    default: 'aux,bbl,blg,idx,ind,lof,lot,out,toc,acn,acr,alg,glg,glo,gls,ist,\
-              fls,log,fdb_latexmk'
+    default: '*.aux, *.bbl, *.blg, *.idx, *.ind, *.lof, *.lot, *.out, *.toc, \
+              *.acn, *.acr, *.alg, *.glg, *.glo, *.gls, *.ist, *.fls, *.log, \
+              *.fdb_latexmk'
   clean_after_build:
     title: 'Clean LaTeX auxillary files after building process'
     order: 11

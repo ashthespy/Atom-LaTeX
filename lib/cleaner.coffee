@@ -1,6 +1,7 @@
 { Disposable } = require 'atom'
 path = require 'path'
 fs = require 'fs'
+glob = require 'glob'
 
 module.exports =
 class Cleaner extends Disposable
@@ -11,10 +12,14 @@ class Cleaner extends Disposable
     if !@latex.manager.findMain()
       return false
     rootDir = path.dirname(@latex.mainFile)
-    removeExt = atom.config.get('atom-latex.file_ext_to_clean')\
+    removeGlobs = atom.config.get('atom-latex.file_ext_to_clean')\
       .replace(/\s/,'').split(',')
-    for file in fs.readdirSync rootDir
-      if removeExt.indexOf((path.extname file).slice(1)) > -1
-        fullPath = path.resolve(rootDir, file)
-        fs.unlink(fullPath)
+    for removeGlob in removeGlobs
+      glob(removeGlob, cwd: rootDir, (err, files) ->
+        if err
+          return
+        for file in files
+          fullPath = path.resolve(rootDir, file)
+          fs.unlink(fullPath)
+      )
     return true
