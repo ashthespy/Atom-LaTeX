@@ -30,7 +30,7 @@ Unification provides seamless experience. Aiming to make it work and work perfec
 
 Installing Atom-LaTeX is simple. You can find it in [the atom.io package registry](https://atom.io/packages/atom-latex), or simply run `apm install atom-latex` in command line.
 
-Alternatively, you can check out this repository and copy it to the Atom package folder:
+For cutting edge features or changes, you can check out this repository to the Atom package folder:
 - Windows `%USERPROFILE%\.atom\packages`
 - Mac/Linux `$HOME/.atom/packages`
 
@@ -46,9 +46,10 @@ Mac OS users can use <kbd>command</kbd> key as a replacement of <kbd>ctrl</kbd>.
 |-----------------------|---------------------------------------------|----------|
 | `atom-latex:build`      | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>B</kbd> | Build LaTeX file. |
 | `atom-latex:build-here` | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>H</kbd> | Build LaTeX using active text editor file if possible. |
+| `atom-latex:clean`      | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>C</kbd> | Clean LaTeX auxillary files. |
 | `atom-latex:preview`    | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>P</kbd> | Preview generated PDF file with in-browser viewer. |
 | `atom-latex:kill`       | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>K</kbd> | Terminate current LaTeX building process. |
-| `atom-latex:synctex`   | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>S</kbd> | Direct SyncTeX from the current cursor position. |
+| `atom-latex:synctex`    | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>S</kbd> | Direct SyncTeX from the current cursor position. |
 | `atom-latex:toggle-panel`   | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>L</kbd> | Toggle Atom-LaTeX panel display. |
 
 ## How To
