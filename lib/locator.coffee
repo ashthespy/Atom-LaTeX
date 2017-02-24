@@ -64,4 +64,5 @@ class Locator extends Disposable
         initialLine: row
         initialColumn: column
       )
+      @latex.viewer.focusMain()
     )

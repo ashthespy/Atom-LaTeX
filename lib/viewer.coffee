@@ -1,4 +1,5 @@
 { Disposable } = require 'atom'
+getCurrentWindow = require('electron').remote.getCurrentWindow
 BrowserWindow = require('electron').remote.BrowserWindow
 fs = require 'fs'
 
@@ -28,8 +29,11 @@ class Viewer extends Disposable
       when 'close'
         @client.ws = undefined
 
-  refresh: () ->
+  refresh: ->
     @client.ws?.send JSON.stringify type: "refresh"
+
+  focusMain: ->
+    @self.focus() if @self?
 
   synctex: (record) ->
     @client.ws?.send JSON.stringify
@@ -62,6 +66,7 @@ class Viewer extends Disposable
       atom.workspace.paneForItem(@tabView).destroyItem(@tabView)
       @tabView = undefined
     if !@window? or @window.isDestroyed()
+      @self = getCurrentWindow()
       @window = new BrowserWindow()
     else
       @window.show()
