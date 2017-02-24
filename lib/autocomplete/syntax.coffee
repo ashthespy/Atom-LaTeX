@@ -17,13 +17,13 @@ class Syntax extends Disposable
       return
 
     cursor = editor.getCursorBufferPosition()
-    if editor?.buffer?.lines[cursor.row][cursor.column] is '$'
-      editor.moveRight()
-    else if editor?.buffer?.lines[cursor.row][cursor.column - 1] is '$'
-      editor.insertText('$')
-    else
-      editor.insertText('$$')
-      editor.moveLeft()
+    if editor?.buffer?.lines[cursor.row][cursor.column - 1] is ' '
+      if editor?.buffer?.lines[cursor.row].length is cursor.column or \
+          editor?.buffer?.lines[cursor.row][cursor.column] is ' '
+        editor.insertText('$$')
+        editor.moveLeft()
+        return
+    editor.insertText('$')
 
   backquote: ->
     editor = atom.workspace.getActiveTextEditor()
