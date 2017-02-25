@@ -17,9 +17,11 @@ class Syntax extends Disposable
       return
 
     cursor = editor.getCursorBufferPosition()
+    allowedNextChar = [' ', '.']
     if editor?.buffer?.lines[cursor.row][cursor.column - 1] is ' '
       if editor?.buffer?.lines[cursor.row].length is cursor.column or \
-          editor?.buffer?.lines[cursor.row][cursor.column] is ' '
+          allowedNextChar.indexOf(
+            editor?.buffer?.lines[cursor.row][cursor.column]) > -1
         editor.insertText('$$')
         editor.moveLeft()
         return
