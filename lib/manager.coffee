@@ -13,10 +13,13 @@ class Manager extends Disposable
     return result
 
   refindMain: () ->
-    @latex.mainFile = undefined
-    result = @findMainSequence(true)
-    @latex.panel.view.update()
-    return result
+    input = document.getElementById('atom-latex-root-input')
+    input.onchange = (=>
+      if input.files.length > 0
+        @latex.mainFile = input.files[0].path
+      @latex.panel.view.update()
+    )
+    input.click()
 
   findMainSequence: (here) ->
     if here
