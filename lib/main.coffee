@@ -1,10 +1,8 @@
-{ CompositeDisposable, Disposable } = require 'atom'
-path = require 'path'
-
 module.exports =
   config: require './config'
 
   activate: ->
+    { CompositeDisposable } = require 'atom'
     @disposables = new CompositeDisposable
     @activated = false
     global.atom_latex = this
@@ -15,10 +13,11 @@ module.exports =
             (grammar.scopeName.indexOf('text.tex.latex') > -1) or
             (grammar.name is 'LaTeX')
           promise = new Promise (resolve, reject) =>
-            @lazyLoad()
+            setTimeout(( => @lazyLoad()), 100)
             resolve()
 
   lazyLoad: ->
+    return if @activated
     @activated = true
 
     @latex = new AtomLaTeX
@@ -43,15 +42,17 @@ module.exports =
       'atom-latex:tools-backquote': () => @latex.provider.syntax.backquote()
       'atom-latex:tools-doublequote': () => @latex.provider.syntax.doublequote()
 
+    path = require 'path'
     @disposables.add atom.workspace.observeTextEditors (editor) =>
       @disposables.add editor.onDidSave () =>
         if atom.config.get('atom-latex.build_after_save') and \
             editor.buffer.file?.path and \
             path.extname(editor.buffer.file?.path) == '.tex'
-          @latex.builder.build()
+          @latex.builder.build
 
   deactivate: ->
-    return @disposables.dispose()
+    @latex?.dispose()
+    @disposables.dispose()
 
   provide: ->
     if !@provider?
@@ -66,10 +67,12 @@ module.exports =
       @status = new Status
       @disposables.add @status
     @status.attach statusBar
+    { Disposable } = require 'atom'
     return new Disposable( => @status.detach())
 
-class AtomLaTeX extends Disposable
+class AtomLaTeX
   constructor: ->
+    { CompositeDisposable } = require 'atom'
     @disposables = new CompositeDisposable
     Builder = require './builder'
     Cleaner = require './cleaner'
