@@ -14,20 +14,22 @@ class Logger extends Disposable
         """Cannot find the LaTeX root file with `\\begin{document}`.""", {
           dismissable: true
           description:
-            """Please configure your LaTeX root file first. Multiple methods:
-               1. Create a `.latexcfg` file at the root directory of your\
+            """Please configure your LaTeX root file first. You can use any one\
+               of the following methods to do so:
+               1. Click the `home` icon on the control bar.
+               2. Create a `.latexcfg` file at the root directory of your\
                   project. The file should contain a json object with `root`\
                   key set to the root file. An example:
                   ```
                   { "root" : "\\path\\to\\root\\file.tex" }
                   ```
-               2. Add a magic comment \
+               3. Add a magic comment \
                   `% !TEX root = \\path\\to\\root\\file.tex` \
                   to all of your LaTeX source file. The path can be absolute \
                   or relative.
-               3. Open the root file and use `Build Here` command. \
+               4. Open the root file and use `Build Here` command. \
                   Alternatively, use `Build LaTeX from active editor` menu item.
-               4. If all previous checks fail to find a root file, Atom-LaTeX \
+               5. If all previous checks fail to find a root file, Atom-LaTeX \
                   will iterate through all LaTeX files in the root directory.
                You can choose one or multiple methods stated above to set\
                the root file.

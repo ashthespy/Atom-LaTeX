@@ -54,7 +54,7 @@ Mac OS users can use <kbd>command</kbd> key as a replacement of <kbd>ctrl</kbd>.
 
 ## How To
 ### <a name="root_file"></a>Set LaTeX root file
-LaTeX root file is essential to Atom-LaTeX. Building, preview, autocompletion, and more features rely on its proper configuration. You can select to manually set the file, or let Atom-LaTeX automatically find it given proper project structures:
+LaTeX root file is essential to Atom-LaTeX. Building, preview, autocompletion, and more features rely on its proper configuration. You can select to manually set the file by clicking the `home` icon on the control bar, or let Atom-LaTeX automatically find it given proper project structures:
 
 1. Create a `.latexcfg` file at the root directory of your project. The file should contain a json object with `root` key set to the root file. An example:
    ```
