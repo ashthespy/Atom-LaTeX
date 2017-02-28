@@ -1,12 +1,24 @@
+## [0.6.1]  2017-02-28
+### Changed
+* [(#9)](https://github.com/James-Yu/Atom-LaTeX/issues/9) Use glob matching for cleaning project.
+* [(#11)](https://github.com/James-Yu/Atom-LaTeX/issues/11) Dollar sign matching pattern.
+* [(#12)](https://github.com/James-Yu/Atom-LaTeX/issues/12) Focus editor window after reverse synctex.
+* Click on home icon of control bar to manually set root file.
+
+### Fixed
+* Significantly reduce loading time with lazy load.
+
 ## [0.6.0]  2017-02-23
 ### Added
 * Clean LaTeX project command and auto-clean after build.
+
 ### Changed
 * Also consider current buffer when generating command auto-complete.
 
 ## [0.5.8]  2017-02-22
 ### Changed
 * Now Atom-LaTeX prioritize `.latexcfg` file over magic comments.
+
 ### Fixed
 * Root file cannot have spaces in file name.
 
