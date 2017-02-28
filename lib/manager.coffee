@@ -112,7 +112,7 @@ class Manager extends Disposable
     content = fs.readFileSync file, 'utf-8'
     baseDir = path.dirname(@latex.mainFile)
 
-    inputReg = /(?:\\input(?:\[[^\[\]\{\}]*\])?){([^}]*)}/g
+    inputReg = /(?:\\(?:input|include|subfile)(?:\[[^\[\]\{\}]*\])?){([^}]*)}/g
     loop
       result = inputReg.exec content
       break if !result?
@@ -124,12 +124,9 @@ class Manager extends Disposable
         @latex.texFiles.push(filePath)
         @findDependentFiles(filePath)
 
-    bibReg = /(?:\\bibliography(?:\[[^\[\]\{\}]*\])?){(.+?)}/g
-    bibRegAlt = /(?:\\addbibresource(?:\[[^\[\]\{\}]*\])?){(.+?)}/g
+    bibReg = /(?:\\(?:bibliography|addbibresource)(?:\[[^\[\]\{\}]*\])?){(.+?)}/g
     loop
       result = bibReg.exec content
-      if !result?
-        result = bibRegAlt.exec content
       break if !result?
       bibs = result[1].split(',').map((bib) -> bib.trim())
       paths = bibs.map((bib) =>
