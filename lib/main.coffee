@@ -50,6 +50,23 @@ module.exports =
             path.extname(editor.buffer.file?.path) == '.tex'
           @latex.builder.build()
 
+    if @minimap?
+      @disposables.add @minimap.observeMinimaps (minimap) ->
+        minimapElement = atom.views.getView(minimap)
+        editor = minimap.getTextEditor()
+        if editor.buffer.file?.path and \
+            path.extname(editor.buffer.file?.path) == '.tex'
+          handlers = editor.emitter?.handlersByEventName?['did-change']
+          if handlers
+            for i of handlers
+              if handlers[i].toString().indexOf('this.emitChanges(changes)') < 0
+                continue
+              handlers[i] = (changes) ->
+                clearTimeout(minimap.latexTimeout)
+                minimap.latexTimeout = setTimeout( ->
+                  minimap.emitChanges(changes)
+                , 500)
+
   deactivate: ->
     @latex?.dispose()
     @disposables.dispose()
@@ -61,7 +78,10 @@ module.exports =
       @disposables.add @provider
     return @provider.provider
 
-  consume: (statusBar) ->
+  consumeMinimap: (minimap) ->
+    @minimap = minimap
+
+  consumeStatusBar: (statusBar) ->
     if !@status?
       Status = require './view/status'
       @status = new Status

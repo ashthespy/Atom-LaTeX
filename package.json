@@ -25,7 +25,12 @@
   "consumedServices": {
     "status-bar": {
       "versions": {
-        "^1.0.0": "consume"
+        "^1.0.0": "consumeStatusBar"
+      }
+    },
+    "minimap": {
+      "versions": {
+        "^1.0.0": "consumeMinimap"
       }
     }
   },
