@@ -1,3 +1,7 @@
+## [0.6.2]  2017-02-28
+### Fixed
+* Build-after-save not working.
+
 ## [0.6.1]  2017-02-28
 ### Changed
 * [(#9)](https://github.com/James-Yu/Atom-LaTeX/issues/9) Use glob matching for cleaning project.
