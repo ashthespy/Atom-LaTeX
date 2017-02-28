@@ -48,7 +48,7 @@ module.exports =
         if atom.config.get('atom-latex.build_after_save') and \
             editor.buffer.file?.path and \
             path.extname(editor.buffer.file?.path) == '.tex'
-          @latex.builder.build
+          @latex.builder.build()
 
   deactivate: ->
     @latex?.dispose()
