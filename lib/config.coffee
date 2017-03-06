@@ -92,3 +92,12 @@ module.exports =
                   the defined file extensions.'
     type: 'boolean'
     default: false
+  delayed_minimap_refresh:
+    title: 'Delay the refresh actions of atom-minimap'
+    order: 12
+    description: 'Delay the refresh actions of atom-minimap upon typing. This \
+                  setting can reduce the keystroke stuttering in very long \
+                  LaTeX source files caused by minimap extension. Reload Atom \
+                  to take effect.'
+    type: 'boolean'
+    default: false

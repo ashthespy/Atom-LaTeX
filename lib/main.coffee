@@ -50,7 +50,7 @@ module.exports =
             path.extname(editor.buffer.file?.path) == '.tex'
           @latex.builder.build()
 
-    if @minimap?
+    if @minimap? and atom.config.get('atom-latex.delayed_minimap_refresh')
       @disposables.add @minimap.observeMinimaps (minimap) ->
         minimapElement = atom.views.getView(minimap)
         editor = minimap.getTextEditor()
