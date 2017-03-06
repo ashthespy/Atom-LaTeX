@@ -1,3 +1,7 @@
+## [0.6.3]  2017-03-06
+### Added
+* A delay-minimap-refresh feature to prevent keystroke stuttering in long LaTeX files.
+
 ## [0.6.2]  2017-02-28
 ### Fixed
 * Build-after-save not working.
