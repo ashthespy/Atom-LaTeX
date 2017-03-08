@@ -44,7 +44,7 @@ class Builder extends Disposable
     @process = @execCmd(
       cmd, {cwd: path.dirname @latex.mainFile}, (err, stdout, stderr) =>
         @process = undefined
-        if !err
+        if !err or (err.code is null)
           @buildProcess()
         else
           @latex.logger.processError(
