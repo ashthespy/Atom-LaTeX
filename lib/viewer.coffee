@@ -32,6 +32,9 @@ class Viewer extends Disposable
   refresh: ->
     @client.ws?.send JSON.stringify type: "refresh"
 
+  focusViewer: ->
+    @window.focus() if @window? and !@window.isDestroyed()
+
   focusMain: ->
     @self.focus() if @self?
 
@@ -39,6 +42,8 @@ class Viewer extends Disposable
     @client.ws?.send JSON.stringify
       type: "synctex"
       data: record
+    @focusViewer()
+    @focusMain()
 
   openViewer: ->
     if @client.ws?
