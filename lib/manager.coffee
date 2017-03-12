@@ -7,6 +7,20 @@ class Manager extends Disposable
   constructor: (latex) ->
     @latex = latex
 
+  loadLocalCfg: ->
+    for rootDir in atom.project.getPaths()
+      for file in fs.readdirSync rootDir
+        if file is '.latexcfg'
+          try
+            filePath = path.join rootDir, file
+            fileContent = fs.readFileSync filePath, 'utf-8'
+            @config = JSON.parse fileContent
+            if @config.root?
+              @config.root = path.resolve rootDir, @config.root
+            return true
+          catch err
+    return false
+
   findMain: (here) ->
     result = @findMainSequence(here)
     @latex.panel.view.update()
@@ -67,17 +81,11 @@ class Manager extends Disposable
     return false
 
   findMainConfig: ->
-    for rootDir in atom.project.getPaths()
-      for file in fs.readdirSync rootDir
-        if file is '.latexcfg'
-          try
-            filePath = path.join rootDir, file
-            fileContent = fs.readFileSync filePath, 'utf-8'
-            config = JSON.parse fileContent
-            @latex.mainFile = path.resolve rootDir, config.root
-            @latex.logger.setMain('config')
-            return true
-          catch err
+    @loadLocalCfg()
+    if @config?.root
+      @latex.mainFile = @config.root
+      @latex.logger.setMain('config')
+      return true
     return false
 
   findMainAllRoot: ->

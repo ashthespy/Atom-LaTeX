@@ -101,7 +101,10 @@ class Builder extends Disposable
     return false
 
   setCmds: ->
-    if atom.config.get('atom-latex.toolchain') == 'auto'
+    @latex.manager.loadLocalCfg()
+    if @latex.manager.config?.toolchain
+      @custom_toolchain(@latex.manager.config.toolchain)
+    else if atom.config.get('atom-latex.toolchain') == 'auto'
       if !@latexmk_toolchain()
         @custom_toolchain()
     else if atom.config.get('atom-latex.toolchain') == 'latexmk toolchain'
@@ -119,12 +122,13 @@ class Builder extends Disposable
       return false
     return true
 
-  custom_toolchain: ->
+  custom_toolchain: (toolchain) ->
     texCompiler = atom.config.get('atom-latex.compiler')
     bibCompiler = atom.config.get('atom-latex.bibtex')
     args = atom.config.get('atom-latex.compiler_param')
-    toolchain = atom.config.get('atom-latex.custom_toolchain').split('&&')
-    toolchain = toolchain.map((cmd) -> cmd.trim())
+    if !toolchain?
+      toolchain = atom.config.get('atom-latex.custom_toolchain')
+    toolchain = toolchain.split('&&').map((cmd) -> cmd.trim())
     @cmds = []
     result = []
     for toolPrototype in toolchain
