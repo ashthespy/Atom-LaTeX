@@ -1,3 +1,13 @@
+## [0.7.0]  2017-03-12
+### Added
+* Per-project toolchain setting in `.latexcfg` file.
+
+### Changed
+* The viewer window is bring to front after building process or SyncTeX.
+
+### Fixed
+* Atom-LaTeX complaining `arara` returning `null`.
+
 ## [0.6.3]  2017-03-06
 ### Added
 * A delay-minimap-refresh feature to prevent keystroke stuttering in long LaTeX files.

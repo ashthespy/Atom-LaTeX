@@ -52,9 +52,22 @@ Mac OS users can use <kbd>command</kbd> key as a replacement of <kbd>ctrl</kbd>.
 | `atom-latex:synctex`    | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>S</kbd> | Direct SyncTeX from the current cursor position. |
 | `atom-latex:toggle-panel`   | <kbd>ctrl</kbd>+<kbd>L</kbd> <kbd>ctrl</kbd>+<kbd>L</kbd> | Toggle Atom-LaTeX panel display. |
 
+## Project-based Configuration
+Atom currently does not provide per-project configuration. Atom-LaTeX uses a `.latexcfg` file under the root directory of LaTeX project to partially control its behavior. Following is a complete example of its content.
+   ```
+   {
+     "root" : "\path\to\root\file.tex",
+     "toolchain" : "%TEX %ARG %DOC"
+   }
+   ```
+If a key is set, the config will overwrite the global one in atom settings.
+
 ## How To
 ### <a name="root_file"></a>Set LaTeX root file
 LaTeX root file is essential to Atom-LaTeX. Building, preview, autocompletion, and more features rely on its proper configuration. You can select to manually set the file by clicking the `home` icon on the control bar, or let Atom-LaTeX automatically find it given proper project structures:
+   ```
+   { "root" : "\path\to\root\file.tex" }
+   ```
 
 1. Create a `.latexcfg` file at the root directory of your project. The file should contain a json object with `root` key set to the root file. An example:
    ```
@@ -65,6 +78,16 @@ LaTeX root file is essential to Atom-LaTeX. Building, preview, autocompletion, a
 4. If all previous checks fail to find a root file, Atom-LaTeX will iterate through all LaTeX files in the root directory.
 
 You can choose one or multiple methods stated above to set the root file.
+
+### Set per-project LaTeX toolchain
+LaTeX toolchain can be controlled by either atom configuration or `.latexcfg` file under root directory. If LaTeX projects need special toolchain, one can add a `toolchain` key to this file. An example:
+   ```
+   { "toolchain" : "%TEX %ARG %DOC" }
+   ```
+This example will only use the defined compiler in atom configuration to build the project. Alternatively, you can also have this example that provides the same functionality:
+   ```
+   { "toolchain" : "pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -pdf %DOC" }
+   ```
 
 ### Enable spell check
 - Open setting panel of build-in package `spell-check`.
