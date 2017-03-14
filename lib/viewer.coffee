@@ -43,11 +43,12 @@ class Viewer extends Disposable
       type: "synctex"
       data: record
     @focusViewer()
-    @focusMain()
 
   openViewer: ->
     if @client.ws?
       @refresh()
+      @latex.viewer.focusViewer()
+      @latex.viewer.focusMain()
     else if atom.config.get('atom-latex.preview_after_build') is\
         'View in PDF viewer window'
       @openViewerNewWindow()

@@ -88,8 +88,6 @@ class Builder extends Disposable
       @latex.viewer.openViewer()
     if atom.config.get('atom-latex.clean_after_build')
       @latex.cleaner.clean()
-    @latex.viewer.focusViewer()
-    @latex.viewer.focusMain()
 
   killProcess: ->
     @cmds = []
