@@ -1,3 +1,10 @@
+## [0.7.1]  2017-03-15
+### Added
+* A setting item controlling the PDF viewer focus behavior.
+
+### Changed
+* Tweak the PDF viewer gain focus behavior.
+
 ## [0.7.0]  2017-03-12
 ### Added
 * Per-project toolchain setting in `.latexcfg` file.
