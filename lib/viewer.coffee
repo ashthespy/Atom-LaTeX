@@ -31,6 +31,9 @@ class Viewer extends Disposable
 
   refresh: ->
     @client.ws?.send JSON.stringify type: "refresh"
+    @latex.viewer.focusViewer()
+    if !atom.config.get('atom-latex.focus_viewer')
+      @latex.viewer.focusMain()
 
   focusViewer: ->
     @window.focus() if @window? and !@window.isDestroyed()
@@ -42,13 +45,12 @@ class Viewer extends Disposable
     @client.ws?.send JSON.stringify
       type: "synctex"
       data: record
-    @focusViewer()
+    if atom.config.get('atom-latex.focus_viewer')
+      @focusViewer()
 
   openViewer: ->
     if @client.ws?
       @refresh()
-      @latex.viewer.focusViewer()
-      @latex.viewer.focusMain()
     else if atom.config.get('atom-latex.preview_after_build') is\
         'View in PDF viewer window'
       @openViewerNewWindow()

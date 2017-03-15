@@ -55,9 +55,16 @@ module.exports =
     description: 'Start building with toolchain after saving a `.tex` file.'
     type: 'boolean'
     default: true
+  focus_viewer:
+    title: 'Focus PDF viewer window after building'
+    order: 8
+    description: 'PDF viewer window will gain focus after building LaTeX or \
+                  forward SyncTeX.'
+    type: 'boolean'
+    default: false
   preview_after_build:
     title: 'Preview PDF after building process'
-    order: 8
+    order: 9
     description: 'Use PDF viewer to preview the generated PDF file after \
                   successfully building LaTeX.'
     type: 'string'
@@ -69,7 +76,7 @@ module.exports =
     ]
   combine_typesetting_log:
     title: 'Combine typesetting log messages'
-    order: 9
+    order: 10
     description: 'Combine typesetting log messages in log panel. Sometimes \
                   typesetting messages may clutter the panel. Enable this \
                   config to display one message for all typesetting entries.'
@@ -77,7 +84,7 @@ module.exports =
     default: true
   file_ext_to_clean:
     title: 'Files to clean'
-    order: 10
+    order: 11
     description: 'All files under the LaTeX project root directory with the set\
                   extensions will be removed when cleaning LaTeX project. \
                   Multiple file extensions are joint with commas.'
@@ -87,14 +94,14 @@ module.exports =
               *.fdb_latexmk'
   clean_after_build:
     title: 'Clean LaTeX auxillary files after building process'
-    order: 11
+    order: 12
     description: 'Clean all auxillary files after building LaTeX project by \
                   the defined file extensions.'
     type: 'boolean'
     default: false
   delayed_minimap_refresh:
     title: 'Delay the refresh actions of atom-minimap'
-    order: 12
+    order: 13
     description: 'Delay the refresh actions of atom-minimap upon typing. This \
                   setting can reduce the keystroke stuttering in very long \
                   LaTeX source files caused by minimap extension. Reload Atom \
