@@ -15,7 +15,6 @@ class Builder extends Disposable
     @killProcess()
     @setCmds()
     @latex.logger.log = []
-    @latex.panel.view.showLog = true
     @latex.package.status.view.status = 'building'
     @latex.package.status.view.update()
     @buildLogs = []
@@ -34,6 +33,8 @@ class Builder extends Disposable
       @postBuild()
       return
 
+    if atom.config.get('atom-latex.hide_log_if_success')
+      @latex.panel.view.showLog = false
     @buildLogs.push ''
     @execCmds.push cmd
     # @latex.logPanel.showText icon: 'sync', spin: true, 'Building LaTeX.'
@@ -47,6 +48,7 @@ class Builder extends Disposable
         if !err or (err.code is null)
           @buildProcess()
         else
+          @latex.panel.view.showLog = true
           @latex.logger.processError(
             """Failed Building LaTeX (code #{err.code}).""", err.message, true,
             [{

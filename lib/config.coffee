@@ -82,9 +82,17 @@ module.exports =
                   config to display one message for all typesetting entries.'
     type: 'boolean'
     default: true
+  hide_log_if_success:
+    title: 'Hide LaTeX log messages on successful build'
+    order: 11
+    description: 'Hide the LaTeX log panel if the build process is successful. \
+                  This will save some space for the editor, but warnings are \
+                  hidden unless manually click the `Show build log` icon.'
+    type: 'boolean'
+    default: false
   file_ext_to_clean:
     title: 'Files to clean'
-    order: 11
+    order: 12
     description: 'All files under the LaTeX project root directory with the set\
                   extensions will be removed when cleaning LaTeX project. \
                   Multiple file extensions are joint with commas.'
@@ -94,14 +102,14 @@ module.exports =
               *.fdb_latexmk'
   clean_after_build:
     title: 'Clean LaTeX auxillary files after building process'
-    order: 12
+    order: 13
     description: 'Clean all auxillary files after building LaTeX project by \
                   the defined file extensions.'
     type: 'boolean'
     default: false
   delayed_minimap_refresh:
     title: 'Delay the refresh actions of atom-minimap'
-    order: 13
+    order: 14
     description: 'Delay the refresh actions of atom-minimap upon typing. This \
                   setting can reduce the keystroke stuttering in very long \
                   LaTeX source files caused by minimap extension. Reload Atom \
