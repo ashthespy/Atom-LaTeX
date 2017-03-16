@@ -84,7 +84,8 @@ class Logger extends Disposable
     cmd = @latex?.builder.execCmds?[@latex?.builder.execCmds?.length - 1]
     log = @latex?.builder.buildLogs?[@latex?.builder.buildLogs?.length - 1]
     if cmd?
-      atom.workspace.open().then(
-        (editor) ->
-          editor.setText("""> #{cmd}\n\n#{log}""")
-      )
+      tmp = require('tmp')
+      fs = require('fs')
+      logFile = tmp.fileSync()
+      fs.writeFileSync(logFile.fd,"""> #{cmd}\n\n#{log}""")
+      atom.workspace.open(logFile.name)
