@@ -119,7 +119,7 @@ class Command extends Disposable
     latex:
       begin:
         displayText: 'begin'
-        snippet: 'begin{$1}\n  $2\n\\\\end{$1}'
+        snippet: 'begin{$1}\n\t$2\n\\\\end{$1}'
         chainComplete: true
       cite:
         displayText: 'cite'
