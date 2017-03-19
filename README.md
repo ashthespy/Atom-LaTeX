@@ -57,7 +57,8 @@ Atom currently does not provide per-project configuration. Atom-LaTeX uses a `.l
    ```
    {
      "root" : "\path\to\root\file.tex",
-     "toolchain" : "%TEX %ARG %DOC"
+     "toolchain" : "%TEX %ARG %DOC",
+     "latex_ext": [".tikz", ".Rnw"]
    }
    ```
 If a key is set, the config will overwrite the global one in atom settings.
@@ -81,13 +82,20 @@ You can choose one or multiple methods stated above to set the root file.
 
 ### Set per-project LaTeX toolchain
 LaTeX toolchain can be controlled by either atom configuration or `.latexcfg` file under root directory. If LaTeX projects need special toolchain, one can add a `toolchain` key to this file. An example:
-   ```
-   { "toolchain" : "%TEX %ARG %DOC" }
-   ```
+```
+{ "toolchain" : "%TEX %ARG %DOC" }
+```
 This example will only use the defined compiler in atom configuration to build the project. Alternatively, you can also have this example that provides the same functionality:
-   ```
-   { "toolchain" : "pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -pdf %DOC" }
-   ```
+```
+{ "toolchain" : "pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -pdf %DOC" }
+```
+
+### Support non-tex files
+Atom-LaTeX has limited support to LaTeX source files with a non-`.tex` extension. To consider such files as valid LaTeX documents, one can add a `latex_ext` key to the `.latexcfg` local configuration file. An example:
+```
+{ "latex_ext": [".tikz", ".Rnw"] }
+```
+Note that the value must be a JSON array, even when there is only one alternative file extension.
 
 ### Enable spell check
 - Open setting panel of build-in package `spell-check`.

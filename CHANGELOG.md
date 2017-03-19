@@ -1,4 +1,4 @@
-## [0.7.1]  2017-03-19
+## [0.7.2]  2017-03-19
 ### Added
 * [(#21)](https://github.com/James-Yu/Atom-LaTeX/issues/21) A setting item to auto-collapse log panel upon successful building process.
 * [(#22)](https://github.com/James-Yu/Atom-LaTeX/issues/22) Support LaTeX files with non-`.tex` extension.
