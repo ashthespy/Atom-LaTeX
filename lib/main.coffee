@@ -46,16 +46,16 @@ module.exports =
     @disposables.add atom.workspace.observeTextEditors (editor) =>
       @disposables.add editor.onDidSave () =>
         if atom.config.get('atom-latex.build_after_save') and \
-            editor.buffer.file?.path and \
-            path.extname(editor.buffer.file?.path) == '.tex'
-          @latex.builder.build()
+            editor.buffer.file?.path
+          if @latex.manager.isTexFile(editor.buffer.file?.path)
+            @latex.builder.build()
 
     if @minimap? and atom.config.get('atom-latex.delayed_minimap_refresh')
-      @disposables.add @minimap.observeMinimaps (minimap) ->
+      @disposables.add @minimap.observeMinimaps (minimap) =>
         minimapElement = atom.views.getView(minimap)
         editor = minimap.getTextEditor()
         if editor.buffer.file?.path and \
-            path.extname(editor.buffer.file?.path) == '.tex'
+            @latex.manager.isTexFile(editor.buffer.file?.path)
           handlers = editor.emitter?.handlersByEventName?['did-change']
           if handlers
             for i of handlers

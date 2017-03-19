@@ -12,7 +12,7 @@ class Locator extends Disposable
     currentPath = editor?.buffer.file?.path
     currentPosition = editor?.cursors[0].getBufferPosition()
 
-    return if !currentPath? or path.extname(currentPath) isnt '.tex'
+    return if !currentPath? or !@latex.manager.isTexFile(currentPath)
 
     cmd = """synctex view -i \"#{currentPosition.row + 1}:\
              #{currentPosition.column + 1}:\

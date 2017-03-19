@@ -36,7 +36,7 @@ class Command extends Disposable
     currentPath = editor?.buffer.file?.path
     currentContent = editor?.getText()
     if currentPath and currentContent
-      if (path.extname(currentPath) == '.tex')
+      if @latex.manager.isTexFile(currentPath)
         texItems = @getCommandsFromContent currentContent
         for key of texItems
           items[key] = texItems[key] if not (key of items)

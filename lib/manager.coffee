@@ -8,6 +8,9 @@ class Manager extends Disposable
     @latex = latex
 
   loadLocalCfg: ->
+    if @lastCfgTime? and Date.now() - @lastCfgTime < 200
+      return @config?
+    @lastCfgTime = Date.now()
     for rootDir in atom.project.getPaths()
       for file in fs.readdirSync rootDir
         if file is '.latexcfg'
@@ -19,6 +22,13 @@ class Manager extends Disposable
               @config.root = path.resolve rootDir, @config.root
             return true
           catch err
+    return false
+
+  isTexFile: (name) ->
+    @latex.manager.loadLocalCfg()
+    if path.extname(name) == '.tex' or \
+        @latex.manager.config?.latex_ext?.indexOf(path.extname(name)) > -1
+      return true
     return false
 
   findMain: (here) ->
@@ -58,8 +68,7 @@ class Manager extends Disposable
     currentContent = editor?.getText()
 
     if currentPath and currentContent
-      if (path.extname(currentPath) == '.tex') and
-          (currentContent.match docRegex)
+      if @isTexFile(currentPath) and currentContent.match(docRegex)
         @latex.mainFile = currentPath
         @latex.logger.setMain('self')
         return true
@@ -72,7 +81,7 @@ class Manager extends Disposable
     currentContent = editor?.getText()
 
     if currentPath and currentContent
-      if path.extname(currentPath) == '.tex'
+      if @isTexFile(currentPath)
         result = currentContent.match magicRegex
         if result
           @latex.mainFile = path.resolve(path.dirname(currentPath), result[1])
@@ -92,8 +101,7 @@ class Manager extends Disposable
     docRegex = /\\begin{document}/
     for rootDir in atom.project.getPaths()
       for file in fs.readdirSync rootDir
-        if (path.extname file) != '.tex'
-          continue
+        continue if !@isTexFile(file)
         filePath = path.join rootDir, file
         fileContent = fs.readFileSync filePath, 'utf-8'
         if fileContent.match docRegex

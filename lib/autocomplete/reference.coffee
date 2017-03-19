@@ -31,7 +31,7 @@ class Reference extends Disposable
     currentContent = editor?.getText()
 
     if currentPath and currentContent
-      if (path.extname(currentPath) == '.tex')
+      if @latex.manager.isTexFile(currentPath)
         items = items.concat @getItems currentContent
 
     for item in items
