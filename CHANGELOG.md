@@ -1,19 +1,30 @@
+## [0.7.1]  2017-03-19
+### Added
+* [(#21)](https://github.com/James-Yu/Atom-LaTeX/issues/21) A setting item to auto-collapse log panel upon successful building process.
+* [(#22)](https://github.com/James-Yu/Atom-LaTeX/issues/22) Support LaTeX files with non-`.tex` extension.
+
+### Changed
+* [(#21)](https://github.com/James-Yu/Atom-LaTeX/issues/21) Now raw log will be contained in a temp file to avoid the save file popup.
+
+### Fixed
+* [(#20)](https://github.com/James-Yu/Atom-LaTeX/issues/20) `\begin` environment wrongly uses two spaces instead of `\t`.
+
 ## [0.7.1]  2017-03-15
 ### Added
 * A setting item controlling the PDF viewer focus behavior.
 
 ### Changed
-* Tweak the PDF viewer gain focus behavior.
+* [(#16)](https://github.com/James-Yu/Atom-LaTeX/issues/16) Tweak the PDF viewer gain focus behavior.
 
 ## [0.7.0]  2017-03-12
 ### Added
-* Per-project toolchain setting in `.latexcfg` file.
+* [(#18)](https://github.com/James-Yu/Atom-LaTeX/issues/18) Per-project toolchain setting in `.latexcfg` file.
 
 ### Changed
-* The viewer window is bring to front after building process or SyncTeX.
+* [(#16)](https://github.com/James-Yu/Atom-LaTeX/issues/16) The viewer window is bring to front after building process or SyncTeX.
 
 ### Fixed
-* Atom-LaTeX complaining `arara` returning `null`.
+* [(#4)](https://github.com/James-Yu/Atom-LaTeX/issues/4) Atom-LaTeX complaining `arara` returning `null`.
 
 ## [0.6.3]  2017-03-06
 ### Added
