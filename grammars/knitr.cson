@@ -1,0 +1,112 @@
+fileTypes: [
+  "Snw"
+  "Rnw"
+  "snw"
+  "rnw"
+]
+foldingStartMarker: "^<<(.?*)>>=|\\\\begin\\{.*\\}"
+foldingStopMarker: "^@(.?*)$|\\\\end\\{.*\\}"
+name: "Knitr"
+patterns: [
+  {
+    begin: "^(<<)"
+    beginCaptures:
+      "1":
+        name: "punctuation.definition.parameters.begin.knitr"
+    end: "(>>)(?==)"
+    endCaptures:
+      "1":
+        name: "punctuation.definition.parameters.end.knitr"
+    name: "meta.block.parameters.knitr"
+    patterns: [
+      {
+        captures:
+          "1":
+            name: "keyword.other.name-of-parameter.knitr"
+          "2":
+            name: "punctuation.separator.key-value.knitr"
+          "3":
+            name: "constant.language.boolean.knitr"
+          "4":
+            name: "constant.language.results.knitr"
+          "5":
+            name: "string.unquoted.label.knitr"
+        match: "(\\w+)(=)(?:(true|false)|(verbatim|tex|hide)|([\\w.]+))"
+        name: "meta.parameter.knitr"
+      }
+      {
+        match: "[\\w.]+"
+        name: "string.unquoted.label.knitr"
+      }
+      {
+        match: ","
+        name: "punctuation.separator.parameters.knitr"
+      }
+    ]
+  }
+  {
+    begin: "(?<=>>)(=)(.*)\\n"
+    beginCaptures:
+      "1":
+        name: "punctuation.section.embedded.begin.knitr"
+      "2":
+        name: "comment.line.other.knitr"
+    contentName: "source.r.embedded.knitr"
+    end: "^(@)(.*)$"
+    endCaptures:
+      "1":
+        name: "punctuation.section.embedded.end.knitr"
+      "2":
+        name: "comment.line.other.knitr"
+    name: "meta.block.code.knitr"
+    patterns: [
+      {
+        match: "^\\s+@.*\\n?"
+        name: "invalid.illegal.knitr"
+      }
+      {
+        include: "source.r"
+      }
+    ]
+  }
+  {
+    match: "^\\s+<<.*\\n?"
+    name: "invalid.illegal.knitr"
+  }
+  {
+    begin: "^\\\\begin(\\{)Scode(\\})"
+    captures:
+      "1":
+        name: "punctuation.definition.arguments.begin.latex"
+      "2":
+        name: "punctuation.definition.arguments.end.latex"
+    contentName: "source.r.embedded.knitr"
+    end: "^\\\\end(\\{)Scode(\\})"
+    name: "meta.block.source.r"
+    patterns: [
+      {
+        include: "source.r"
+      }
+    ]
+  }
+  {
+    begin: "\\\\Sexpr(\\{)"
+    beginCaptures:
+      "1":
+        name: "punctuation.definition.arguments.begin.latex"
+    end: "(\\})"
+    endCaptures:
+      "1":
+        name: "punctuation.definition.arguments.end.latex"
+    name: "source.r.embedded.knitr"
+    patterns: [
+      {
+        include: "source.r"
+      }
+    ]
+  }
+  {
+    include: "text.tex.latex"
+  }
+]
+scopeName: "text.tex.latex.knitr"
