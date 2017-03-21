@@ -4953,7 +4953,7 @@ var pdfjsWebLibs;
      this.eventBus = options.eventBus || domEvents.getGlobalEventBus();
      this.linkService = options.linkService || new SimpleLinkService();
      this.downloadManager = options.downloadManager || null;
-     this.removePageBorders = options.removePageBorders || false;
+     this.removePageBorders = options.removePageBorders || true;
      this.enhanceTextSelection = options.enhanceTextSelection || false;
      this.renderInteractiveForms = options.renderInteractiveForms || false;
      this.renderer = options.renderer || RendererType.CANVAS;
