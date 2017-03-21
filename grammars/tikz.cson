@@ -1,0 +1,101 @@
+fileTypes: [
+  "tikz"
+]
+firstLineMatch: "^\\\\begin(\\[.*\\])?\\{tikzpicture\\}"
+foldingStartMarker: "\\\\begin\\{.*\\}|%.*\\(fold\\)\\s*$"
+foldingStopMarker: "\\\\end\\{.*\\}|%.*\\(end\\)\\s*$"
+name: "TikZ"
+patterns: [
+  {
+    begin: "\\s*((\\\\)(draw|node|path))"
+    beginCaptures:
+      "1":
+        name: "support.function.draw.latex.tikz"
+      "2":
+        name: "punctuation.definition.function.latex.tikz"
+    end: "(;)"
+    endCaptures:
+      "1":
+        name: "punctuation.terminator.latex.tikz"
+    name: "meta.function.draw.latex.tikz"
+    patterns: [
+      {
+        include: "#options"
+      }
+      {
+        include: "#points"
+      }
+      {
+        include: "#tex"
+      }
+    ]
+  }
+  {
+    include: "text.tex.latex"
+  }
+]
+repository:
+  options:
+    begin: "(\\[)"
+    beginCaptures:
+      "1":
+        name: "punctuation.definition.arguments.begin.latex.tikz"
+    end: "(\\])"
+    endCaptures:
+      "1":
+        name: "punctuation.definition.arguments.end.latex.tikz"
+    name: "meta.function.arguments.optional.latex.tikz"
+    patterns: [
+      {
+        begin: "([a-z\\/][a-z\\/. ]*)(=)"
+        beginCaptures:
+          "1":
+            name: "entity.other.attribute-name.latex.tikz"
+          "2":
+            name: "punctuation"
+        end: "(,)?|(?=\\])"
+        endCaptures:
+          "1":
+            name: "punctuation"
+      }
+      {
+        captures:
+          "1":
+            name: "entity.other.attribute-name.latex.tikz"
+          "2":
+            name: "punctuation"
+        match: "([a-z\\/][a-z\\/. ]*)(?:(,)|(?=]))"
+      }
+    ]
+  points:
+    begin: "(\\()"
+    beginCaptures:
+      "1":
+        name: "punctuation.definition.arguments.begin.latex.tikz"
+    end: "(\\))"
+    endCaptures:
+      "1":
+        name: "punctuation.definition.arguments.end.latex.tikz"
+    name: "meta.point.latex.tikz"
+    patterns: [
+      {
+        match: "[A-Za-z][a-zA-Z0-9 ]*"
+        name: "entity.name.node.latex.tikz"
+      }
+    ]
+  tex:
+    begin: "(\\{)"
+    beginCaptures:
+      "1":
+        name: "punctuation.definition.string.begin.latex.tikz"
+    end: "(\\})"
+    endCaptures:
+      "1":
+        name: "punctuation.definition.string.end.latex.tikz"
+    name: "string.other.tex.latex.tikz"
+    patterns: [
+      {
+        include: "text.tex.latex"
+      }
+    ]
+scopeName: "text.tex.latex.tikz"
