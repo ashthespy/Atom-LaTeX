@@ -81,7 +81,7 @@ class Viewer extends Disposable
       @window.focus()
 
     @window.loadURL(@url)
-    @window.setMenu(null)
+    @window.setMenuBarVisibility(false)
     @window.setTitle("""Atom-LaTeX PDF Viewer - [#{@latex.mainFile}]""")
 
   openViewerNewTab: ->
