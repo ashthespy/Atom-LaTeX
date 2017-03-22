@@ -52,8 +52,11 @@ document.addEventListener('pagerendered', (e) => {
     var canvas_dom = e.target.childNodes[1];
     canvas_dom.onclick = (e) => {
         if (!(e.ctrlKey || e.metaKey)) return;
-        var left = e.pageX - target.offsetLeft + target.parentNode.parentNode.scrollLeft - 9;
+        var left = e.pageX - target.offsetLeft + target.parentNode.parentNode.scrollLeft;
         var top = e.pageY - target.offsetTop + target.parentNode.parentNode.scrollTop - 41;
+        if (page == 1) {
+          top += 41
+        }
         var pos = PDFViewerApplication.pdfViewer._pages[page-1].getPagePoint(left, canvas_dom.offsetHeight - top);
         socket.send(JSON.stringify({type:"click", path:file, pos:pos, page:page}));
     }
