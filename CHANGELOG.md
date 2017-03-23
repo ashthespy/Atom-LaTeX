@@ -1,3 +1,11 @@
+## [0.7.3]  2017-03-23
+### Added
+* [(#22)](https://github.com/James-Yu/Atom-LaTeX/issues/22) Add tikz and knitr syntax highlighting.
+
+### Changed
+* [(#25)](https://github.com/James-Yu/Atom-LaTeX/issues/25) [(#26)](https://github.com/James-Yu/Atom-LaTeX/pull/26) Remove pdf page borders.
+* Hide PDF Viewer menus when possible.
+
 ## [0.7.2]  2017-03-19
 ### Added
 * [(#21)](https://github.com/James-Yu/Atom-LaTeX/issues/21) A setting item to auto-collapse log panel upon successful building process.
