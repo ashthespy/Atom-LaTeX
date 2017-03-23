@@ -59,10 +59,15 @@ class Locator extends Disposable
       else
         column = record['column'] - 1
       row = record['line'] - 1
-      file = path.resolve(record['input'].replace(/(\r\n|\n|\r)/gm, ''))
-      atom.workspace.open(file,
-        initialLine: row
-        initialColumn: column
-      )
-      @latex.viewer.focusMain()
+      if 'input' of record
+        file = path.resolve(record['input'].replace(/(\r\n|\n|\r)/gm, ''))
+        atom.workspace.open(file,
+          initialLine: row
+          initialColumn: column
+        )
+        @latex.viewer.focusMain()
+      else
+        @latex.logger.processError(
+          """Failed SyncTeX. No file path is given.""", record
+        )
     )
