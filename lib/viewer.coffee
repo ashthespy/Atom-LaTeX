@@ -100,7 +100,7 @@ class Viewer extends Disposable
     if @tabView? and atom.workspace.paneForItem(@tabView)?
       atom.workspace.paneForItem(@tabView).activateItem(@tabView)
     else
-      @tabView = new PDFView(@url,"""#{path.basename(pdfPath)}""")
+      @tabView = new PDFView(@url,path.basename(pdfPath))
       atom.workspace.getActivePane().splitRight().addItem(@tabView)
 
   getUrl: ->
@@ -113,16 +113,16 @@ class Viewer extends Disposable
     return true
 
 class PDFView
-  constructor: (url,tabTitle) ->
+  constructor: (url,title) ->
     @element = document.createElement 'iframe'
     @element.setAttribute 'src', url
     @element.setAttribute 'width', '100%'
     @element.setAttribute 'height', '100%'
     @element.setAttribute 'frameborder', 0,
-    @tabTitle = tabTitle
+    @title = title
 
-  getTitle:  ->
-    return """Atom-LaTeX - #{@tabTitle}"""
+  getTitle: ->
+    return """Atom-LaTeX - #{@title}"""
 
   serialize: ->
     return @element.getAttribute 'src'
