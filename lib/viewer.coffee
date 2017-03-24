@@ -2,6 +2,7 @@
 getCurrentWindow = require('electron').remote.getCurrentWindow
 BrowserWindow = require('electron').remote.BrowserWindow
 fs = require 'fs'
+path = require 'path'
 
 module.exports =
 class Viewer extends Disposable
@@ -99,7 +100,7 @@ class Viewer extends Disposable
     if @tabView? and atom.workspace.paneForItem(@tabView)?
       atom.workspace.paneForItem(@tabView).activateItem(@tabView)
     else
-      @tabView = new PDFView(@url)
+      @tabView = new PDFView(@url,path.basename(pdfPath))
       atom.workspace.getActivePane().splitRight().addItem(@tabView)
 
   getUrl: ->
@@ -112,15 +113,16 @@ class Viewer extends Disposable
     return true
 
 class PDFView
-  constructor: (url) ->
+  constructor: (url,title) ->
     @element = document.createElement 'iframe'
     @element.setAttribute 'src', url
     @element.setAttribute 'width', '100%'
     @element.setAttribute 'height', '100%'
-    @element.setAttribute 'frameborder', 0
+    @element.setAttribute 'frameborder', 0,
+    @title = title
 
   getTitle: ->
-    return 'Atom-LaTeX PDF Viewer'
+    return """Atom-LaTeX - #{@title}"""
 
   serialize: ->
     return @element.getAttribute 'src'
