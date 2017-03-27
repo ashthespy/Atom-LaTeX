@@ -11,7 +11,14 @@ class Manager extends Disposable
     if @lastCfgTime? and Date.now() - @lastCfgTime < 200
       return @config?
     @lastCfgTime = Date.now()
-    for rootDir in atom.project.getPaths()
+    editor = atom.workspace.getActivePaneItem()
+    currentPath = editor?.buffer.file?.path
+    currentDir = path.dirname(currentPath)
+    if currentDir?
+      dirs = [currentDir]
+    else
+      dirs = []
+    for rootDir in dirs.concat(atom.project.getPaths())
       for file in fs.readdirSync rootDir
         if file is '.latexcfg'
           try
