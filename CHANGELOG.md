@@ -1,3 +1,10 @@
+## [0.7.4]  2017-03-27
+### Changed
+* [(#32)](https://github.com/James-Yu/Atom-LaTeX/pull/32) Save all files before build.
+* [(#31)](https://github.com/James-Yu/Atom-LaTeX/issues/31) Find local config use current active editor directory first.
+* [(#30)](https://github.com/James-Yu/Atom-LaTeX/pull/30) Formatted PDF viewer title.
+* Slightly adjust SyncTeX accuracy.
+
 ## [0.7.3]  2017-03-23
 ### Added
 * [(#22)](https://github.com/James-Yu/Atom-LaTeX/issues/22) Add tikz and knitr syntax highlighting.
