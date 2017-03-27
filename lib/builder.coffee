@@ -14,6 +14,8 @@ class Builder extends Disposable
 
     @killProcess()
     @setCmds()
+    if atom.config.get('atom-latex.save_on_build')
+      @saveonBuild()
     @latex.logger.log = []
     @latex.package.status.view.status = 'building'
     @latex.package.status.view.update()
@@ -22,6 +24,13 @@ class Builder extends Disposable
     @buildProcess()
 
     return true
+
+  saveonBuild: ->
+    if !@latex?.texFiles
+      @latex.manager.findAll()
+    for editor in atom.workspace.getTextEditors()
+      if editor.isModified() and editor.getPath() in @latex.texFiles
+        editor.save()
 
   execCmd: (cmd, env, cb) ->
     env.maxBuffer = Infinity
