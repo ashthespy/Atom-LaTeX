@@ -11,24 +11,17 @@ class Manager extends Disposable
     if @lastCfgTime? and Date.now() - @lastCfgTime < 200
       return @config?
     @lastCfgTime = Date.now()
-    editor = atom.workspace.getActivePaneItem()
-    currentPath = editor?.buffer.file?.path
-    currentDir = path.dirname(currentPath)
-    if currentDir?
-      dirs = [currentDir]
-    else
-      dirs = []
-    for rootDir in dirs.concat(atom.project.getPaths())
-      for file in fs.readdirSync rootDir
-        if file is '.latexcfg'
-          try
-            filePath = path.join rootDir, file
-            fileContent = fs.readFileSync filePath, 'utf-8'
-            @config = JSON.parse fileContent
-            if @config.root?
-              @config.root = path.resolve rootDir, @config.root
-            return true
-          catch err
+    rootDir = atom.project.relativizePath(atom.workspace.getActiveTextEditor().getPath())[0]
+    for file in fs.readdirSync rootDir
+      if file is '.latexcfg'
+        try
+          filePath = path.join rootDir, file
+          fileContent = fs.readFileSync filePath, 'utf-8'
+          @config = JSON.parse fileContent
+          if @config.root?
+            @config.root = path.resolve rootDir, @config.root
+          return true
+        catch err
     return false
 
   isTexFile: (name) ->
@@ -57,10 +50,10 @@ class Manager extends Disposable
       return true if @findMainSelfMagic()
       return true if @findMainSelf()
 
+    return true if @findMainConfig()
     if @latex.mainFile?
       return true
 
-    return true if @findMainConfig()
     return true if @findMainSelfMagic()
     return true if @findMainSelf()
     return true if @findMainAllRoot()
