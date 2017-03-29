@@ -1,6 +1,7 @@
 { Disposable } = require 'atom'
 path = require 'path'
 
+latexFile = /^.*?\(\.\/(.*?\.\w+)/
 latexPattern = /^Output\swritten\son\s(.*)\s\(.*\)\.$/gm
 latexFatalPattern = /Fatal error occurred, no output PDF file produced!/gm
 latexError = /^(?:(.*):(\d+):|!)(?: (.+) Error:)? (.+?)\.?$/
@@ -28,6 +29,7 @@ class Parser extends Disposable
       @isLatexmkSkipped = true
     @latex.package.status.view.update()
     @latex.panel.view.update()
+    @lastFile = @latex.mainFile
 
   trimLatexmk: (log) ->
     log = log.replace(/(.{78}(\w|\s|\d|\\|\/))(\r\n|\n)/g, '$1')
@@ -51,12 +53,16 @@ class Parser extends Disposable
     lines = log.replace(/(\r\n)|\r/g, '\n').split('\n')
     items = []
     for line in lines
+      file = line.match latexFile
+      if file
+        @lastFile = path.resolve(path.dirname(@latex.mainFile), file[1])
+
       result = line.match latexBox
       if result
         items.push
           type: 'typesetting',
           text: result[1]
-          file: @latex.mainFile
+          file: @lastFile
           line: parseInt(result[2], 10)
         continue
       result = line.match latexWarn
@@ -64,7 +70,7 @@ class Parser extends Disposable
         items.push
           type: 'warning',
           text: result[3]
-          file: @latex.mainFile
+          file: @lastFile
           line: parseInt result[4]
         continue
       result = line.match latexError
