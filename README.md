@@ -2,6 +2,10 @@
 
 Atom-LaTeX is an extension for [Atom.io](https://atom.io/), aiming to provide all-in-one features and utilities for latex typesetting with Atom.
 
+## Update
+
+Recently (Mar. 29th, 2017 now) I switched back to [Visual Studio Code](https://code.visualstudio.com/) for most coding and typesetting tasks due to reasons 1, 2, 3, and more. Atom-LaTeX will still be maintained, though new feature development is in stale. I would recommend you to have a check on VS Code as well as [LaTeX Workshop](https://github.com/James-Yu/LaTeX-Workshop), a counterpart of Atom-LaTeX to VS Code. Thank you all for your long time support!
+
 ## Features
 
 Atom-LaTeX is currently under active development. More features coming soon.
