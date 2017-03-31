@@ -8,7 +8,8 @@ class Manager extends Disposable
     @latex = latex
 
   loadLocalCfg: ->
-    if @lastCfgTime? and Date.now() - @lastCfgTime < 200
+    if @lastCfgTime? and Date.now() - @lastCfgTime < 200 or\
+       !atom.workspace.getActiveTextEditor()?
       return @config?
     @lastCfgTime = Date.now()
     rootDir = atom.project.relativizePath(atom.workspace.getActiveTextEditor().getPath())[0]
