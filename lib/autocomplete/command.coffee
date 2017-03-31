@@ -129,3 +129,19 @@ class Command extends Disposable
         displayText: 'ref'
         snippet: 'ref{$1}'
         chainComplete: true
+      input:
+        displayText: 'input'
+        snippet: 'input{$1}'
+        chainComplete: true
+      include:
+        displayText: 'include'
+        snippet: 'include{$1}'
+        chainComplete: true
+      subfile:
+        displayText: 'subfile'
+        snippet: 'subfile{$1}'
+        chainComplete: true
+      includegraphics:
+        displayText: 'includegraphics'
+        snippet: 'includegraphics{$1}'
+        chainComplete: true

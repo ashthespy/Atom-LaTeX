@@ -15,11 +15,13 @@ class Provider extends Disposable
     Environment = require './autocomplete/environment'
     Command = require './autocomplete/command'
     Syntax = require './autocomplete/syntax'
+    SubFiles = require './autocomplete/subFiles'
     @citation = new Citation(@latex)
     @reference = new Reference(@latex)
     @environment = new Environment(@latex)
     @command = new Command(@latex)
     @syntax = new Syntax(@latex)
+    @subFiles = new SubFiles(@latex)
 
   provider:
     selector: '.text.tex.latex'
@@ -32,7 +34,7 @@ class Provider extends Disposable
           atom.packages.getActivePackage('autocomplete-plus')\
             .mainModule.autocompleteManager.shouldDisplaySuggestions = true
 
-        for command in ['citation', 'reference', 'environment', 'command']
+        for command in ['citation', 'reference', 'environment', 'command', 'subFiles']
           suggestions = atom_latex.latex.provider.completeCommand(line, command)
           resolve(suggestions) if suggestions?
 
@@ -67,6 +69,9 @@ class Provider extends Disposable
       when 'command'
         reg = /\\([a-zA-Z]*)$/
         provider = @command
+      when 'subFiles'
+        reg = /(?:\\(?:input|include|subfile|includegraphics)(?:\[[^\[\]]*\])?){([^}]*)$/
+        provider = @subFiles
 
     result = line.match(reg)
     if result
@@ -77,4 +82,6 @@ class Provider extends Disposable
         allKeys = prefix.split(',')
         currentPrefix = allKeys[allKeys.length - 1].trim()
       suggestions = provider.provide(currentPrefix)
+      if ['subFiles'].indexOf(type) > -1 and line.match(/(?:\\(?:includegraphics)(?:\[[^\[\]]*\])?){([^}]*)$/)
+        suggestions = provider.provide(currentPrefix,true)
     return suggestions
