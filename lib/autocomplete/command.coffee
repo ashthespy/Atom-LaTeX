@@ -123,25 +123,25 @@ class Command extends Disposable
         chainComplete: true
       cite:
         displayText: 'cite'
-        snippet: 'cite{$1}'
+        snippet: 'cite{$1}$2'
         chainComplete: true
       ref:
         displayText: 'ref'
-        snippet: 'ref{$1}'
+        snippet: 'ref{$1}$2'
         chainComplete: true
       input:
         displayText: 'input'
-        snippet: 'input{$1}'
+        snippet: 'input{$1}$2'
         chainComplete: true
       include:
         displayText: 'include'
-        snippet: 'include{$1}'
+        snippet: 'include{$1}$2'
         chainComplete: true
       subfile:
         displayText: 'subfile'
-        snippet: 'subfile{$1}'
+        snippet: 'subfile{$1}$2'
         chainComplete: true
       includegraphics:
         displayText: 'includegraphics'
-        snippet: 'includegraphics{$1}'
+        snippet: 'includegraphics{$1}$2'
         chainComplete: true

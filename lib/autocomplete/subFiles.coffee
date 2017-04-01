@@ -1,6 +1,6 @@
 { Disposable } = require 'atom'
 path = require 'path'
-fs = require 'fs'
+fs = require 'fs-plus'
 
 module.exports =
 class SubFiles extends Disposable
@@ -37,47 +37,40 @@ class SubFiles extends Disposable
   getFileItems: (currentPath,images) ->
     items = []
     dirName = path.dirname(currentPath)
-    imgExts = ['.jpg','.png','.pdf','.eps']
-    classNames = ['image-icon','image-icon','icon-file-pdf','postscript']
-    results =  @traverseTree dirName
+    results =  fs.listTreeSync(dirName)
     for result in results
       try
-        if !images and @latex.manager.isTexFile(result)
+        if !images and @latex.manager.isTexFile(result) and result isnt currentPath
           relPath = path.relative(dirName,result)
+          extType = path.extname(relPath)
           items.push
            text: relPath.substr(
                     0, relPath.lastIndexOf('.')).replace( /\\/g, "/")
-           type: 'tag'
-           rightLabel: path.extname(relPath).replace(".", "")
-           iconHTML: '<i class="tex-icon"></i>'
+           rightLabel: extType.replace(".", "")
+           iconHTML: """<i class="#{if extType of FileTypes then FileTypes[extType] else  "icon-file-text"}"></i>"""
            latexType: 'files'
-         else if images and path.extname(result) in imgExts
+         else if images and path.extname(result) of ImageTypes
            relPath = path.relative(dirName,result)
            extType = path.extname(relPath)
            items.push
             text: relPath.substr(
                      0, relPath.lastIndexOf('.')).replace( /\\/g, "/")
-            type: 'tag'
             rightLabel: extType.replace(".", "")
-            iconHTML: """<i class="#{classNames[imgExts.indexOf(extType)]}"></i>"""
+            iconHTML: """<i class="#{ImageTypes[extType]}"></i>"""
             latexType: 'files'
       catch e
 
     return items
 
-  traverseTree: (dirName) ->
-    flatten = (array) ->
-      flat = []
-      for element in array
-        if Array.isArray(element)
-          flat = flat.concat flatten element
-        else
-          flat.push element
-      flat
-    walkSync = (dir) ->
-      if !fs.lstatSync(dir).isDirectory()
-        return dir
-      fs.readdirSync(dir).map (f) ->
-        walkSync path.join(dir, f)
-
-    return flatten walkSync dirName
+# Use file-icons as default with Git Octicons as backups
+ImageTypes =
+  '.png':   "medium-orange icon-file-media"
+  '.eps':   "postscript-icon medium-orange icon-file-media"
+  '.jpeg':  "medium-green icon-file-media"
+  '.jpg':   "medium-green icon-file-media"
+  '.pdf':   "medium-red icon-file-pdf"
+FileTypes  =
+  '.tex': "tex-icon medium-blue icon-file-text"
+  '.cls': "tex-icon medium-orange icon-file-text"
+  '.tikz': "tex-icon medium-green icon-file-text"
+  '.Rnw': "tex-icon medium-green icon-file-text"
