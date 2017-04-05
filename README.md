@@ -100,6 +100,7 @@ Atom-LaTeX has limited support to LaTeX source files with a non-`.tex` extension
 { "latex_ext": [".tikz", ".Rnw"] }
 ```
 Note that the value must be a JSON array, even when there is only one alternative file extension.
+For toolchain settings of non-tex files, @ashthespy gave a very good summary [here](https://github.com/James-Yu/Atom-LaTeX/issues/42).
 
 ### Enable spell check
 - Open setting panel of build-in package `spell-check`.
