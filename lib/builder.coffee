@@ -146,7 +146,7 @@ class Builder extends Disposable
       cmd = cmd.split('%BIB').join(bibCompiler)
       cmd = cmd.split('%ARG').join(args)
       cmd = cmd.split('%DOC').join(
-        @escapeFileName(path.basename(@latex.mainFile, '.tex'))
+        @escapeFileName(path.basename(@latex.mainFile).replace(/\.[^/.]+$/,""))
       )
       @cmds.push cmd
 
