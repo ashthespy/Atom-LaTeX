@@ -1,3 +1,12 @@
+## [0.7.5]  2017-04-07
+### Added
+* [(#40)](https://github.com/James-Yu/Atom-LaTeX/pull/40) Added sub-file autocomplete support.
+
+### Changed
+* [(#35)](https://github.com/James-Yu/Atom-LaTeX/pull/35) Use `relativizePath` to get current project path and change order in `findMain` to check `findMainConfig` first.
+* [(#36)](https://github.com/James-Yu/Atom-LaTeX/pull/36) Display correct file path for infos and warnings.
+* [(#44)](https://github.com/James-Yu/Atom-LaTeX/pull/44) `%DOC` now removes file extension.
+
 ## [0.7.4]  2017-03-27
 ### Changed
 * [(#32)](https://github.com/James-Yu/Atom-LaTeX/pull/32) Save all files before build.
