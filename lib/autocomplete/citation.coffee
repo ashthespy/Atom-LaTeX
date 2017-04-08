@@ -7,7 +7,7 @@ class Citation extends Disposable
   constructor: (latex) ->
     @latex = latex
     @suggestions = []
-
+    @items = {}
   provide: (prefix) ->
     suggestions = []
     if prefix.length > 0
@@ -20,18 +20,16 @@ class Citation extends Disposable
       return suggestions
     if !@latex.manager.findAll()
       return suggestions
-    items = []
-    for bib in @latex.bibFiles
-      items = items.concat @getBibItems bib
-    for item in items
-      description = item.title
-      if item.author?
-        description += """ - #{item.author.split(' and ').join('; ')}"""
-      suggestions.push
-        text: item.key
-        type: 'tag'
-        latexType: 'citation'
-        description: description
+    for bib of @items
+      for item in @items[bib]
+        description = item.title
+        if item.author?
+          description += """ - #{item.author.split(' and ').join('; ')}"""
+        suggestions.push
+          text: item.key
+          type: 'tag'
+          latexType: 'citation'
+          description: description
     suggestions.sort((a, b) ->
       return -1 if a.text < b.text
       return 1)
@@ -41,7 +39,7 @@ class Citation extends Disposable
   getBibItems: (bib) ->
     items = []
     if !fs.existsSync(bib)
-      return items
+      return @items
     content = fs.readFileSync bib, 'utf-8'
     content = content.replace(/[\r\n]/g, ' ')
     itemReg = /@(\w+){/g
@@ -54,8 +52,7 @@ class Citation extends Disposable
       prev_result = result
       if result?
         result = itemReg.exec content
-
-    return items
+    @items[bib] = items
 
   splitBibItem: (item) ->
     unclosed = 0
@@ -85,3 +82,6 @@ class Citation extends Disposable
       value = value.replace(/(\\.)|({)/g, '$1').replace(/(\\.)|(})/g, '$1')
       bibItem[key] = value
     return bibItem
+
+  resetBibItems:(bib) ->
+    delete @items[bib]

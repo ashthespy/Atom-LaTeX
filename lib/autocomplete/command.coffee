@@ -8,7 +8,7 @@ class Command extends Disposable
   constructor: (latex) ->
     @latex = latex
     @additionalSuggestions = []
-
+    @items = {}
   provide: (prefix) ->
     suggestions = @predefinedCommands(prefix)
     if prefix.length > 0
@@ -26,11 +26,6 @@ class Command extends Disposable
     if !@latex.manager.findAll()
       return suggestions
     @additionalSuggestions = []
-    items = {}
-    for tex in @latex.texFiles
-      texItems = @getCommands(tex)
-      for key of texItems
-        items[key] = texItems[key] if not (key of items)
 
     editor = atom.workspace.getActivePaneItem()
     currentPath = editor?.buffer.file?.path
@@ -39,12 +34,11 @@ class Command extends Disposable
       if @latex.manager.isTexFile(currentPath)
         texItems = @getCommandsFromContent currentContent
         for key of texItems
-          items[key] = texItems[key] if not (key of items)
-
-    for key of items
+          @items[key] = texItems[key] if not (key of @items)
+    for key of @items
       for pkg of @suggestions
         if !(key of @suggestions[pkg])
-          @additionalSuggestions.push items[key]
+          @additionalSuggestions.push @items[key]
 
     suggestions = suggestions.concat @additionalSuggestions
     suggestions.sort((a, b) ->
@@ -85,7 +79,9 @@ class Command extends Disposable
     if !fs.existsSync(tex)
       return {}
     content = fs.readFileSync tex, 'utf-8'
-    return @getCommandsFromContent(content)
+    texItems = @getCommandsFromContent(content)
+    for key of texItems
+      @items[key] = texItems[key] if not (key of @items)
 
   getCommandsFromContent: (content) ->
     items = {}
@@ -115,6 +111,9 @@ class Command extends Disposable
         items[result[1]].counts += 1
     return items
 
+  resetCommands: ->
+    @items = {}
+    
   suggestions:
     latex:
       begin:

@@ -7,6 +7,7 @@ class SubFiles extends Disposable
   constructor: (latex) ->
     @latex = latex
     @suggestions = []
+    @items = []
 
   provide: (prefix,images) ->
     suggestions = []
@@ -21,12 +22,10 @@ class SubFiles extends Disposable
 
     if !@latex.manager.findAll()
       return suggestions
-
-    items = []
-    editor = atom.workspace.getActiveTextEditor()
-    items = @getFileItems editor.getPath() , images?
-    for item in items
-      suggestions.push item
+    activeFile = atom.workspace.getActiveTextEditor().getPath()
+    for item in @items when item.texImage is images? and\
+       item.text isnt path.basename(activeFile,path.extname(activeFile))
+        suggestions.push item
 
     suggestions.sort((a, b) ->
       return -1 if a.text < b.text
@@ -34,34 +33,44 @@ class SubFiles extends Disposable
     @suggestions = suggestions
     return suggestions
 
-  getFileItems: (currentPath,images) ->
-    items = []
-    dirName = path.dirname(currentPath)
-    results =  fs.listTreeSync(dirName)
-    for result in results
-      try
-        if !images and @latex.manager.isTexFile(result) and result isnt currentPath
-          relPath = path.relative(dirName,result)
-          extType = path.extname(relPath)
-          items.push
-           text: relPath.substr(
-                    0, relPath.lastIndexOf('.')).replace( /\\/g, "/")
-           rightLabel: extType.replace(".", "")
-           iconHTML: """<i class="#{if extType of FileTypes then FileTypes[extType] else  "icon-file-text"}"></i>"""
-           latexType: 'files'
-         else if images and path.extname(result) of ImageTypes
-           relPath = path.relative(dirName,result)
-           extType = path.extname(relPath)
-           items.push
-            text: relPath.substr(
-                     0, relPath.lastIndexOf('.')).replace( /\\/g, "/")
-            rightLabel: extType.replace(".", "")
-            iconHTML: """<i class="#{ImageTypes[extType]}"></i>"""
-            latexType: 'files'
-      catch e
+  getFileItems: (file,images,splice) ->
+    dirName = path.dirname(@latex.mainFile)
+    try
+      if !images and !splice?
+        relPath = path.relative(dirName,file)
+        # console.log "File: #{relPath} added to suggestion"
+        extType = path.extname(relPath)
+        @items.push
+         text: relPath.substr(
+                  0, relPath.lastIndexOf('.')).replace( /\\/g, "/")
+         rightLabel: extType.replace(".", "")
+         iconHTML: """<i class="#{if extType of FileTypes then FileTypes[extType] else  "icon-file-text"}"></i>"""
+         latexType: 'files'
+         texImage: false
+      else if images and path.extname(file) of ImageTypes and !splice?
+         relPath = path.relative(dirName,file)
+         extType = path.extname(relPath)
+         @items.push
+          text: relPath.substr(
+                   0, relPath.lastIndexOf('.')).replace( /\\/g, "/")
+          rightLabel: extType.replace(".", "")
+          iconHTML: """<i class="#{ImageTypes[extType]}"></i>"""
+          latexType: 'files'
+          texImage: true
+      else if splice?
+        relPath = path.relative(dirName,file)
+        extType = path.extname(relPath)
+        for item in @items when item.text is relPath.substr(
+                 0, relPath.lastIndexOf('.')).replace( /\\/g, "/")
+          pos =  @items.map (item) -> item.text.indexOf(relPath.substr(
+                   0, relPath.lastIndexOf('.')).replace( /\\/g, "/"))
+          @items.splice(pos.indexOf(0),1)
+          console.log "File: #{relPath} removed to suggestion"
+    catch e
 
-    return items
-
+  resetFileItems: ->
+    @items = []
+    
 # Use file-icons as default with Git Octicons as backups
 ImageTypes =
   '.png':   "medium-orange icon-file-media"
