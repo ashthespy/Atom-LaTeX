@@ -12,6 +12,8 @@ latexmkPattern = /^Latexmk:\sapplying\srule/gm
 latexmkPatternNoGM = /^Latexmk:\sapplying\srule/
 latexmkUpToDate = /^Latexmk: All targets \(.*\) are up-to-date/
 
+araraPattern = /Running\s(?:[a-zA-Z]*)\.\.\./g
+araraFailurePattern = /(FAILURE)/g
 module.exports =
 class Parser extends Disposable
   constructor: (latex) ->
@@ -22,7 +24,9 @@ class Parser extends Disposable
     @isLatexmkSkipped = false
     if log.match(latexmkPattern)
       log = @trimLatexmk log
-    if log.match(latexPattern) or log.match(latexFatalPattern)
+    if log.match(araraPattern)
+      log = @trimArara log
+    if log.match(latexPattern) or log.match(latexFatalPattern) or log.match(araraFailurePattern)
       @parseLatex log
     else if @latexmkSkipped(log)
       @latex.package.status.view.status = 'skipped'
@@ -47,6 +51,17 @@ class Parser extends Disposable
     if lines[0].match(latexmkUpToDate)
       return true
     return false
+
+  trimArara: (log) ->
+    araraRunIdx = []
+    lines = log.replace(/(\r\n)|\r/g, '\n').split('\n')
+    for index of lines
+      line = lines[index]
+      result = line.match(/Running\s(?:[a-zA-Z]*)\.\.\./)
+      if result
+        araraRunIdx = araraRunIdx.concat index
+    # Return only last arara run
+    return lines.slice(araraRunIdx.slice(-1)[0]).join('\n')
 
   parseLatex: (log) ->
     log = log.replace(/(.{78}(\w|\s|\d|\\|\/))(\r\n|\n)/g, '$1')
