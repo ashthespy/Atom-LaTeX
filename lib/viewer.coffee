@@ -31,7 +31,16 @@ class Viewer extends Disposable
         @client.ws = undefined
 
   refresh: ->
+    newTitle = path.basename("""#{@latex.mainFile.substr(
+      0, @latex.mainFile.lastIndexOf('.'))}.pdf""")
+
+    if @tabView? and @tabView.title isnt newTitle and
+        atom.workspace.paneForItem(@tabView)?
+      atom.workspace.paneForItem(@tabView).destroyItem(@tabView)
+      @openViewerNewTab()
+      return
     @client.ws?.send JSON.stringify type: "refresh"
+
     @latex.viewer.focusViewer()
     if !atom.config.get('atom-latex.focus_viewer')
       @latex.viewer.focusMain()
