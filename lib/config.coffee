@@ -21,11 +21,10 @@ module.exports =
     title: 'Custom toolchain commands'
     order: 3
     description: 'The commands to execute in `custom` toolchain. Multiple \
-                  commands should be seperated by `&&`. Placeholders `%TEX` \
+                  commands should be separated by `&&`. Placeholders `%TEX` \
                   `%ARG` `%BIB` will be replaced by the following settings, \
                   and `%DOC` will be replaced by the main LaTeX file which \
-                  is automatically detected under the root folder of the \
-                  openning project.'
+                  is either automatically detected or manually set'
     type: 'string'
     default: '%TEX %ARG %DOC && %BIB %DOC && %TEX %ARG %DOC && %TEX %ARG %DOC'
   compiler:
@@ -93,7 +92,7 @@ module.exports =
     order: 12
     description: 'Hide the LaTeX log panel if the build process is successful. \
                   This will save some space for the editor, but warnings are \
-                  hidden unless manually click the `Show build log` icon.'
+                  hidden unless manually clicking the `Show build log` icon.'
     type: 'boolean'
     default: false
   file_ext_to_clean:
@@ -107,9 +106,9 @@ module.exports =
               *.acn, *.acr, *.alg, *.glg, *.glo, *.gls, *.ist, *.fls, *.log, \
               *.fdb_latexmk'
   clean_after_build:
-    title: 'Clean LaTeX auxillary files after building process'
+    title: 'Clean LaTeX auxiliary files after building process'
     order: 14
-    description: 'Clean all auxillary files after building LaTeX project by \
+    description: 'Clean all auxiliary files after building LaTeX project by \
                   the defined file extensions.'
     type: 'boolean'
     default: false
