@@ -39,6 +39,8 @@ class Viewer extends Disposable
       atom.workspace.paneForItem(@tabView).destroyItem(@tabView)
       @openViewerNewTab()
       return
+    else if @window? and @window.getTitle() isnt newTitle
+      @window.setTitle("""Atom-LaTeX PDF Viewer - [#{@latex.mainFile}]""")
     @client.ws?.send JSON.stringify type: "refresh"
 
     @latex.viewer.focusViewer()
@@ -64,9 +66,13 @@ class Viewer extends Disposable
     else if atom.config.get('atom-latex.preview_after_build') is\
         'View in PDF viewer window'
       @openViewerNewWindow()
+      if !atom.config.get('atom-latex.focus_viewer')
+        @latex.viewer.focusMain()
     else if atom.config.get('atom-latex.preview_after_build') is\
         'View in PDF viewer tab'
       @openViewerNewTab()
+      if !atom.config.get('atom-latex.focus_viewer')
+        @latex.viewer.focusMain()
 
   openViewerNewWindow: ->
     if !@latex.manager.findMain()
@@ -106,6 +112,7 @@ class Viewer extends Disposable
     if !@getUrl()
       return
 
+    @self = atom.workspace.getActivePane()
     if @tabView? and atom.workspace.paneForItem(@tabView)?
       atom.workspace.paneForItem(@tabView).activateItem(@tabView)
     else
