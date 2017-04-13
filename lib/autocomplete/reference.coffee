@@ -7,7 +7,7 @@ class Reference extends Disposable
   constructor: (latex) ->
     @latex = latex
     @suggestions = []
-    @items = []
+    @items = {}
 
   provide: (prefix) ->
     suggestions = []
@@ -23,22 +23,22 @@ class Reference extends Disposable
     if !@latex.manager.findAll()
       return suggestions
 
-    # for tex in @latex.texFiles
-    #   items = items.concat @getRefItems tex
-
     editor = atom.workspace.getActivePaneItem()
     currentPath = editor?.buffer.file?.path
     currentContent = editor?.getText()
 
     if currentPath and currentContent
       if @latex.manager.isTexFile(currentPath)
-        @items = @items.concat @getItems currentContent
+        @getRefItems currentPath
 
-    for item in @items
-      suggestions.push
-        text: item
-        type: 'tag'
-        latexType: 'reference'
+    for tex of @items
+      if tex in  @latex.texFiles
+        for item in @items[tex]
+          suggestions.push
+            text: item
+            type: 'tag'
+            latexType: 'reference'
+
     suggestions.sort((a, b) ->
       return -1 if a.text < b.text
       return 1)
@@ -59,7 +59,10 @@ class Reference extends Disposable
     if !fs.existsSync(tex)
       return []
     content = fs.readFileSync tex, 'utf-8'
-    @items = @items.concat @getItems(content)
+    @items[tex] = @getItems(content)
 
-  resetRefItems: ->
-    @items = []
+  resetRefItems: (tex) ->
+    if tex?
+      delete @items[tex]
+    else
+      @items = {}

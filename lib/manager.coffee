@@ -129,7 +129,7 @@ class Manager extends Disposable
     watchedPaths = watcher.getWatched()
     if watcher? and !( watchPath of watchedPaths)
       # rootWatcher exists, but project dir has been changed, so unlink
-      console.log "Closing Watcher on #{watchPath}"
+      # console.log "Closing Watcher on #{watchPath}"
       # Also need to reset all suggestions
       @latex.provider.command.resetCommands()
       @latex.provider.reference.resetRefItems()
@@ -141,34 +141,28 @@ class Manager extends Disposable
 
   watchRoot: ->
     if !@rootWatcher? or @prevWatcherClosed(@rootWatcher,@rootDir())
-      console.log "Init new watcher on #{@rootDir()}"
-      # @latex.logger.log.push {
-      #   type: info
-      #   text: "Watching #{@rootDir()} for changes"
-      # }
+      @latex.logger.log.push {
+        type: status
+        text: "Watching project #{@rootDir()} for changes"
+      }
       watchFileExts = ['png','eps','jpeg','jpg','pdf','tex']
       if @latex.manager.config?.latex_ext?
         watchFileExts.push @latex.manager.config.latex_ext...
       @rootWatcher = chokidar.watch(@rootDir() + "/**/*.+(#{watchFileExts.join("|").replace(/\./g,'')})")
-      @findDependentFiles(@latex.mainFile)
 
-      # Event callbacks
       @rootWatcher.on('add',(path)=>
-        console.log """#{path} was added!"""
         @watchActions(path,'add')
         return)
 
       @rootWatcher.on('change', (path,stats) =>
-        console.log """#{path} has changed!"""
         if @isTexFile(path)
           if path == @latex.mainFile
-            console.log "Main file has changed - Checking dependant files again"
+            # console.log "Main file has changed - Checking dependant files again"
             @findDependentFiles(path)
           # Parse changed file for references and commands
           @watchActions(path)
         return)
       @rootWatcher.on('unlink',(path) =>
-        console.log """#{path} was removed!"""
         @watchActions(path,'unlink')
         return)
       return true
@@ -181,8 +175,8 @@ class Manager extends Disposable
       @latex.provider.subFiles.getFileItems(path, !@isTexFile(path))
     else if event is 'unlink'
       @latex.provider.subFiles.getFileItems(path,false,true) # don't bother checking file type
+      @latex.provider.reference.resetRefItems(path)
     if @isTexFile(path) and (path in @latex.texFiles)
-      console.log "Getting commands and references for #{path}"
       # Push command and references suggestions
       @latex.provider.command.getCommands(path)
       @latex.provider.reference.getRefItems(path)
@@ -192,6 +186,7 @@ class Manager extends Disposable
       return false
     @latex.texFiles = [ @latex.mainFile ]
     @latex.bibFiles = []
+    @findDependentFiles(@latex.mainFile)
     @watchRoot()
     return true
 
@@ -227,22 +222,18 @@ class Manager extends Disposable
         if @latex.bibFiles.indexOf(bib) < 0
           @latex.bibFiles.push(bib)
         if !@bibWatcher or @prevBibWatcherClosed(@bibWatcher,bib)
-          console.log "Addiing new watcher on #{bib}"
           @bibWatcher = chokidar.watch(bib)
           # Register watcher callbacks
           @bibWatcher.on('add', (path) =>
             # bib file added, reparse
-            console.log "bib file #{path} Added - parsing!"
             @latex.provider.citation.getBibItems(path)
             return)
           @bibWatcher.on('change', (path) =>
             # bib file changed, reparse
-            console.log "bib file #{path} changed - Reparsing!"
             @latex.provider.citation.getBibItems(path)
             return)
           @bibWatcher.on('unlink', (path) =>
             # bib file removed, close and reset citation suggestions
-            console.log "bib file #{path} Removed"
             @latex.provider.citation.resetBibItems(path)
             return)
       )
@@ -252,7 +243,6 @@ class Manager extends Disposable
     watchedPaths = watcher.getWatched()
     if watcher? and path.basename(watchPath) not in watchedPaths[path.dirname(watchPath)]
 
-      console.log "Watcher on #{watchPath} closed!"
       watcher.close()
       return true
     else

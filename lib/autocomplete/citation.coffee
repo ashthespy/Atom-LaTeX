@@ -83,5 +83,5 @@ class Citation extends Disposable
       bibItem[key] = value
     return bibItem
 
-  resetBibItems:(bib) ->
+  resetBibItems: (bib) ->
     delete @items[bib]
