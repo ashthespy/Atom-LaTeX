@@ -128,9 +128,8 @@ class Manager extends Disposable
   prevWatcherClosed: (watcher, watchPath) ->
     watchedPaths = watcher.getWatched()
     if watcher? and !( watchPath of watchedPaths)
-      # rootWatcher exists, but project dir has been changed, so unlink
-      # console.log "Closing Watcher on #{watchPath}"
-      # Also need to reset all suggestions
+      # rootWatcher exists, but project dir has been changed
+      # and reset all suggestions and close watcher
       @latex.provider.command.resetCommands()
       @latex.provider.reference.resetRefItems()
       @latex.provider.subFiles.resetFileItems()
@@ -157,9 +156,10 @@ class Manager extends Disposable
       @rootWatcher.on('change', (path,stats) =>
         if @isTexFile(path)
           if path == @latex.mainFile
-            # console.log "Main file has changed - Checking dependant files again"
-            @findDependentFiles(path)
-          # Parse changed file for references and commands
+            # Update dependent files
+            @latex.texFiles = [ @latex.mainFile ]
+            @latex.bibFiles = []
+            @findDependentFiles(@latex.mainFile)
           @watchActions(path)
         return)
       @rootWatcher.on('unlink',(path) =>
@@ -176,7 +176,7 @@ class Manager extends Disposable
     else if event is 'unlink'
       @latex.provider.subFiles.getFileItems(path,false,true) # don't bother checking file type
       @latex.provider.reference.resetRefItems(path)
-    if @isTexFile(path) and (path in @latex.texFiles)
+    if @isTexFile(path)
       # Push command and references suggestions
       @latex.provider.command.getCommands(path)
       @latex.provider.reference.getRefItems(path)
@@ -184,14 +184,13 @@ class Manager extends Disposable
   findAll: ->
     if !@findMain()
       return false
-    @latex.texFiles = [ @latex.mainFile ]
-    @latex.bibFiles = []
-    @findDependentFiles(@latex.mainFile)
-    @watchRoot()
+    if @watchRoot()
+      @latex.texFiles = [ @latex.mainFile ]
+      @latex.bibFiles = []
+      @findDependentFiles(@latex.mainFile)
     return true
 
   findDependentFiles: (file) ->
-    console.log "Finding dependant files for " + file
     content = fs.readFileSync file, 'utf-8'
     baseDir = path.dirname(@latex.mainFile)
 
@@ -203,11 +202,8 @@ class Manager extends Disposable
       if path.extname(inputFile) is ''
         inputFile += '.tex'
       filePath = path.resolve(path.join(baseDir, inputFile))
-      if @latex.texFiles.indexOf(filePath) < 0
+      if @latex.texFiles.indexOf(filePath) < 0 and fs.existsSync(filePath)
         @latex.texFiles.push(filePath)
-        # Hacky - rethink how to implement this properly
-        @latex.provider.command.getCommands(filePath)
-        @latex.provider.reference.getRefItems(filePath)
         @findDependentFiles(filePath)
 
     bibReg = /(?:\\(?:bibliography|addbibresource)(?:\[[^\[\]\{\}]*\])?){(.+?)}/g
@@ -242,7 +238,6 @@ class Manager extends Disposable
   prevBibWatcherClosed:(watcher,watchPath) ->
     watchedPaths = watcher.getWatched()
     if watcher? and path.basename(watchPath) not in watchedPaths[path.dirname(watchPath)]
-
       watcher.close()
       return true
     else

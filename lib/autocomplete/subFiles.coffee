@@ -38,10 +38,10 @@ class SubFiles extends Disposable
     try
       if !images and !splice?
         relPath = path.relative(dirName,file)
-        # console.log "File: #{relPath} added to suggestion"
         extType = path.extname(relPath)
         @items.push
-         text: relPath.substr(
+         text: relPath.replace(/\\/g, "/").replace(/(\.tex)/g,"")
+         displayText: relPath.substr(
                   0, relPath.lastIndexOf('.')).replace( /\\/g, "/")
          rightLabel: extType.replace(".", "")
          iconHTML: """<i class="#{if extType of FileTypes then FileTypes[extType] else  "icon-file-text"}"></i>"""
@@ -70,7 +70,7 @@ class SubFiles extends Disposable
 
   resetFileItems: ->
     @items = []
-    
+
 # Use file-icons as default with Git Octicons as backups
 ImageTypes =
   '.png':   "medium-orange icon-file-media"
