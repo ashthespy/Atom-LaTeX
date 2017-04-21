@@ -43,6 +43,7 @@
     "latex-symbols-list": "^0.1.2",
     "tmp": "^0.0.31",
     "ws": "^1.1.1",
-    "fs-plus": "^2.3.0"
+    "fs-plus": "^2.3.0",
+    "chokidar": "^1.6.0"
   }
 }

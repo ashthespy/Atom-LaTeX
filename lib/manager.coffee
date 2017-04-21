@@ -1,9 +1,15 @@
 { Disposable } = require 'atom'
 fs = require 'fs'
 path = require 'path'
+chokidar = require 'chokidar'
 
 module.exports =
 class Manager extends Disposable
+  rootDir: ->
+    if atom.workspace.getActiveTextEditor()?
+      return atom.project.relativizePath(atom.workspace.getActiveTextEditor().getPath())[0]
+    else
+      return atom.project.getPaths()[0] # backup, return first active project
   constructor: (latex) ->
     @latex = latex
 
@@ -12,7 +18,7 @@ class Manager extends Disposable
        !atom.workspace.getActiveTextEditor()?
       return @config?
     @lastCfgTime = Date.now()
-    rootDir = atom.project.relativizePath(atom.workspace.getActiveTextEditor().getPath())[0]
+    rootDir = @rootDir()
     for file in fs.readdirSync rootDir
       if file is '.latexcfg'
         try
@@ -51,10 +57,11 @@ class Manager extends Disposable
       return true if @findMainSelfMagic()
       return true if @findMainSelf()
 
-    return true if @findMainConfig()
-    if @latex.mainFile?
+    # Check if the mainFile is part of the curent project path
+    if @latex.mainFile? and atom.project.relativizePath(@latex.mainFile)[0] == @rootDir()
       return true
 
+    return true if @findMainConfig()
     return true if @findMainSelfMagic()
     return true if @findMainSelf()
     return true if @findMainAllRoot()
@@ -118,12 +125,70 @@ class Manager extends Disposable
       path.dirname(@latex.mainFile),
       path.basename(@latex.mainFile, '.tex') + '.pdf')
 
+  prevWatcherClosed: (watcher, watchPath) ->
+    watchedPaths = watcher.getWatched()
+    if watcher? and !( watchPath of watchedPaths)
+      # rootWatcher exists, but project dir has been changed
+      # and reset all suggestions and close watcher
+      @latex.provider.command.resetCommands()
+      @latex.provider.reference.resetRefItems()
+      @latex.provider.subFiles.resetFileItems()
+      watcher.close()
+      return true
+    else
+      return false
+
+  watchRoot: ->
+    if !@rootWatcher? or @prevWatcherClosed(@rootWatcher,@rootDir())
+      @latex.logger.log.push {
+        type: status
+        text: "Watching project #{@rootDir()} for changes"
+      }
+      watchFileExts = ['png','eps','jpeg','jpg','pdf','tex']
+      if @latex.manager.config?.latex_ext?
+        watchFileExts.push @latex.manager.config.latex_ext...
+      @rootWatcher = chokidar.watch(@rootDir() + "/**/*.+(#{watchFileExts.join("|").replace(/\./g,'')})")
+
+      @rootWatcher.on('add',(path)=>
+        @watchActions(path,'add')
+        return)
+
+      @rootWatcher.on('change', (path,stats) =>
+        if @isTexFile(path)
+          if path == @latex.mainFile
+            # Update dependent files
+            @latex.texFiles = [ @latex.mainFile ]
+            @latex.bibFiles = []
+            @findDependentFiles(@latex.mainFile)
+          @watchActions(path)
+        return)
+      @rootWatcher.on('unlink',(path) =>
+        @watchActions(path,'unlink')
+        return)
+      return true
+
+    return false
+
+  watchActions: (path,event) ->
+    # Push/Splice file suggestions on new file additions or removals
+    if event is 'add'
+      @latex.provider.subFiles.getFileItems(path, !@isTexFile(path))
+    else if event is 'unlink'
+      @latex.provider.subFiles.getFileItems(path,false,true) # don't bother checking file type
+      @latex.provider.reference.resetRefItems(path)
+    if @isTexFile(path)
+      # Push command and references suggestions
+      @latex.provider.command.getCommands(path)
+      @latex.provider.reference.getRefItems(path)
+
   findAll: ->
     if !@findMain()
       return false
-    @latex.texFiles = [ @latex.mainFile ]
-    @latex.bibFiles = []
-    @findDependentFiles(@latex.mainFile)
+    if @watchRoot()
+      @latex.texFiles = [ @latex.mainFile ]
+      @latex.bibFiles = []
+      @findDependentFiles(@latex.mainFile)
+    return true
 
   findDependentFiles: (file) ->
     content = fs.readFileSync file, 'utf-8'
@@ -137,7 +202,7 @@ class Manager extends Disposable
       if path.extname(inputFile) is ''
         inputFile += '.tex'
       filePath = path.resolve(path.join(baseDir, inputFile))
-      if @latex.texFiles.indexOf(filePath) < 0
+      if @latex.texFiles.indexOf(filePath) < 0 and fs.existsSync(filePath)
         @latex.texFiles.push(filePath)
         @findDependentFiles(filePath)
 
@@ -152,5 +217,28 @@ class Manager extends Disposable
         bib = path.resolve(path.join(baseDir, bib))
         if @latex.bibFiles.indexOf(bib) < 0
           @latex.bibFiles.push(bib)
+        if !@bibWatcher or @prevBibWatcherClosed(@bibWatcher,bib)
+          @bibWatcher = chokidar.watch(bib)
+          # Register watcher callbacks
+          @bibWatcher.on('add', (path) =>
+            # bib file added, reparse
+            @latex.provider.citation.getBibItems(path)
+            return)
+          @bibWatcher.on('change', (path) =>
+            # bib file changed, reparse
+            @latex.provider.citation.getBibItems(path)
+            return)
+          @bibWatcher.on('unlink', (path) =>
+            # bib file removed, close and reset citation suggestions
+            @latex.provider.citation.resetBibItems(path)
+            return)
       )
     return true
+
+  prevBibWatcherClosed:(watcher,watchPath) ->
+    watchedPaths = watcher.getWatched()
+    if watcher? and path.basename(watchPath) not in watchedPaths[path.dirname(watchPath)]
+      watcher.close()
+      return true
+    else
+      return false
