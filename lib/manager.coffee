@@ -217,7 +217,7 @@ class Manager extends Disposable
         bib = path.resolve(path.join(baseDir, bib))
         if @latex.bibFiles.indexOf(bib) < 0
           @latex.bibFiles.push(bib)
-        if !@bibWatcher or @prevBibWatcherClosed(@bibWatcher,bib)
+        if !@bibWatcher? or @prevBibWatcherClosed(@bibWatcher,bib)
           @bibWatcher = chokidar.watch(bib)
           # Register watcher callbacks
           @bibWatcher.on('add', (path) =>
@@ -237,7 +237,7 @@ class Manager extends Disposable
 
   prevBibWatcherClosed:(watcher,watchPath) ->
     watchedPaths = watcher.getWatched()
-    if watcher? and path.basename(watchPath) not in watchedPaths[path.dirname(watchPath)]
+    if watcher? and (!watchedPaths[path.dirname(watchPath)]? or path.basename(watchPath) not in watchedPaths[path.dirname(watchPath)])
       watcher.close()
       return true
     else
