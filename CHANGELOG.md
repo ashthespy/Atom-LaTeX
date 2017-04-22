@@ -1,3 +1,10 @@
+## [0.7.6]  2017-04-22
+### Changed
+* [(#47)](https://github.com/James-Yu/Atom-LaTeX/pull/49) Use `chokidar` to watch files and folders.
+
+### Fixed
+* [(#49)](https://github.com/James-Yu/Atom-LaTeX/pull/49) Also respect `Focus Viewer` setting for on launching from preview icon.
+
 ## [0.7.5]  2017-04-07
 ### Added
 * [(#40)](https://github.com/James-Yu/Atom-LaTeX/pull/40) Added sub-file autocomplete support.
