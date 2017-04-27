@@ -1,3 +1,7 @@
+## [0.7.7]  2017-04-27
+### Fixed
+* [(#57)](https://github.com/James-Yu/Atom-LaTeX/pull/57) Fix prevBibWatcherClosed issue in [#56](https://github.com/James-Yu/Atom-LaTeX/issues/56).
+
 ## [0.7.6]  2017-04-22
 ### Changed
 * [(#47)](https://github.com/James-Yu/Atom-LaTeX/pull/49) Use `chokidar` to watch files and folders.
