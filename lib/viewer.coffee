@@ -51,7 +51,7 @@ class Viewer extends Disposable
     @window.focus() if @window? and !@window.isDestroyed()
 
   focusMain: ->
-    @self.focus() if @self?
+    @self.focus() if @self?.activeItem?
 
   synctex: (record) ->
     @client.ws?.send JSON.stringify
