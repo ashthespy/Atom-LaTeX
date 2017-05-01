@@ -1,3 +1,7 @@
+## [0.7.8]  2017-05-01
+### Fixed
+* [(#61)](https://github.com/James-Yu/Atom-LaTeX/pull/57) Fix [#59](https://github.com/James-Yu/Atom-LaTeX/issues/59) - Set focus only activeItem is defined.
+
 ## [0.7.7]  2017-04-27
 ### Fixed
 * [(#57)](https://github.com/James-Yu/Atom-LaTeX/pull/57) Fix prevBibWatcherClosed issue in [#56](https://github.com/James-Yu/Atom-LaTeX/issues/56).
