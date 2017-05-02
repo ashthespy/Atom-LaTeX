@@ -6,10 +6,19 @@ chokidar = require 'chokidar'
 module.exports =
 class Manager extends Disposable
   rootDir: ->
-    if atom.workspace.getActiveTextEditor()?
+    # Collect all open TextEditors with  LaTeX grammar
+    texEditors = (editor for editor in atom.workspace.getTextEditors()\
+                    when editor.getGrammar().scopeName.match(/text.tex.latex/))
+    if atom.workspace.getActiveTextEditor()? # An active editor is open
       return atom.project.relativizePath(atom.workspace.getActiveTextEditor().getPath())[0]
-    else
-      return atom.project.getPaths()[0] # backup, return first active project
+    else if texEditors.length > 0   # First open editor with LaTeX grammar
+      return atom.project.relativizePath(texEditors[0].getPath())[0]
+    else # backup, return first active project
+        @latex.logger.log.push {
+          type: status
+          text: "No active TeX editors were open - Setting Project: #{atom.project.getPaths()[0]}"
+        }
+      return atom.project.getPaths()[0]
   constructor: (latex) ->
     @latex = latex
 
