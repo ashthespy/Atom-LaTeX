@@ -5,6 +5,10 @@ chokidar = require 'chokidar'
 
 module.exports =
 class Manager extends Disposable
+  constructor: (latex) ->
+    @latex = latex
+    @disable_watcher = atom.config.get "atom-latex.disable_watcher"
+
   rootDir: ->
     # Collect all open TextEditors with  LaTeX grammar
     texEditors = (editor for editor in atom.workspace.getTextEditors()\
@@ -19,8 +23,6 @@ class Manager extends Disposable
           text: "No active TeX editors were open - Setting Project: #{atom.project.getPaths()[0]}"
         }
       return atom.project.getPaths()[0]
-  constructor: (latex) ->
-    @latex = latex
 
   loadLocalCfg: ->
     if @lastCfgTime? and Date.now() - @lastCfgTime < 200 or\
@@ -156,47 +158,54 @@ class Manager extends Disposable
       watchFileExts = ['png','eps','jpeg','jpg','pdf','tex']
       if @latex.manager.config?.latex_ext?
         watchFileExts.push @latex.manager.config.latex_ext...
-      @rootWatcher = chokidar.watch(@rootDir() + "/**/*.+(#{watchFileExts.join("|").replace(/\./g,'')})")
-
-      @rootWatcher.on('add',(path)=>
-        @watchActions(path,'add')
+      @rootWatcher = chokidar.watch(@rootDir(),{
+        ignored: ///(|[\/\\])\.(?!#{watchFileExts.join("|").replace(/\./g,'')})///g
+        })
+      console.time('RootWatcher Init')
+      @rootWatcher.on('add',(fpath)=>
+        @watchActions(fpath,'add')
         return)
-
-      @rootWatcher.on('change', (path,stats) =>
-        if @isTexFile(path)
-          if path == @latex.mainFile
-            # Update dependent files
-            @latex.texFiles = [ @latex.mainFile ]
-            @latex.bibFiles = []
-            @findDependentFiles(@latex.mainFile)
-          @watchActions(path)
-        return)
-      @rootWatcher.on('unlink',(path) =>
-        @watchActions(path,'unlink')
-        return)
+      @rootWatcher.on('ready',
+      () =>
+        @rootWatcher.on('change', (fpath,stats) =>
+          if @isTexFile(fpath)
+            if fpath == @latex.mainFile
+              # Update dependent files
+              @latex.texFiles = [ @latex.mainFile ]
+              @latex.bibFiles = []
+              @findDependentFiles(@latex.mainFile)
+            @watchActions(fpath)
+          return)
+        @rootWatcher.on('unlink',(fpath) =>
+          @watchActions(fpath,'unlink')
+          return)
+      )
+      console.timeEnd('RootWatcher Init')
       return true
 
     return false
 
-  watchActions: (path,event) ->
+  watchActions: (fpath,event) ->
     # Push/Splice file suggestions on new file additions or removals
     if event is 'add'
-      @latex.provider.subFiles.getFileItems(path, !@isTexFile(path))
+      @latex.provider.subFiles.getFileItems(fpath, !@isTexFile(fpath))
     else if event is 'unlink'
-      @latex.provider.subFiles.getFileItems(path,false,true) # don't bother checking file type
-      @latex.provider.reference.resetRefItems(path)
-    if @isTexFile(path)
+      @latex.provider.subFiles.getFileItems(fpath,false,true) # don't bother checking file type
+      @latex.provider.reference.resetRefItems(fpath)
+    if @isTexFile(fpath)
       # Push command and references suggestions
-      @latex.provider.command.getCommands(path)
-      @latex.provider.reference.getRefItems(path)
+      @latex.provider.command.getCommands(fpath)
+      @latex.provider.reference.getRefItems(fpath)
 
   findAll: ->
     if !@findMain()
       return false
-    if @watchRoot()
+    if @disable_watcher or @watchRoot()
       @latex.texFiles = [ @latex.mainFile ]
       @latex.bibFiles = []
       @findDependentFiles(@latex.mainFile)
+      if @disable_watcher
+        @watchActions(file,'add') for file in @latex.texFiles
     return true
 
   findDependentFiles: (file) ->
@@ -226,20 +235,22 @@ class Manager extends Disposable
         bib = path.resolve(path.join(baseDir, bib))
         if @latex.bibFiles.indexOf(bib) < 0
           @latex.bibFiles.push(bib)
-        if !@bibWatcher? or @prevBibWatcherClosed(@bibWatcher,bib)
+        if @disable_watcher
+          @latex.provider.citation.getBibItems(bib)
+        else if !@bibWatcher? or @prevBibWatcherClosed(@bibWatcher,bib)
           @bibWatcher = chokidar.watch(bib)
           # Register watcher callbacks
-          @bibWatcher.on('add', (path) =>
+          @bibWatcher.on('add', (fpath) =>
             # bib file added, reparse
-            @latex.provider.citation.getBibItems(path)
+            @latex.provider.citation.getBibItems(fpath)
             return)
-          @bibWatcher.on('change', (path) =>
+          @bibWatcher.on('change', (fpath) =>
             # bib file changed, reparse
-            @latex.provider.citation.getBibItems(path)
+            @latex.provider.citation.getBibItems(fpath)
             return)
-          @bibWatcher.on('unlink', (path) =>
+          @bibWatcher.on('unlink', (fpath) =>
             # bib file removed, close and reset citation suggestions
-            @latex.provider.citation.resetBibItems(path)
+            @latex.provider.citation.resetBibItems(fpath)
             return)
       )
     return true

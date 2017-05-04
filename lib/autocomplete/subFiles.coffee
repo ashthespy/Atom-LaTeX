@@ -22,6 +22,18 @@ class SubFiles extends Disposable
 
     if !@latex.manager.findAll()
       return suggestions
+
+    if @latex.manager.disable_watcher
+      dirName = path.dirname(@latex.mainFile)
+      results =  fs.listTreeSync(dirName)
+      FileExts = Object.keys(ImageTypes)
+      if @latex.manager.config?.latex_ext?
+        FileExts.push ".tex" , @latex.manager.config.latex_ext...
+      # Filter results
+      results = fs.listTreeSync(dirName).filter (res) -> return \
+       res.match(///(|[\/\\])\.(?:#{FileExts.join("|").replace(/\./g,'')})///g)
+      @getFileItems(file,!@latex.manager.isTexFile(file)) for file in results
+
     activeFile = atom.workspace.getActiveTextEditor().getPath()
     for item in @items when item.texImage is images? and\
        item.text isnt path.basename(activeFile,path.extname(activeFile))
@@ -44,10 +56,10 @@ class SubFiles extends Disposable
          displayText: relPath.substr(
                   0, relPath.lastIndexOf('.')).replace( /\\/g, "/")
          rightLabel: extType.replace(".", "")
-         iconHTML: """<i class="#{if extType of FileTypes then FileTypes[extType] else  "icon-file-text"}"></i>"""
+         iconHTML: """<i class="#{(FileTypes[extType] || "icon-file-text")}"></i>"""
          latexType: 'files'
          texImage: false
-      else if images and path.extname(file) of ImageTypes and !splice?
+      else if images and !splice?
          relPath = path.relative(dirName,file)
          extType = path.extname(relPath)
          @items.push
@@ -65,8 +77,8 @@ class SubFiles extends Disposable
           pos =  @items.map (item) -> item.text.indexOf(relPath.substr(
                    0, relPath.lastIndexOf('.')).replace( /\\/g, "/"))
           @items.splice(pos.indexOf(0),1)
-          console.log "File: #{relPath} removed to suggestion"
     catch e
+      console.log e
 
   resetFileItems: ->
     @items = []
