@@ -18,6 +18,9 @@ describe 'Atom-LaTeX', ->
         expect(pkg.latex.server).toBeDefined()
         expect(pkg.latex.panel).toBeDefined()
         expect(pkg.latex.parser).toBeDefined()
+        expect(pkg.latex.locator).toBeDefined()
+        expect(pkg.latex.logger).toBeDefined()
+        expect(pkg.latex.cleaner).toBeDefined()
 
   describe 'Builder', ->
     beforeEach ->
@@ -116,6 +119,7 @@ describe 'Atom-LaTeX', ->
       execCmd = execCmd_ = open = open_ = undefined
 
       beforeEach ->
+        waitsForPromise -> atom.packages.activatePackage('status-bar')
         open = jasmine.createSpy('open')
         stdout = jasmine.createSpy('stdout')
         execCmd = jasmine.createSpy('execCmd').andCallFake((cmd, cwd, fn) ->
@@ -140,7 +144,7 @@ describe 'Atom-LaTeX', ->
         helper.unsetConfig 'atom-latex.bibtex'
         helper.unsetConfig 'atom-latex.compiler_param'
         helper.unsetConfig 'atom-latex.custom_toolchain'
-        helper.setConfig 'atom-latex.preview_after_build', false
+        helper.setConfig 'atom-latex.preview_after_build', 'Do nothing'
         pkg.latex.builder.build()
         expect(execCmd.callCount).toBe(4)
         expect(open).not.toHaveBeenCalled()
