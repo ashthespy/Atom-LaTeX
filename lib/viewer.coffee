@@ -39,7 +39,7 @@ class Viewer extends Disposable
       atom.workspace.paneForItem(@tabView).destroyItem(@tabView)
       @openViewerNewTab()
       return
-    else if @window? and @window.getTitle() isnt newTitle
+    else if @window? and !@window.isDestroyed() and @window.getTitle() isnt newTitle
       @window.setTitle("""Atom-LaTeX PDF Viewer - [#{@latex.mainFile}]""")
     @client.ws?.send JSON.stringify type: "refresh"
 
