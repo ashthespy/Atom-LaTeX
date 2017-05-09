@@ -16,6 +16,7 @@ class Builder extends Disposable
     @setCmds()
     if atom.config.get('atom-latex.save_on_build')
       @saveonBuild()
+    @buildTimer = Date.now()
     @latex.logger.log = []
     @latex.package.status.view.status = 'building'
     @latex.package.status.view.update()
@@ -86,7 +87,7 @@ class Builder extends Disposable
     if @latex.parser.isLatexmkSkipped
       logText = 'latexmk skipped building process.'
     else
-      logText = 'Successfully built LaTeX.'
+      logText = "Successfully built LaTeX in #{Date.now() - @buildTimer} ms"
     @latex.logger.log.push({
       type: 'status',
       text: logText
