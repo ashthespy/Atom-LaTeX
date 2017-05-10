@@ -1,6 +1,10 @@
+## [0.7.9]  2017-05-10
+### Changed
+* [(#65)](https://github.com/James-Yu/Atom-LaTeX/pull/65) Multi-file handling improvements and minor tweaks.
+
 ## [0.7.8]  2017-05-01
 ### Fixed
-* [(#61)](https://github.com/James-Yu/Atom-LaTeX/pull/57) Fix [#59](https://github.com/James-Yu/Atom-LaTeX/issues/59) - Set focus only activeItem is defined.
+* [(#61)](https://github.com/James-Yu/Atom-LaTeX/pull/61) Fix [#59](https://github.com/James-Yu/Atom-LaTeX/issues/59) - Set focus only activeItem is defined.
 
 ## [0.7.7]  2017-04-27
 ### Fixed
