@@ -80,8 +80,7 @@ describe 'Atom-LaTeX', ->
         helper.unsetConfig 'atom-latex.latexmk_param'
         pkg.latex.builder.binCheck.andReturn(true)
         pkg.latex.builder.setCmds()
-        expect(pkg.latex.builder.cmds[0]).toBe('latexmk -synctex=1 \
-          -interaction=nonstopmode -file-line-error -pdf main')
+        expect(pkg.latex.builder.cmds[0]).toBe('latexmk -pdf main')
 
       it 'generates custom command when enabled auto but without binary', ->
         helper.setConfig 'atom-latex.toolchain', 'auto'
@@ -100,8 +99,7 @@ describe 'Atom-LaTeX', ->
         helper.unsetConfig 'atom-latex.latexmk_param'
         pkg.latex.builder.binCheck.andReturn(true)
         pkg.latex.builder.setCmds()
-        expect(pkg.latex.builder.cmds[0]).toBe('latexmk -synctex=1 \
-          -interaction=nonstopmode -file-line-error -pdf main')
+        expect(pkg.latex.builder.cmds[0]).toBe('latexmk -pdf main')
 
       it 'generates custom command when enabled custom toolchain', ->
         helper.setConfig 'atom-latex.toolchain', 'custom toolchain'
