@@ -64,6 +64,7 @@ class Locator extends Disposable
         atom.workspace.open(file,
           initialLine: row
           initialColumn: column
+          searchAllPanes: true
         )
         @latex.viewer.focusMain()
       else
