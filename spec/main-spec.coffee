@@ -45,7 +45,8 @@ describe 'Atom-LaTeX', ->
         project = """#{path.dirname(__filename)}#{path.sep}latex_project"""
         waitsForPromise -> atom.workspace.open(
           """#{project}#{path.sep}input.tex""").then (editor) ->
-            await editor.save()
+            Promise.resolve editor.save()
+          .then () ->
             expect(builder.build).toHaveBeenCalled()
 
       it 'does nothing if config disabled', ->
@@ -53,7 +54,8 @@ describe 'Atom-LaTeX', ->
         project = """#{path.dirname(__filename)}#{path.sep}latex_project"""
         waitsForPromise -> atom.workspace.open(
           """#{project}#{path.sep}input.tex""").then (editor) ->
-            await editor.save()
+            Promise.resolve editor.save()
+          .then () ->
             expect(builder.build).not.toHaveBeenCalled()
 
       it 'does nothing if current file is not a .tex file', ->
@@ -61,7 +63,8 @@ describe 'Atom-LaTeX', ->
         project = """#{path.dirname(__filename)}#{path.sep}latex_project"""
         waitsForPromise -> atom.workspace.open(
           """#{project}#{path.sep}dummy.file""").then (editor) ->
-            await editor.save()
+            Promise.resolve editor.save()
+          .then () ->
             expect(builder.build).not.toHaveBeenCalled()
 
     describe 'toolchain feature', ->

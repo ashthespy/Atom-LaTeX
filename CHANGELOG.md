@@ -1,3 +1,7 @@
+## [0.7.11]  2017-06-15
+### Fixed
+* `await` won't work with coffee-script.
+
 ## [0.7.10]  2017-06-15
 ### Changed
 * [(#77)](https://github.com/James-Yu/Atom-LaTeX/issues/77) Cope with async save() in new atom.

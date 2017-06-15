@@ -14,24 +14,28 @@ class Builder extends Disposable
 
     @killProcess()
     @setCmds()
+    promise = Promise.resolve()
     if atom.config.get('atom-latex.save_on_build')
-      @saveonBuild()
-    @buildTimer = Date.now()
-    @latex.logger.log = []
-    @latex.package.status.view.status = 'building'
-    @latex.package.status.view.update()
-    @buildLogs = []
-    @execCmds = []
-    @buildProcess()
+      promise = @saveonBuild()
+    promise.then () =>
+      @buildTimer = Date.now()
+      @latex.logger.log = []
+      @latex.package.status.view.status = 'building'
+      @latex.package.status.view.update()
+      @buildLogs = []
+      @execCmds = []
+      @buildProcess()
 
     return true
 
   saveonBuild: ->
     if !@latex?.texFiles
       @latex.manager.findAll()
+    promises = []
     for editor in atom.workspace.getTextEditors()
       if editor.isModified() and editor.getPath() in @latex.texFiles
-        await editor.save()
+        promises.push editor.save()
+    return Promise.all(promises)
 
   execCmd: (cmd, env, cb) ->
     env.maxBuffer = Infinity
