@@ -31,7 +31,7 @@ class Builder extends Disposable
       @latex.manager.findAll()
     for editor in atom.workspace.getTextEditors()
       if editor.isModified() and editor.getPath() in @latex.texFiles
-        editor.save()
+        await editor.save()
 
   execCmd: (cmd, env, cb) ->
     env.maxBuffer = Infinity
