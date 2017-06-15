@@ -1,3 +1,7 @@
+## [0.7.10]  2017-06-15
+### Changed
+* [(#77)](https://github.com/James-Yu/Atom-LaTeX/issues/77) Cope with async save() in new atom.
+
 ## [0.7.9]  2017-05-10
 ### Changed
 * [(#65)](https://github.com/James-Yu/Atom-LaTeX/pull/65) Multi-file handling improvements and minor tweaks.
