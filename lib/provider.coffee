@@ -45,12 +45,12 @@ class Provider extends Disposable
         setTimeout(( -> atom.packages.getActivePackage('autocomplete-plus')\
           .mainModule.autocompleteManager.findSuggestions()), 100)
       if suggestion.latexType is 'environment'
-        rowContent = editor.buffer.lines[triggerPosition.row].slice(
-          0, triggerPosition.column)
+        lines = editor.getBuffer().getLines()
+        rowContent = lines[triggerPosition.row].slice(0, triggerPosition.column)
         if rowContent.indexOf('\\end') > rowContent.indexOf('\\begin')
           editor.setCursorBufferPosition(
             row: triggerPosition.row - 1
-            column: editor.buffer.lines[triggerPosition.row - 1].length
+            column: lines[triggerPosition.row - 1].length
           )
           if suggestion.additionalInsert?
             editor.insertText(suggestion.additionalInsert)
