@@ -1,3 +1,7 @@
+## [0.7.12]  2017-07-27
+### Fixed
+* [(#83)](https://github.com/James-Yu/Atom-LaTeX/pull/83) Fix failures due to buffer.lines being undefined @mortenpi.
+
 ## [0.7.11]  2017-06-15
 ### Fixed
 * `await` won't work with coffee-script.
