@@ -44,7 +44,7 @@ class Manager extends Disposable
 
   isTexFile: (name) ->
     @latex.manager.loadLocalCfg()
-    if path.extname(name) == '.tex' or \
+    if path.extname(name) == '.tex' or path.extname(name) == '.tikz' or \
         @latex.manager.config?.latex_ext?.indexOf(path.extname(name)) > -1
       return true
     return false
