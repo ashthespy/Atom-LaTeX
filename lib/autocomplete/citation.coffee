@@ -84,4 +84,8 @@ class Citation extends Disposable
     return bibItem
 
   resetBibItems: (bib) ->
-    delete @items[bib]
+    # Remove specific or all citation suggestions
+    if bib?
+      delete @items[bib]
+    else
+      @items = []

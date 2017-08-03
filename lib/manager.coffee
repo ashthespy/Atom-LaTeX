@@ -8,7 +8,7 @@ class Manager extends Disposable
   constructor: (latex) ->
     @latex = latex
     @disable_watcher = atom.config.get "atom-latex.disable_watcher"
-
+    @watched = []
   rootDir: ->
     # Collect all open TextEditors with  LaTeX grammar
     texEditors = (editor for editor in atom.workspace.getTextEditors()\
@@ -138,29 +138,32 @@ class Manager extends Disposable
 
   prevWatcherClosed: (watcher, watchPath) ->
     watchedPaths = watcher.getWatched()
-    if watcher? and !( watchPath of watchedPaths)
+    if !( watchPath of watchedPaths)
       # rootWatcher exists, but project dir has been changed
       # and reset all suggestions and close watcher
       @latex.provider.command.resetCommands()
       @latex.provider.reference.resetRefItems()
       @latex.provider.subFiles.resetFileItems()
+      @latex.provider.citation.resetBibItems()
       watcher.close()
       return true
     else
       return false
 
   watchRoot: ->
-    if !@rootWatcher? or @prevWatcherClosed(@rootWatcher,@rootDir())
+    root = @rootDir()
+    if !@rootWatcher? or @prevWatcherClosed(@rootWatcher,root)
       @latex.logger.log.push {
         type: status
-        text: "Watching project #{@rootDir()} for changes"
+        text: "Watching project #{root} for changes"
       }
       watchFileExts = ['png','eps','jpeg','jpg','pdf','tex']
       if @latex.manager.config?.latex_ext?
         watchFileExts.push @latex.manager.config.latex_ext...
-      @rootWatcher = chokidar.watch(@rootDir(),{
+      @rootWatcher = chokidar.watch(root,{
         ignored: ///(|[\/\\])\.(?!#{watchFileExts.join("|").replace(/\./g,'')})///g
         })
+      @watched.push(root)
       console.time('RootWatcher Init')
       @rootWatcher.on('add',(fpath)=>
         @watchActions(fpath,'add')
@@ -229,36 +232,55 @@ class Manager extends Disposable
       result = bibReg.exec content
       break if !result?
       bibs = result[1].split(',').map((bib) -> bib.trim())
-      paths = bibs.map((bib) =>
-        if path.extname(bib) is ''
-          bib += '.bib'
-        bib = path.resolve(path.join(baseDir, bib))
-        if @latex.bibFiles.indexOf(bib) < 0
-          @latex.bibFiles.push(bib)
-        if @disable_watcher
-          @latex.provider.citation.getBibItems(bib)
-        else if !@bibWatcher? or @prevBibWatcherClosed(@bibWatcher,bib)
-          @bibWatcher = chokidar.watch(bib)
-          # Register watcher callbacks
-          @bibWatcher.on('add', (fpath) =>
-            # bib file added, reparse
-            @latex.provider.citation.getBibItems(fpath)
-            return)
-          @bibWatcher.on('change', (fpath) =>
-            # bib file changed, reparse
-            @latex.provider.citation.getBibItems(fpath)
-            return)
-          @bibWatcher.on('unlink', (fpath) =>
-            # bib file removed, close and reset citation suggestions
-            @latex.provider.citation.resetBibItems(fpath)
-            return)
-      )
+      @addBibToWatcher(bib) for bib in bibs
+
+    # Reset Citations
+    for fpath in @watched
+      # The race is on b/w this test and setting up bibWatcher, hence the first check
+      if fpath? and fpath not in @latex.bibFiles and !(fpath.indexOf('.bib') < 0)
+        # bib file removed, remove citation suggestions and unwatch
+        @latex.provider.citation.resetBibItems(fpath)
+        @bibWatcher.unwatch(fpath)
+        @watched.splice(@watched.indexOf(fpath),1)
     return true
 
-  prevBibWatcherClosed:(watcher,watchPath) ->
-    watchedPaths = watcher.getWatched()
-    if watcher? and (!watchedPaths[path.dirname(watchPath)]? or path.basename(watchPath) not in watchedPaths[path.dirname(watchPath)])
-      watcher.close()
-      return true
-    else
-      return false
+  addBibToWatcher: (bib) ->
+    if path.extname(bib) is ''
+      bib += '.bib'
+    bib = path.resolve(path.join(path.dirname(@latex.mainFile),bib))
+    if @latex.bibFiles.indexOf(bib) < 0
+      @latex.bibFiles.push(bib)
+    if @disable_watcher
+      @latex.provider.citation.getBibItems(bib)
+      return
+    # Init bibWatcher listeners
+    if !@bibWatcher? or @bibWatcher.closed
+      @bibWatcher = chokidar.watch(bib)
+      @watched.push(bib)
+      # @latex.logger.log.push {
+      #   type: status
+      #   text: "Watching bib file #{bib} for changes"
+      # }
+      # Register watcher callbacks
+      @bibWatcher.on('add', (fpath) =>
+        # bib file added, parse
+        @latex.provider.citation.getBibItems(fpath)
+        # @latex.logger.log.push {
+        #   type: status
+        #   text: "Added bib file #{fpath} to Watcher"
+        # }
+        return)
+      @bibWatcher.on('change', (fpath) =>
+        # bib file changed, reparse
+        @latex.provider.citation.getBibItems(fpath)
+        return)
+      @bibWatcher.on('unlink', (fpath) =>
+        # bib file deleted, remove citation suggestions and unwatch
+        @latex.provider.citation.resetBibItems(fpath)
+        @bibWatcher.unwatch(fpath)
+        @watched.splice(@watched.indexOf(fpath),1)
+        return)
+    else if bib not in @watched
+      # Process new unwatched bib file
+      @bibWatcher.add(bib)
+      @watched.push(bib)
