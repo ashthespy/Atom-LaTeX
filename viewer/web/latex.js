@@ -58,3 +58,13 @@ document.addEventListener('pagerendered', (e) => {
         socket.send(JSON.stringify({type:"click", path:file, pos:pos, page:page}));
     }
 }, true);
+
+// Open links externally
+// identified by target set from PDFJS.LinkTarget.TOP
+document.addEventListener('click', (e) => {
+    var srcElement = e.srcElement;
+    if (srcElement.href != undefined && srcElement.target == '_top'){
+      e.preventDefault()
+      socket.send(JSON.stringify({type:"link",href:srcElement.href}));
+    }
+});
