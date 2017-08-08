@@ -1,3 +1,10 @@
+## [0.7.13]  2017-08-08
+### Fixed
+* [(#89)](https://github.com/James-Yu/Atom-LaTeX/pull/89)
+* [(#90)](https://github.com/James-Yu/Atom-LaTeX/pull/90)
+* [(#92)](https://github.com/James-Yu/Atom-LaTeX/pull/92)
+* [(#94)](https://github.com/James-Yu/Atom-LaTeX/pull/94)
+
 ## [0.7.12]  2017-07-27
 ### Fixed
 * [(#83)](https://github.com/James-Yu/Atom-LaTeX/pull/83) Fix failures due to buffer.lines being undefined @mortenpi.
