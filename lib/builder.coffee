@@ -23,6 +23,7 @@ class Builder extends Disposable
       @latex.package.status.view.status = 'building'
       @latex.package.status.view.update()
       @buildLogs = []
+      @buildErrs = []
       @execCmds = []
       @buildProcess()
 
@@ -37,9 +38,6 @@ class Builder extends Disposable
         promises.push editor.save()
     return Promise.all(promises)
 
-  execCmd: (cmd, env, cb) ->
-    env.maxBuffer = Infinity
-    return cp.exec(cmd, env, cb)
 
   buildProcess: ->
     cmd = @cmds.shift()
@@ -50,40 +48,61 @@ class Builder extends Disposable
     if atom.config.get('atom-latex.hide_log_if_success')
       @latex.panel.view.showLog = false
     @buildLogs.push ''
+    @buildErrs.push ''
     @execCmds.push cmd
-    # @latex.logPanel.showText icon: 'sync', spin: true, 'Building LaTeX.'
+
     @latex.logger.log.push({
       type: 'status',
       text: """Step #{@buildLogs.length}> #{cmd}"""
     })
-    @process = @execCmd(
-      cmd, {cwd: path.dirname @latex.mainFile}, (err, stdout, stderr) =>
-        @process = undefined
-        if !err or (err.code is null)
-          @buildProcess()
-        else
-          @latex.panel.view.showLog = true
-          @latex.logger.processError(
-            """Failed Building LaTeX (code #{err.code}).""", err.message, true,
-            [{
-              text: "Dismiss"
-              onDidClick: => @latex.logger.clearBuildError()
-            }, {
-              text: "Show build log"
-              onDidClick: => @latex.logger.showLog()
-            }]
-          )
-          @cmds = []
-          # @latex.logPanel.showText icon: @latex.parser.status, 'Error.', 3000
-          @latex.logger.log.push({
-            type: 'status',
-            text: 'Error occurred while building LaTeX.'
-          })
-          @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
-    )
+    toolchain = cmd.split(' ') # Split into array of cmd + arguments
+    @currentProcess = cp.spawn(toolchain.shift(), toolchain, {cwd:path.dirname @latex.mainFile})
 
-    @process.stdout.on 'data', (data) =>
+    # Register callbacks for the spawnprocess
+    @currentProcess.stdout.on 'data', (data) =>
       @buildLogs[@buildLogs.length - 1] += data
+
+    @currentProcess.stderr.on 'data', (data) =>
+      @buildErrs += data
+
+    @currentProcess.on 'error', (err) =>
+      # Fatal executable error
+      throwErrors(err)
+      @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
+      @currentProcess = undefined
+
+    @currentProcess.on 'exit' , (exitCode, signal) =>
+      if !exitCode and !signal?     # Proceed if no error or kill signal
+        @buildProcess()
+      else
+        # Build up err object with a default msg
+        err =
+          code: exitCode
+          message: if @buildErrs.length > 1 then @buildErrs else  "Command Failed: " + cmd
+        throwErrors(err)
+        # Parse last command's log
+        @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
+        # Clear pending commands and currentProcess
+        @cmds = []
+      @currentProcess = undefined
+
+    throwErrors = (err) =>
+      @latex.package.status.view.status = 'error'
+      @latex.panel.view.showLog = true
+      @latex.logger.processError(
+        """Failed Building LaTeX (code #{err.code}).""", err.message, true,
+        [{
+          text: "Dismiss"
+          onDidClick: => @latex.logger.clearBuildError()
+        }, {
+          text: "Show build log"
+          onDidClick: => @latex.logger.showLog()
+        }]
+      )
+      @latex.logger.log.push({
+        type: 'error',
+        text: 'Error occurred while building LaTeX.'
+      })
 
   postBuild: ->
     @latex.logger.clearBuildError()
@@ -107,7 +126,12 @@ class Builder extends Disposable
 
   killProcess: ->
     @cmds = []
-    @process?.kill()
+    if @currentProcess?
+      @latex.logger.log.push({
+        type: 'warning',
+        text: "Killing running LaTeX command (PID: #{@currentProcess.pid})"
+      })
+      @currentProcess.kill()
 
   binCheck: (binary) ->
     if hb.sync binary
