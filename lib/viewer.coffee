@@ -29,6 +29,8 @@ class Viewer extends Disposable
         @latex.locator.locate(data)
       when 'close'
         @client.ws = undefined
+      when 'link' # Open link externally
+        require('electron').shell.openExternal(data.href)
 
   refresh: ->
     newTitle = path.basename("""#{@latex.mainFile.substr(
