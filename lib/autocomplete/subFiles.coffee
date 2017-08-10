@@ -9,7 +9,7 @@ class SubFiles extends Disposable
     @suggestions = []
     @items = []
 
-  provide: (prefix,images) ->
+  provide: (prefix,latexType) ->
     suggestions = []
     if prefix.length > 0
       for item in @suggestions
@@ -28,15 +28,16 @@ class SubFiles extends Disposable
       results =  fs.listTreeSync(dirName)
       FileExts = Object.keys(ImageTypes)
       if @latex.manager.config?.latex_ext?
-        FileExts.push ".tex" , @latex.manager.config.latex_ext...
+        FileExts.push ".tex" , ".bib" , @latex.manager.config.latex_ext...
       # Filter results
       results = fs.listTreeSync(dirName).filter (res) -> return \
        res.match(///(|[\/\\])\.(?:#{FileExts.join("|").replace(/\./g,'')})///g)
-      @getFileItems(file,!@latex.manager.isTexFile(file)) for file in results
+      @getFileItems(file) for file in results
 
-    activeFile = atom.workspace.getActiveTextEditor().getPath()
-    for item in @items when item.texImage is images? and\
-       item.text isnt path.basename(activeFile,path.extname(activeFile))
+    activeFile = atom.project.relativizePath(atom.workspace.getActiveTextEditor().getPath())[1]
+    # Push filtered items to suggestions
+    for item in @items when item.latexType is (latexType || 'files-tex') and\
+      item.relPath isnt activeFile
         suggestions.push item
 
     suggestions.sort((a, b) ->
@@ -45,43 +46,35 @@ class SubFiles extends Disposable
     @suggestions = suggestions
     return suggestions
 
-  getFileItems: (file,images,splice) ->
+  getFileItems: (file) ->
     dirName = path.dirname(@latex.mainFile)
+    relPath = path.relative(dirName,file)
+    extType = path.extname(relPath)
+    if ImageTypes[extType]?
+      latexType = 'files-img'
+    else if extType == '.bib'
+      latexType = 'files-bib'
+    else
+      latexType = 'files-tex'
     try
-      if !images and !splice?
-        relPath = path.relative(dirName,file)
-        extType = path.extname(relPath)
-        @items.push
-         text: relPath.replace(/\\/g, "/").replace(/(\.tex)/g,"")
-         displayText: relPath.substr(
-                  0, relPath.lastIndexOf('.')).replace( /\\/g, "/")
-         rightLabel: extType.replace(".", "")
-         iconHTML: """<i class="#{(FileTypes[extType] || "icon-file-text")}"></i>"""
-         latexType: 'files'
-         texImage: false
-      else if images and !splice?
-         relPath = path.relative(dirName,file)
-         extType = path.extname(relPath)
-         @items.push
-          text: relPath.substr(
-                   0, relPath.lastIndexOf('.')).replace( /\\/g, "/")
-          rightLabel: extType.replace(".", "")
-          iconHTML: """<i class="#{ImageTypes[extType]}"></i>"""
-          latexType: 'files'
-          texImage: true
-      else if splice?
-        relPath = path.relative(dirName,file)
-        extType = path.extname(relPath)
-        for item in @items when item.text is relPath.substr(
-                 0, relPath.lastIndexOf('.')).replace( /\\/g, "/")
-          pos =  @items.map (item) -> item.text.indexOf(relPath.substr(
-                   0, relPath.lastIndexOf('.')).replace( /\\/g, "/"))
-          @items.splice(pos.indexOf(0),1)
-    catch e
-      console.log e
+      @items.push
+        relPath: relPath
+        text: relPath.replace(/\\/g, '/').replace(///\.(?:tex|#{FileExtsRegString})///,'')
+        displayText: relPath.substr(
+                 0, relPath.lastIndexOf('.')).replace( /\\/g,'/')
+        rightLabel: extType.replace('.','')
+        iconHTML: """<i class="#{(ImageTypes[extType] || FileTypes[extType] || "icon-file-text")}"></i>"""
+        latexType: latexType
+    catch error
+      console.log error
 
-  resetFileItems: ->
-    @items = []
+  resetFileItems:(file) ->
+    if file?
+      relPath = path.relative(path.dirname(@latex.mainFile),file)
+      pos = @items.map((item) -> item.relPath).indexOf(relPath)
+      @items.splice(pos,1)
+    else
+      @items = []
 
 # Use file-icons as default with Git Octicons as backups
 ImageTypes =
@@ -95,3 +88,7 @@ FileTypes  =
   '.cls': "tex-icon medium-orange icon-file-text"
   '.tikz': "tex-icon medium-green icon-file-text"
   '.Rnw': "tex-icon medium-green icon-file-text"
+  '.bib': "bibtex-icon medium-yellow icon-file-text"
+
+# String of file types to strip extentions
+FileExtsRegString = "#{Object.keys(ImageTypes).join("|").replace(/\./g,'')}"

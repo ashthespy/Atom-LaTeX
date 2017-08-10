@@ -157,7 +157,7 @@ class Manager extends Disposable
         type: status
         text: "Watching project #{root} for changes"
       }
-      watchFileExts = ['png','eps','jpeg','jpg','pdf','tex']
+      watchFileExts = ['png','eps','jpeg','jpg','pdf','tex','bib']
       if @latex.manager.config?.latex_ext?
         watchFileExts.push @latex.manager.config.latex_ext...
       @rootWatcher = chokidar.watch(root,{
@@ -191,9 +191,9 @@ class Manager extends Disposable
   watchActions: (fpath,event) ->
     # Push/Splice file suggestions on new file additions or removals
     if event is 'add'
-      @latex.provider.subFiles.getFileItems(fpath, !@isTexFile(fpath))
+      @latex.provider.subFiles.getFileItems(fpath)
     else if event is 'unlink'
-      @latex.provider.subFiles.getFileItems(fpath,false,true) # don't bother checking file type
+      @latex.provider.subFiles. resetFileItems(fpath) 
       @latex.provider.reference.resetRefItems(fpath)
     if @isTexFile(fpath)
       # Push command and references suggestions
