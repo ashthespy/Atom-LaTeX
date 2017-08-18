@@ -83,13 +83,14 @@ If `latexmk` fails, the `custom toolchain` is utilised which by default sequenti
 ```
 %TEX %ARG %DOC && %BIB %DOC && %TEX %ARG %DOC && %TEX %ARG %DOC
 ```
-Multiple commands should be separated by `&&`. Placeholders `%TEX`,`%ARG` and `%BIB` will be replaced by tools defined in the settings menu and `%DOC` will be replaced by the [root LaTeX](root_file) filename (without extension).
+Multiple commands should be separated by `&&`. Placeholders `%TEX`,`%ARG` and `%BIB` will be replaced by tools defined in the settings menu
+`%DOC` will be replaced by the [root LaTeX](root_file) filename (without extension), while `%EXT` gives the file extension
 
 
 For non `perl` users, other automatic LaTeX helper utilities such as [`texify`](https://docs.miktex.org/manual/texifying.html) or [`arara`](https://www.ctan.org/pkg/arara?lang=en) can also be configured.
   * Sample `custom toolchain` configuration for `texify`
   ```
-  texify --synctex --pdf --tex-option=\"-interaction=nonstopmode\" --tex-option=\"-file-line-error\" %DOC%.tex
+  texify --synctex --pdf --tex-option=\"-interaction=nonstopmode\" --tex-option=\"-file-line-error\" %DOC.%EXT
   ```
   Do note that `texify` requires the complete root file name with extension to compile.
 
@@ -136,7 +137,7 @@ Note that the value must be a JSON array, even when there is only one alternativ
 
 #### Sample toolchain for [`knitr`](https://github.com/yihui/knitr)
 ```
-  {"toolchain": "Rscript -e \"library(knitr); knit('%DOC.Rnw')\" && latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf %DOC"}
+  {"toolchain": "Rscript -e \"library(knitr); knit('%DOC.%EXT')\" && latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf %DOC"}
 ```
 Have a look at [this thread](https://github.com/James-Yu/Atom-LaTeX/issues/42) for more options for custom toolchains.
 
