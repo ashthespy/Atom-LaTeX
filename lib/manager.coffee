@@ -10,10 +10,10 @@ class Manager extends Disposable
     @disable_watcher = atom.config.get "atom-latex.disable_watcher"
     @watched = []
   rootDir: ->
-    # Collect all open TextEditors with  LaTeX grammar
+    # Collect all open TextEditors with LaTeX grammar
     texEditors = (editor for editor in atom.workspace.getTextEditors()\
                     when editor.getGrammar().scopeName.match(/text.tex.latex/))
-    if atom.workspace.getActiveTextEditor()? # An active editor is open
+    if atom.workspace.getActiveTextEditor() in texEditors # An active TeXeditor is open
       return atom.project.relativizePath(atom.workspace.getActiveTextEditor().getPath())[0]
     else if texEditors.length > 0   # First open editor with LaTeX grammar
       return atom.project.relativizePath(texEditors[0].getPath())[0]
