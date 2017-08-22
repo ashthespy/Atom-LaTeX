@@ -51,6 +51,17 @@ class Manager extends Disposable
 
   findMain: (here) ->
     result = @findMainSequence(here)
+    if !fs.existsSync(@latex.mainFile)
+      @latex.logger.processError(
+        "Invalid LaTeX root file `#{path.basename(@latex.mainFile)}`",
+        "The path #{@latex.mainFile} does not exist!", true,
+        [{
+          text: "Set LaTeX root"
+          onDidClick: =>
+            @latex.manager.refindMain()
+            @latex.logger.clearBuildError()
+        }])
+      return false
     @latex.panel.view.update()
     return result
 
