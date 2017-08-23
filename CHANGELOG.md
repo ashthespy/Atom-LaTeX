@@ -1,3 +1,12 @@
+## [0.8.0]  2017-08-23
+### Changed
+* [(#50)](https://github.com/James-Yu/Atom-LaTeX/pull/50) Preliminary `arara` log parsing support
+* [(#97)](https://github.com/James-Yu/Atom-LaTeX/pull/97) Add new `%EXT` placeholder for custom toolchains
+* [(#98)](https://github.com/James-Yu/Atom-LaTeX/pull/98) Add `.bib` to subfile-autocomplete + code clean up
+* [(#100)](https://github.com/James-Yu/Atom-LaTeX/pull/100) Add error notification for invalid LaTeX root file
+### Fixed
+* [(#102)](https://github.com/James-Yu/Atom-LaTeX/pull/102) Fix root directory determination
+
 ## [0.7.13]  2017-08-08
 ### Fixed
 * [(#89)](https://github.com/James-Yu/Atom-LaTeX/pull/89)

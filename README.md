@@ -2,13 +2,14 @@
 
 Atom-LaTeX is an extension for [Atom.io](https://atom.io/), aiming to provide all-in-one features and utilities for LaTeX typesetting with Atom.
 
-## Update
+## Update (Thank you, `@ashthespy`!)
 
-Recently (Mar. 29th, 2017 now) I switched back to [Visual Studio Code](https://code.visualstudio.com/) for most coding and typesetting tasks due to reasons 1, 2, 3, and more. Atom-LaTeX will still be maintained, though new feature development is in stale. I would recommend you to have a check on VS Code as well as [LaTeX Workshop](https://github.com/James-Yu/LaTeX-Workshop), a counterpart of Atom-LaTeX to VS Code. Thank you all for your long time support!
+The original package author `@James-Yu` switched back to [Visual Studio Code](https://code.visualstudio.com/) for most coding and typesetting tasks due to reasons 1, 2, 3, and more since late Mar. 2017.
+
+Atom-LaTeX is currently actively maintained by `@ashthespy`. Please join me in thanking him for the great contribution!
 
 ## Features
 
-Atom-LaTeX is currently under active development. More features coming soon.
 Some features have screenshots/screencasts available [here](https://github.com/James-Yu/Atom-LaTeX/blob/master/GALLERY.md). Have a check!
 
 - Compile LaTeX with BibTeX
