@@ -70,7 +70,7 @@ class Provider extends Disposable
         reg = /\\([a-zA-Z]*)$/
         provider = @command
       when 'subFiles'
-        reg = /(?:\\(?:input|include|subfile|includegraphics)(?:\[[^\[\]]*\])?){([^}]*)$/
+        reg = /(?:\\(?:input|include|subfile|includegraphics|addbibresource)(?:\[[^\[\]]*\])?){([^}]*)$/
         provider = @subFiles
 
     result = line.match(reg)
@@ -82,6 +82,9 @@ class Provider extends Disposable
         allKeys = prefix.split(',')
         currentPrefix = allKeys[allKeys.length - 1].trim()
       suggestions = provider.provide(currentPrefix)
-      if ['subFiles'].indexOf(type) > -1 and line.match(/(?:\\(?:includegraphics)(?:\[[^\[\]]*\])?){([^}]*)$/)
-        suggestions = provider.provide(currentPrefix,true)
+      if type == 'subFiles'
+        if line.match(/(?:\\(?:includegraphics)(?:\[[^\[\]]*\])?){([^}]*)$/)
+          suggestions = provider.provide(currentPrefix,'files-img')
+        else if line.match(/(?:\\(?:addbibresource)(?:\[[^\[\]]*\])?){([^}]*)$/)
+          suggestions = provider.provide(currentPrefix,'files-bib')
     return suggestions
