@@ -1,3 +1,7 @@
+## [0.8.1]  2017-08-24
+### Fixed
+* Missing changes in version 0.8.0
+
 ## [0.8.0]  2017-08-23
 ### Changed
 * [(#50)](https://github.com/James-Yu/Atom-LaTeX/pull/50) Preliminary `arara` log parsing support
