@@ -3,6 +3,7 @@ fileTypes: [
 ]
 firstLineMatch: "^\\\\documentclass(?!.*\\{beamer\\})"
 name: "LaTeX"
+limitLineLength: false
 patterns: [
   {
     comment: "This scope identifies partially typed commands such as `\\tab`. We use this to trigger “Command Completion” only when it makes sense."
