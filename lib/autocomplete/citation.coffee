@@ -40,18 +40,33 @@ class Citation extends Disposable
     items = []
     if !fs.existsSync(bib)
       return @items
-    content = fs.readFileSync bib, 'utf-8'
-    content = content.replace(/[\r\n]/g, ' ')
+    fileContent = fs.readFileSync bib, 'utf-8'
+    content = fileContent.replace(/[\r\n]/g, ' ')
     itemReg = /@(\w+){/g
     result = itemReg.exec content
     prev_result = undefined
-    while result? or prev_result?
-      if prev_result? and prev_result[1].toLowerCase() != 'comment'
-        item = content.substring(prev_result.index, result?.index).trim()
-        items.push @splitBibItem item
-      prev_result = result
-      if result?
-        result = itemReg.exec content
+    try
+      while result? or prev_result?
+        if prev_result? and prev_result[1].toLowerCase() in bibEntries
+          item = content.substring(prev_result.index, result?.index).trim()
+          itemPos = fileContent.substring(0, prev_result.index).split('\n')
+          items.push @splitBibItem item
+        prev_result = result
+        if result?
+          result = itemReg.exec content
+    catch error
+      atom.notifications.addError("Error parsing citations in `#{path.basename(bib)}`",
+      detail: """Unexpected syntax in the entry:
+
+              #{fileContent.substring(prev_result.index, result?.index)}"""
+      dismissable:true
+      buttons: [
+        text: 'Open File'
+        onDidClick: ->
+          atom.workspace.open(bib,
+          initialLine: itemPos.length-1)
+        ]
+      )
     @items[bib] = items
 
   splitBibItem: (item) ->
@@ -89,3 +104,9 @@ class Citation extends Disposable
       delete @items[bib]
     else
       @items = []
+
+bibEntries = ['article', 'book', 'bookinbook', 'booklet', 'collection', 'conference', 'inbook',
+              'incollection', 'inproceedings', 'inreference', 'manual', 'mastersthesis', 'misc',
+              'mvbook', 'mvcollection', 'mvproceedings', 'mvreference', 'online', 'patent', 'periodical',
+              'phdthesis', 'proceedings', 'reference', 'report', 'set', 'suppbook', 'suppcollection',
+              'suppperiodical', 'techreport', 'thesis', 'unpublished']
