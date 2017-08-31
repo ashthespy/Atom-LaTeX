@@ -131,6 +131,11 @@ class Builder extends Disposable
         type: 'warning',
         text: "Killing running LaTeX command (PID: #{@currentProcess.pid})"
       })
+      # Kill entire process tree
+      if process.platform is 'win32'
+        cp.exec("taskkill -pid #{@currentProcess.pid} /T /F")
+      else
+        cp.exec("pkill -P #{@currentProcess.pid}")  
       @currentProcess.kill()
 
   binCheck: (binary) ->
