@@ -109,11 +109,26 @@ class Command extends Disposable
           counts: 1
       else
         items[result[1]].counts += 1
+      # Parse custom user-defined commands
+      newCommandReg = /\\(?:re|provide)?(?:new)?command(?:{)?\\(\w+)/g
+      loop
+        result = newCommandReg.exec content
+        break if !result?
+        if not (result[1] of items)
+          items[result[1]] =
+          displayText: result[1]
+          snippet: result[1] + '{$1}'
+          type: 'function'
+          latexType: 'command'
+          chainComplete: false
+          counts: 1
+        else
+          items[result[1]].counts += 1
     return items
 
   resetCommands: ->
     @items = {}
-    
+
   suggestions:
     latex:
       begin:
