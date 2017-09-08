@@ -79,18 +79,18 @@ class Builder extends Disposable
         err =
           code: exitCode
           message: if @buildErrs.length > 1 then @buildErrs else  "Command Failed: " + cmd
-        throwErrors(err)
+        throwErrors(err,'Build Aborted!' if signal?)
         # Parse last command's log
         @latex.parser.parse @buildLogs?[@buildLogs?.length - 1]
         # Clear pending commands and currentProcess
         @cmds = []
       @currentProcess = undefined
 
-    throwErrors = (err) =>
+    throwErrors = (err,title) =>
       @latex.package.status.view.status = 'error'
       @latex.panel.view.showLog = true
       @latex.logger.processError(
-        """Failed Building LaTeX (code #{err.code}).""", err.message, true,
+        title || """Failed Building LaTeX (code #{err.code}).""", err.message, true,
         [{
           text: "Dismiss"
           onDidClick: => @latex.logger.clearBuildError()
@@ -131,7 +131,15 @@ class Builder extends Disposable
         type: 'warning',
         text: "Killing running LaTeX command (PID: #{@currentProcess.pid})"
       })
-      @currentProcess.kill()
+      # Kill entire process tree
+      if process.platform is 'win32'
+        killcmd = "taskkill -pid #{@currentProcess.pid} /T /F"
+      else
+        killcmd = "pkill -P #{@currentProcess.pid}"
+      cp.exec(killcmd, (error, stdout, stderr) ->
+        console.log error if error?
+        console.log "> #{killcmd}\n\n#{stdout}" if stdout?
+        console.log stderr if stderr)
 
   binCheck: (binary) ->
     if hb.sync binary
