@@ -50,7 +50,7 @@ class Viewer extends Disposable
       @latex.viewer.focusMain()
 
   focusViewer: ->
-    @window.focus() if @window? and !@window.isDestroyed()
+    @window.show() if @window? and !@window.isDestroyed()
 
   focusMain: ->
     @self.focus() if @self? and !@self.focused
