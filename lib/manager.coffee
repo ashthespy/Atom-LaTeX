@@ -30,16 +30,17 @@ class Manager extends Disposable
       return @config?
     @lastCfgTime = Date.now()
     rootDir = @rootDir()
-    for file in fs.readdirSync rootDir
-      if file is '.latexcfg'
-        try
-          filePath = path.join rootDir, file
-          fileContent = fs.readFileSync filePath, 'utf-8'
-          @config = JSON.parse fileContent
-          if @config.root?
-            @config.root = path.resolve rootDir, @config.root
-          return true
-        catch err
+    return false if !rootDir?
+    if '.latexcfg' in fs.readdirSync rootDir
+      try
+        filePath = path.join rootDir, '.latexcfg'
+        fileContent = fs.readFileSync filePath, 'utf-8'
+        @config = JSON.parse fileContent
+        if @config.root?
+          @config.root = path.resolve rootDir, @config.root
+        return true
+      catch err
+        console.log err
     return false
 
   isTexFile: (name) ->
@@ -163,6 +164,7 @@ class Manager extends Disposable
 
   watchRoot: ->
     root = @rootDir()
+    return false if !root?
     if !@rootWatcher? or @prevWatcherClosed(@rootWatcher,root)
       @latex.logger.log.push {
         type: status
@@ -204,7 +206,7 @@ class Manager extends Disposable
     if event is 'add'
       @latex.provider.subFiles.getFileItems(fpath)
     else if event is 'unlink'
-      @latex.provider.subFiles. resetFileItems(fpath) 
+      @latex.provider.subFiles. resetFileItems(fpath)
       @latex.provider.reference.resetRefItems(fpath)
     if @isTexFile(fpath)
       # Push command and references suggestions
