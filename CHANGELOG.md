@@ -1,5 +1,6 @@
 ## [0.8.2]  2017-09-15
 ### Fixed
+* [(#111)](https://github.com/James-Yu/Atom-LaTeX/issues/111) Better handling of single documents
 * [(#16)](https://github.com/James-Yu/Atom-LaTeX/issues/16) Fix PDF window focus for non Windows platforms
 * [(#106)](https://github.com/James-Yu/Atom-LaTeX/pull/106) Kill all children process
 * [(#67)](https://github.com/James-Yu/Atom-LaTeX/issues/67) Add error notification for issues parsing citations
