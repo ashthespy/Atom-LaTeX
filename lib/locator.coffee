@@ -25,6 +25,11 @@ class Locator extends Disposable
         )
         return
       record = @parseResult(stdout)
+      if Object.keys(record).length = 0
+        @latex.logger.processError(
+          'Failed SyncTeX', "Unable to parse output:\n\n\n #{stdout}"
+        )
+        return
       @latex.viewer.synctex(record)
     )
 
