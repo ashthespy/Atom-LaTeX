@@ -5,6 +5,7 @@ class Logger extends Disposable
   constructor: (latex) ->
     @latex = latex
     @log = []
+    @debuglog = new DebugLog
 
   missingMain: ->
     if @missingMainNotification? and !@missingMainNotification.dismissed
@@ -89,6 +90,48 @@ class Logger extends Disposable
       logFile = tmp.fileSync()
       fs.writeFileSync(logFile.fd,"""> #{cmd}\n\n#{log}""")
       atom.workspace.open(logFile.name).then((editor) ->
-        # Force LaTeX Log editor grammar 
+        # Force LaTeX Log editor grammar
         atom.textEditors.setGrammarOverride(editor, 'text.log.latex')
         )
+
+  showDebugLog: () ->
+    atom.workspace.open().then( (editor) =>
+      editor.setText(
+        """ <detail>
+          <summary> Atom-LaTeX Debug Log </summary>
+
+          ```
+          #{@debuglog.dump()}
+          ```
+          </detail>""")
+    )
+
+  class DebugLog
+    constructor:  ->
+      @log = [] # Just a simple array for now
+      @logSize = 100  # Limit size to 100 lines
+      @logIdx = 1
+      @log[0] = "Atom-LaTeX debug log initiated at #{new Date().toLocaleTimeString('en-US', {hour12: false})} \n\n"
+
+    dump: ->
+      return @log.join('\n')
+
+    write: (msg) ->
+      @log[@logIdx] = msg
+      if @logIdx == (@logSize - 1)
+        @logIdx += 1
+        @info('Log limit reached, overwriting!')
+      else
+        @logIdx = (@logIdx + 1) % @logSize
+
+    info: (msg) ->
+      @write("[#{new Date().toLocaleTimeString('en-US', {hour12: false})}| Info] #{msg}")
+
+    debug: (msg) ->
+      @write("[#{new Date().toLocaleTimeString('en-US', {hour12: false})}| Debug] #{msg}")
+
+    command: (msg) ->
+      @write("[#{new Date().toLocaleTimeString('en-US', {hour12: false})}| Command] #{msg}")
+
+    warn: (msg) ->
+      @write("[#{new Date().toLocaleTimeString('en-US', {hour12: false})}| Warn] #{msg}")
