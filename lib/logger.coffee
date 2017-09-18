@@ -88,4 +88,7 @@ class Logger extends Disposable
       fs = require('fs')
       logFile = tmp.fileSync()
       fs.writeFileSync(logFile.fd,"""> #{cmd}\n\n#{log}""")
-      atom.workspace.open(logFile.name)
+      atom.workspace.open(logFile.name).then((editor) ->
+        # Force LaTeX Log editor grammar 
+        atom.textEditors.setGrammarOverride(editor, 'text.log.latex')
+        )
