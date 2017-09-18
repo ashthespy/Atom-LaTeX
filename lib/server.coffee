@@ -44,7 +44,11 @@ class Server extends Disposable
       fs.createReadStream(pdfPath).pipe(response)
       return
 
-    file = path.join @httpRoot, request.url.split('?')[0]
+    if request.url.startsWith('/build/') || request.url.startsWith('/web/')
+      root = path.resolve("#{path.dirname(__filename)}/../node_modules/pdfjs-dist")
+    else
+      root = @httpRoot
+    file = path.join root, request.url.split('?')[0]
     switch path.extname(file)
       when '.js'
         contentType = 'text/javascript'

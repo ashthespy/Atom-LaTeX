@@ -28,8 +28,7 @@ socket.addEventListener("message", (event) => {
                                         scale:PDFViewerApplication.pdfViewer.currentScaleValue,
                                         scrollTop:document.getElementById('viewerContainer').scrollTop,
                                         scrollLeft:document.getElementById('viewerContainer').scrollLeft}));
-            socket.onclose = () => {}
-            location.reload();
+            PDFViewerApplication.open(`/pdf:${decodeURIComponent(file)}`)
             break;
         case "position":
             PDFViewerApplication.pdfViewer.currentScaleValue = data.scale;
