@@ -18,7 +18,7 @@ class Server extends Disposable
         else if @latex.server.openTab
           @latex.viewer.openViewerNewWindow()
 
-    @ws = ws.createServer server: @http
+    @ws = new ws.Server server: @http
     @ws.on "connection", (ws) =>
       ws.on "message", (msg) => @latex.viewer.wsHandler(ws, msg)
       ws.on "close", () => @latex.viewer.wsHandler(ws, '{"type":"close"}')
