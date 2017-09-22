@@ -9,8 +9,8 @@ for (var i = 0, ii = parts.length; i < ii; ++i) {
     if (param[0].toLowerCase() == "file")
         file = decodeURIComponent(param[1]);
 }
-if (server == undefined) {
-    server = `ws://${window.location.hostname}:${window.location.port}`
+if (server === undefined) {
+    server = `ws://${window.location.hostname}:${window.location.port}`;
 }
 
 var socket = new WebSocket(server);
@@ -28,7 +28,7 @@ socket.addEventListener("message", (event) => {
                                         scale:PDFViewerApplication.pdfViewer.currentScaleValue,
                                         scrollTop:document.getElementById('viewerContainer').scrollTop,
                                         scrollLeft:document.getElementById('viewerContainer').scrollLeft}));
-            PDFViewerApplication.open(`/pdf:${decodeURIComponent(file)}`)
+            PDFViewerApplication.open(`/pdf:${decodeURIComponent(file)}`);
             break;
         case "position":
             PDFViewerApplication.pdfViewer.currentScaleValue = data.scale;
@@ -39,7 +39,7 @@ socket.addEventListener("message", (event) => {
             break;
     }
 });
-socket.onclose = () => {window.close();}
+socket.onclose = () => {window.close();};
 
 document.addEventListener('pagesinit', (e) => {
     socket.send(JSON.stringify({type:"loaded"}));
@@ -55,15 +55,15 @@ document.addEventListener('pagerendered', (e) => {
         var top = e.pageY - target.offsetTop + target.parentNode.parentNode.scrollTop - 41;
         var pos = PDFViewerApplication.pdfViewer._pages[page-1].getPagePoint(left, canvas_dom.offsetHeight - top);
         socket.send(JSON.stringify({type:"click", path:file, pos:pos, page:page}));
-    }
+    };
 }, true);
 
 // Open links externally
 // identified by target set from PDFJS.LinkTarget.TOP
 document.addEventListener('click', (e) => {
     var srcElement = e.srcElement;
-    if (srcElement.href != undefined && srcElement.target == '_top'){
-      e.preventDefault()
+    if (srcElement.href !== undefined && srcElement.target == '_top'){
+      e.preventDefault();
       socket.send(JSON.stringify({type:"link",href:srcElement.href}));
     }
 });

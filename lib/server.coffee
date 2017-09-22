@@ -35,8 +35,7 @@ class Server extends Disposable
         response.end()
         return
 
-      pdfPath = """#{@latex.mainFile.substr(
-        0, @latex.mainFile.lastIndexOf('.'))}.pdf"""
+      pdfPath = @latex.manager.findPDF()
       pdfSize = fs.statSync(pdfPath).size
       response.writeHead 200,
         'Content-Type': 'application/pdf',

@@ -33,14 +33,11 @@ class Viewer extends Disposable
         require('electron').shell.openExternal(data.href)
 
   refresh: ->
-    newTitle = path.basename("""#{@latex.mainFile.substr(
-      0, @latex.mainFile.lastIndexOf('.'))}.pdf""")
+    newTitle = path.basename(@latex.manager.findPDF())
 
-    if @tabView? and @tabView.title isnt newTitle and
+    if @tabView? and @tabView.title isnt newTitle and\
         atom.workspace.paneForItem(@tabView)?
-      atom.workspace.paneForItem(@tabView).destroyItem(@tabView)
-      @openViewerNewTab()
-      return
+      atom.workspace.paneForItem(@tabView).activeItem.updateTitle(newTitle)
     else if @window? and !@window.isDestroyed() and @window.getTitle() isnt newTitle
       @window.setTitle("""Atom-LaTeX PDF Viewer - [#{@latex.mainFile}]""")
     @client.ws?.send JSON.stringify type: "refresh"
@@ -77,11 +74,7 @@ class Viewer extends Disposable
         @latex.viewer.focusMain()
 
   openViewerNewWindow: ->
-    if !@latex.manager.findMain()
-      return
-
-    pdfPath = """#{@latex.mainFile.substr(
-      0, @latex.mainFile.lastIndexOf('.'))}.pdf"""
+    pdfPath = @latex.manager.findPDF()
     if !fs.existsSync pdfPath
       return
 
@@ -103,11 +96,8 @@ class Viewer extends Disposable
     @window.setTitle("""Atom-LaTeX PDF Viewer - [#{@latex.mainFile}]""")
 
   openViewerNewTab: ->
-    if !@latex.manager.findMain()
-      return
+    pdfPath = @latex.manager.findPDF()
 
-    pdfPath = """#{@latex.mainFile.substr(
-      0, @latex.mainFile.lastIndexOf('.'))}.pdf"""
     if !fs.existsSync pdfPath
       return
 
@@ -138,6 +128,19 @@ class PDFView
     @element.setAttribute 'height', '100%'
     @element.setAttribute 'frameborder', 0,
     @title = title
+    @titleCallbacks = []
+
+  updateTitle:(newTitle) ->
+    @title = newTitle
+    @titleCallbacks.map (cb) -> cb()
+    return true
+
+  onDidChangeTitle: (cb) ->
+    @titleCallbacks.push(cb)
+    return dispose: () => @removeTitleCallback(cb)
+
+  removeTitleCallback: (cb) ->
+    @titleCallbacks.pop(cb)
 
   getTitle: ->
     return """Atom-LaTeX - #{@title}"""
