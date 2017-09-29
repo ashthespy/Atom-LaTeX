@@ -1,4 +1,4 @@
-## [0.8.2]  2017-09-22
+## [0.8.2]  2017-09-29
 ### Fixed
 * Tweak notification for invalid LaTeX root file
 * [(#111)](https://github.com/James-Yu/Atom-LaTeX/issues/111) Better handling of single documents
