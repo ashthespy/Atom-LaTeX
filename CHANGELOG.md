@@ -1,3 +1,25 @@
+## [0.8.2]  2017-09-22
+### Fixed
+* Tweak notification for invalid LaTeX root file
+* [(#111)](https://github.com/James-Yu/Atom-LaTeX/issues/111) Better handling of single documents
+* [(#16)](https://github.com/James-Yu/Atom-LaTeX/issues/16) Fix PDF window focus for non Windows platforms
+* [(#106)](https://github.com/James-Yu/Atom-LaTeX/pull/106) Kill all children process
+
+### Changed
+* PDF Viewer improvements
+  * Render PDF with WebGL
+  * Faster refresh in Tab View
+  * Refactor and use `manager.findPDF()`
+* [(#117)](https://github.com/James-Yu/Atom-LaTeX/pull/117) Update package dependencies, switch to `pdfjs-dist`
+* Use LaTeX Log grammar for highlighting raw logs
+  * Set LaTeX Log grammar for raw logs
+  * Enable LuaTeX and XeTeX log recognition
+* [(#114)](https://github.com/James-Yu/Atom-LaTeX/issues/114) Add error notification for unparsed SyncTeX results
+* [(#67)](https://github.com/James-Yu/Atom-LaTeX/issues/67) Add error notification for issues parsing citations
+* [(#104)](https://github.com/James-Yu/Atom-LaTeX/pull/104) Add custom commands to autocomplete suggestions
+* Clean files in project sub directories as well
+* Support syntax highlight for long lines
+
 ## [0.8.1]  2017-08-24
 ### Fixed
 * Missing changes in version 0.8.0
