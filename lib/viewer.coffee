@@ -122,11 +122,9 @@ class Viewer extends Disposable
 
 class PDFView
   constructor: (url,title) ->
-    @element = document.createElement 'iframe'
+    @element = document.createElement 'webview'
     @element.setAttribute 'src', url
-    @element.setAttribute 'width', '100%'
-    @element.setAttribute 'height', '100%'
-    @element.setAttribute 'frameborder', 0,
+    @element.addEventListener 'console-message', (e) -> console.log e.message
     @title = title
     @titleCallbacks = []
 
