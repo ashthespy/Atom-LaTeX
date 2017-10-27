@@ -43,28 +43,28 @@ describe 'Atom-LaTeX', ->
       it 'compile if current file is a .tex file', ->
         helper.setConfig 'atom-latex.build_after_save', true
         project = """#{path.dirname(__filename)}#{path.sep}latex_project"""
-        waitsForPromise -> atom.workspace.open(
+        waitsForPromise -> (atom.workspace.open(
           """#{project}#{path.sep}input.tex""").then (editor) ->
             Promise.resolve editor.save()
-          .then () ->
+          ).then () ->
             expect(builder.build).toHaveBeenCalled()
 
       it 'does nothing if config disabled', ->
         helper.setConfig 'atom-latex.build_after_save', false
         project = """#{path.dirname(__filename)}#{path.sep}latex_project"""
-        waitsForPromise -> atom.workspace.open(
+        waitsForPromise -> (atom.workspace.open(
           """#{project}#{path.sep}input.tex""").then (editor) ->
             Promise.resolve editor.save()
-          .then () ->
+          ).then () ->
             expect(builder.build).not.toHaveBeenCalled()
 
       it 'does nothing if current file is not a .tex file', ->
         helper.setConfig 'atom-latex.build_after_save', true
         project = """#{path.dirname(__filename)}#{path.sep}latex_project"""
-        waitsForPromise -> atom.workspace.open(
+        waitsForPromise -> (atom.workspace.open(
           """#{project}#{path.sep}dummy.file""").then (editor) ->
             Promise.resolve editor.save()
-          .then () ->
+          ).then () ->
             expect(builder.build).not.toHaveBeenCalled()
 
     describe 'toolchain feature', ->
