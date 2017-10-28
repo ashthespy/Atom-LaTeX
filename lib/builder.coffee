@@ -63,7 +63,7 @@ class Builder extends Disposable
       @buildLogs[@buildLogs.length - 1] += data
 
     @currentProcess.stderr.on 'data', (data) =>
-      @buildErrs += data
+      @buildErrs[@buildErrs.length - 1] += data
 
     @currentProcess.on 'error', (err) =>
       # Fatal executable error
