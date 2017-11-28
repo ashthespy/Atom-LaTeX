@@ -96,7 +96,9 @@ class Builder extends Disposable
           onDidClick: => @latex.logger.clearBuildError()
         }, {
           text: "Show build log"
-          onDidClick: => @latex.logger.showLog()
+          onDidClick: ()=>
+            @latex.logger.clearBuildError()
+            @latex.logger.showLog()
         }]
       )
       @latex.logger.log.push({
