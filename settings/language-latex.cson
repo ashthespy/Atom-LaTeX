@@ -4,3 +4,15 @@
     'tabLength': 2
     'softWrap': true
     'commentStart': '% '
+  'bracket-matcher':
+    'autocompleteCharacters': [
+      '$$',
+      '``',
+      '{}',
+      '()',
+      '[]',
+      '<>',
+      '«»',
+      '""',
+      '\'\''
+    ]

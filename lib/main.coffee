@@ -38,8 +38,6 @@ module.exports =
       'atom-latex:kill': () => @latex.builder.killProcess()
       'atom-latex:toggle-panel': () => @latex.panel.togglePanel()
       'atom-latex:synctex': () => @latex.locator.synctex()
-      'atom-latex:tools-dollarsign': () => @latex.provider.syntax.dollarsign()
-      'atom-latex:tools-backquote': () => @latex.provider.syntax.backquote()
       'atom-latex:tools-doublequote': () => @latex.provider.syntax.doublequote()
 
     path = require 'path'
