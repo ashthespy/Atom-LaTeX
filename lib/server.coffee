@@ -22,6 +22,7 @@ class Server extends Disposable
     @ws.on "connection", (ws) =>
       ws.on "message", (msg) => @latex.viewer.wsHandler(ws, msg)
       ws.on "close", () => @latex.viewer.wsHandler(ws, '{"type":"close"}')
+      ws.on "error", (e) => console.error(e)
 
   httpHandler: (request, response) ->
     if request.url.indexOf('viewer.html') > -1
