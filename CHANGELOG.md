@@ -1,3 +1,15 @@
+## [0.8.3]  2018-01-27
+### Fixed
+* [(#95)](https://github.com/James-Yu/Atom-LaTeX/issues/95)  Add `error` listener for `ws` package compatibility
+* [(#132)](https://github.com/James-Yu/Atom-LaTeX/issues/132) Fix `$` autocomplete, switch to `bracket-matcher`
+* [(#121)](https://github.com/James-Yu/Atom-LaTeX/pull/122) Changes required for upcoming CoffeeScript upgrade
+
+### Changed
+* [(#128)](https://github.com/James-Yu/Atom-LaTeX/pull/122) Dismiss Failure Notification when "Show build log" Is Pressed
+* PDF Viewer improvements
+  * Switch from `iframe` to `webview`
+  * Open links is default browser
+
 ## [0.8.2]  2017-09-29
 ### Fixed
 * Tweak notification for invalid LaTeX root file
