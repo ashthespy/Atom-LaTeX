@@ -104,3 +104,5 @@ class Environment extends Disposable
         text: 'thebibliography'
       titlepage:
         text: 'titlepage'
+      frame:
+        text: 'frame'
