@@ -1,4 +1,6 @@
-fileTypes: []
+fileTypes: [
+  "tex"
+]
 firstLineMatch: "^\\\\documentclass(\\[.*\\])?\\{beamer\\}"
 name: "LaTeX Beamer"
 patterns: [
