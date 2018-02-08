@@ -94,8 +94,8 @@ class Manager extends Disposable
 
   findMainSelf: ->
     docRegex = /\\begin{document}/
-    editor = atom.workspace.getActivePaneItem()
-    currentPath = editor?.buffer.file?.path
+    editor = atom.workspace.getActiveTextEditor()
+    currentPath = editor?.getPath()
     currentContent = editor?.getText()
 
     if currentPath and currentContent
@@ -107,8 +107,8 @@ class Manager extends Disposable
 
   findMainSelfMagic: ->
     magicRegex = /(?:%\s*!TEX\sroot\s*=\s*([^\s]*\.tex)$)/m
-    editor = atom.workspace.getActivePaneItem()
-    currentPath = editor?.buffer.file?.path
+    editor = atom.workspace.getActiveTextEditor()
+    currentPath = editor?.getPath()
     currentContent = editor?.getText()
 
     if currentPath and currentContent
