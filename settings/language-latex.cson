@@ -6,7 +6,6 @@
     'commentStart': '% '
   'bracket-matcher':
     'autocompleteCharacters': [
-      '$$',
       '``',
       '{}',
       '()',
