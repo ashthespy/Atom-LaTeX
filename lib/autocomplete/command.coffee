@@ -118,13 +118,15 @@ class Command extends Disposable
         args_snippet = ''
         args_display = ''
         chainComplete = false
+        number_of_param = 0
         if result[2]
+          number_of_param = parseInt(result[2],10)
           chainComplete = true
-          args_snippet += "{$#{i}}" for i in [1 .. parseInt(result[2],10)]
-          args_display += "{}" for i in [1 .. parseInt(result[2],10)]
+          args_snippet += "{$#{i}}" for i in [1 .. number_of_param]
+          args_display += "{}" for i in [1 .. number_of_param]
         items[result[1]] =
           displayText: result[1] + args_display
-          snippet: result[1] + args_snippet
+          snippet: result[1] + args_snippet + "$#{number_of_param + 1}"
           type: 'function'
           latexType: 'command'
           chainComplete: chainComplete
