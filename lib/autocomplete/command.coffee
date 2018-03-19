@@ -109,21 +109,30 @@ class Command extends Disposable
           counts: 1
       else
         items[result[1]].counts += 1
-      # Parse custom user-defined commands
-      newCommandReg = /\\(?:re|provide)?(?:new)?command(?:{)?\\(\w+)/g
-      loop
-        result = newCommandReg.exec content
-        break if !result?
-        if not (result[1] of items)
-          items[result[1]] =
-          displayText: result[1]
-          snippet: result[1] + '{$1}'
+      # Parse custom user-defined commands with fixed number of parameters TODO: optional parameters
+    newCommandReg = /\\(?:re|provide)?(?:new)?command(?:{)?\\(\w+)(?:})?(?:\[([0-9]+)\]{)?/g
+    loop
+      result = newCommandReg.exec content
+      break if !result?
+      if not (result[1] of items)
+        args_snippet = ''
+        args_display = ''
+        chainComplete = false
+        number_of_param = 0
+        if result[2]
+          number_of_param = parseInt(result[2],10)
+          chainComplete = true
+          args_snippet += "{$#{i}}" for i in [1 .. number_of_param]
+          args_display += "{}" for i in [1 .. number_of_param]
+        items[result[1]] =
+          displayText: result[1] + args_display
+          snippet: result[1] + args_snippet + "$#{number_of_param + 1}"
           type: 'function'
           latexType: 'command'
-          chainComplete: false
+          chainComplete: chainComplete
           counts: 1
-        else
-          items[result[1]].counts += 1
+      else
+        items[result[1]].counts += 1
     return items
 
   resetCommands: ->
