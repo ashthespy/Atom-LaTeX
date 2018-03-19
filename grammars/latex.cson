@@ -11,6 +11,59 @@ patterns: [
     name: "meta.space-after-command.latex"
   }
   {
+    match: "((\\\\)(begin)({)(figure|table)(}))(?:(\\[)([^\\]]*)(\\]))?"
+    captures:
+      "2":
+        name: "support.function.be.latex"
+      "3":
+        name: "support.function.be.latex"
+      "4":
+        name: "punctuation.section.group.begin.tex"
+      "5":
+        name: "variable.parameter.latex"
+      "6":
+        name: "punctuation.section.group.end.tex"
+      "7":
+        name: "punctuation.definition.arguments.begin.latex"
+      "8":
+        name: "variable.parameter.latex"
+      "9":
+        name: "punctuation.definition.arguments.end.latex"
+    name: "meta.begin.latex"
+    patterns: [
+      {
+        include: "$self"
+      }
+    ]
+  }
+  {
+    begin: "((\\\\)(includegraphics))(?:(\\[)([^\\]]*)(\\]))?(\\{)"
+    beginCaptures:
+      "1":
+        name: "keyword.control.label.latex"
+      "2":
+        name: "punctuation.definition.function.latex"
+      "3":
+        name: "punctuation.definition.arguments.begin.latex"
+      "4":
+        name: "variable.parameter.latex"
+      "5":
+        name: "punctuation.definition.arguments.end.latex"
+      "6":
+        name: "punctuation.definition.arguments.begin.latex"
+    contentName: "constant.other.reference.label.latex"
+    end: "\\}"
+    endCaptures:
+      "0":
+        name: "punctuation.definition.arguments.end.latex"
+    name: "meta.preamble.latex"
+    patterns: [
+      {
+        include: "$self"
+      }
+    ]
+  }
+  {
     begin: "((\\\\)(?:usepackage|documentclass))(?:(\\[)([^\\]]*)(\\]))?(\\{)"
     beginCaptures:
       "1":
