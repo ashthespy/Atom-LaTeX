@@ -109,8 +109,7 @@ class Command extends Disposable
           counts: 1
       else
         items[result[1]].counts += 1
-      # Parse custom user-defined commands with fixed number of parameters TODO: optional parameters
-    newCommandReg = /\\(?:re|provide)?(?:new)?command(?:{)?\\(\w+)(?:})?(?:\[([0-9]+)\]{)?/g
+    newCommandReg = /\\(?:re|provide)?(?:new)?command(?:{)?\\(\w+)(?:})?(?:\[([0-9])\]|\[[0-9]\]\[\]{)?/g
     loop
       result = newCommandReg.exec content
       break if !result?
