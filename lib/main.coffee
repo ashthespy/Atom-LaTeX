@@ -64,6 +64,8 @@ module.exports =
                 minimap.latexTimeout = setTimeout( ->
                   minimap.emitChanges(changes)
                 , 500)
+    if atom.config.get('atom-latex.hide_panel')
+      @latex.panel.hidePanel()
 
   deactivate: ->
     @latex?.dispose()
