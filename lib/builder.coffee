@@ -55,7 +55,8 @@ class Builder extends Disposable
       type: 'status',
       text: """Step #{@buildLogs.length}> #{cmd}"""
     })
-    toolchain = cmd.split(' ') # Split into array of cmd + arguments
+    # Split into array of cmd + arguments (un-escaping "" again)
+    toolchain = cmd.match(/(?:[^\s"]+|"[^"]*")+/g).map((arg) -> arg.replace(/"/g,''))
     @currentProcess = cp.spawn(toolchain.shift(), toolchain, {cwd:path.dirname @latex.mainFile})
 
     # Register callbacks for the spawnprocess
