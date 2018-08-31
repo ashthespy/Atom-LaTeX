@@ -144,8 +144,10 @@ class Manager extends Disposable
   findPDF: ->
     if !@findMain()
       return false
-    # mainFile.blah.tex -> mainFile.pdf
-    return @latex.mainFile.replace(/\.([^\/]*)$/, '.pdf')
+    # //some.path/to/mainFile.blah.tex -> //some.path/to/mainFile/mainFile.pdf
+    pdfPath = @latex.mainFile.replace(/\.([^\\|\/]*)$/, '.pdf')
+    @latex.logger.debuglog.info("""PDF path: #{pdfPath}""")
+    return pdfPath
 
   prevWatcherClosed: (watcher, watchPath) ->
     watchedPaths = watcher.getWatched()
