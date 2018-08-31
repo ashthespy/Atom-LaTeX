@@ -1,3 +1,16 @@
+## [0.8.5]  2018-08-31
+### Fixed
+* [(#158)](https://github.com/James-Yu/Atom-LaTeX/issues/158) Fix filenames escaping with whitespace on Unix
+* [(#172)](https://github.com/James-Yu/Atom-LaTeX/issues/172) Fix parsing PDF path with periods
+* [(#140)](https://github.com/James-Yu/Atom-LaTeX/issues/140) Disable `<>` bracket matching
+* [(#34)](https://github.com/James-Yu/Atom-LaTeX/issues/34) Fix path determination when editor isn't active pane item
+
+### Changed
+* [(#157)](https://github.com/James-Yu/Atom-LaTeX/issues/157) Add a `hide_panel` option on startup
+* New matches for `figure`, `table` and `includegraphics` which are excluded from spell-check
+* Support optional parameters in custom command autocomplete parsing
+* [(#136)](https://github.com/James-Yu/Atom-LaTeX/pull/136) Small changes to better support beamer `tex` files
+
 ## [0.8.3]  2018-01-27
 ### Fixed
 * [(#95)](https://github.com/James-Yu/Atom-LaTeX/issues/95)  Add `error` listener for `ws` package compatibility
