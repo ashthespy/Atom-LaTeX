@@ -1,7 +1,8 @@
 { Disposable } = require 'atom'
 path = require 'path'
 
-latexFile = /^.*?\(\.?\/?([^\)\s]*?\.[a-zA-Z_]+)/
+fileName = /^.*?\(\.?\/?([^\)\s]*?)\.\w+/
+latexFile = /^.*?\(\.?\/?([^\)\s]*?\.\w+)/
 latexPattern = /^Output\swritten\son\s(.*)\s\(.*\)\.$/gm
 latexFatalPattern = /Fatal error occurred, no output PDF file produced!/gm
 latexError = /^(?:(.*):(\d+):|!)(?: (.+) Error:)? (.+?)\.?$/gm
@@ -68,7 +69,8 @@ class Parser extends Disposable
     i = 0
     while i < log.length
       if log[i] == "("
-        if log.slice(i).match latexFile
+        name = log.slice(i).match fileName
+        if name && log.match ///#{name[1]}\.aux///g
           fileInds.push [files.length, 0]
           files.push "("
         else
