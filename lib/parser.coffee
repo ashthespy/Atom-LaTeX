@@ -1,12 +1,13 @@
 { Disposable } = require 'atom'
 path = require 'path'
 
-latexFile = /^.*?\(\.\/(.*?\.\w+)/
+fileName = /^.*?\(\.?\/?([^\)\s]*?)\.\w+/
+latexFile = /^.*?\(\.?\/?([^\)\s]*?\.\w+)/
 latexPattern = /^Output\swritten\son\s(.*)\s\(.*\)\.$/gm
 latexFatalPattern = /Fatal error occurred, no output PDF file produced!/gm
-latexError = /^(?:(.*):(\d+):|!)(?: (.+) Error:)? (.+?)\.?$/
-latexBox = /^((?:Over|Under)full \\[vh]box \([^)]*\)) in paragraph at lines (\d+)--(\d+)$/
-latexWarn = /^((?:(?:Class|Package) \S+)|LaTeX) (Warning|Info):\s+(.*?)(?: on input line (\d+))?\.$/
+latexError = /^(?:(.*):(\d+):|!)(?: (.+) Error:)? (.+?)\.?$/gm
+latexBox = /^((?:Over|Under)full \\[vh]box \([^)]*\)) (?:in paragraph at lines|has occurred while \\output is active) \[?(\d+)[-.]+(\d+)\]?\)?$/gm
+latexWarn = /^((?:(?:Class|Package) \S+)|LaTeX(?: Font)?) (Warning|Info):\s+([\s\S]*?)(?: on input line (\d+))?\.$/gm
 
 latexmkPattern = /^Latexmk:\sapplying\srule/gm
 latexmkPatternNoGM = /^Latexmk:\sapplying\srule/
@@ -36,7 +37,6 @@ class Parser extends Disposable
     @lastFile = @latex.mainFile
 
   trimLatexmk: (log) ->
-    log = log.replace(/(.{78}(\w|\s|\d|\\|\/))(\r\n|\n)/g, '$1')
     lines = log.replace(/(\r\n)|\r/g, '\n').split('\n')
     finalLine = -1
     for index of lines
@@ -64,32 +64,51 @@ class Parser extends Disposable
     return lines.slice(araraRunIdx.slice(-1)[0]).join('\n')
 
   parseLatex: (log) ->
-    log = log.replace(/(.{78}(\w|\s|\d|\\|\/))(\r\n|\n)/g, '$1')
-    lines = log.replace(/(\r\n)|\r/g, '\n').split('\n')
-    items = []
-    for line in lines
-      file = line.match latexFile
-      if file
-        @lastFile = path.resolve(path.dirname(@latex.mainFile), file[1])
+    files = []
+    fileInds = []
+    i = 0
+    while i < log.length
+      if log[i] == "("
+        name = log.slice(i).match fileName
+        if name && log.match ///#{name[1]}\.aux///g
+          fileInds.push [files.length, 0]
+          files.push "("
+        else
+          if fileInds.length > 0
+            fileInds[fileInds.length - 1][1] += 1
+            files[fileInds[fileInds.length - 1][0]] += "("
+      else
+        if log[i] == ")"
+          if fileInds.length > 0
+            files[fileInds[fileInds.length - 1][0]] += ")"
+            if fileInds[fileInds.length - 1][1] > 0
+              fileInds[fileInds.length - 1][1] -= 1
+            else
+              fileInds.pop()
+        else
+          if fileInds.length > 0
+            files[fileInds[fileInds.length - 1][0]] += log[i]
+      i += 1
 
-      result = line.match latexBox
-      if result
+    items = []
+    for file in files
+      @lastFile = path.resolve(path.dirname(@latex.mainFile), file.match(latexFile)[1])
+
+      while result = latexBox.exec file
         items.push
           type: 'typesetting',
-          text: result[1]
+          text: result[1].replace /\s\s+/g, ' '
           file: @lastFile
-          line: parseInt(result[2], 10)
-        continue
-      result = line.match latexWarn
-      if result
+          line: parseInt result[2], 10
+
+      while result = latexWarn.exec file
         items.push
           type: 'warning',
-          text: result[3]
+          text: result[3].replace /\s\s+/g, ' '
           file: @lastFile
           line: parseInt result[4]
-        continue
-      result = line.match latexError
-      if result
+
+      while result = latexError.exec file
         items.push
           type: 'error',
           text: if result[3] and result[3] != 'LaTeX' then \
@@ -98,7 +117,6 @@ class Parser extends Disposable
             path.resolve(path.dirname(@latex.mainFile), result[1]) else \
             @latex.mainFile
           line: if result[2] then parseInt result[2], 10 else undefined
-        continue
 
     types = items.map((item) -> item.type)
     if types.indexOf('error') > -1
