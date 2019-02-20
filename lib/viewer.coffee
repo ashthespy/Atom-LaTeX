@@ -3,6 +3,7 @@ getCurrentWindow = require('electron').remote.getCurrentWindow
 BrowserWindow = require('electron').remote.BrowserWindow
 fs = require 'fs'
 path = require 'path'
+spawn = require('child_process').spawn
 
 module.exports =
 class Viewer extends Disposable
@@ -60,7 +61,11 @@ class Viewer extends Disposable
       @focusViewer()
 
   openViewer: ->
-    if @client.ws?
+    if atom.config.get('atom-latex.preview_after_build') is 'View with evince'
+      @openViewerExternal('evince')
+    if atom.config.get('atom-latex.preview_after_build') is 'View with okular'
+      @openViewerExternal('okular')
+    else if @client.ws?
       @refresh()
     else if atom.config.get('atom-latex.preview_after_build') is\
         'View in PDF viewer window'
@@ -72,6 +77,18 @@ class Viewer extends Disposable
       @openViewerNewTab()
       if !atom.config.get('atom-latex.focus_viewer')
         @latex.viewer.focusMain()
+
+  openViewerExternal: (viewer) ->
+      pdfPath = @latex.manager.findPDF()
+      console.log( pdfPath )
+      if !fs.existsSync pdfPath
+            return
+      # already running and the same pdf
+      if @externalViewer && @externalViewer.pdfPath == pdfPath
+        return
+      @externalViewer = spawn(viewer, [pdfPath], {});
+      @externalViewer.on( 'close', (code) => @externalViewer = false );
+      @externalViewer.pdfPath = pdfPath;
 
   openViewerNewWindow: ->
     pdfPath = @latex.manager.findPDF()

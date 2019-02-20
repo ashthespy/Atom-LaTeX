@@ -77,6 +77,8 @@ module.exports =
     enum: [
       'View in PDF viewer window'
       'View in PDF viewer tab'
+      'View with evince'
+      'View with okular'
       'Do nothing'
     ]
   combine_typesetting_log:
