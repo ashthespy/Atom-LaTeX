@@ -17,6 +17,12 @@ module.exports =
     description: 'The parameters to use when invoking `latexmk`.'
     type: 'string'
     default: '-synctex=1 -interaction=nonstopmode -file-line-error -pdf'
+  bibinputs:
+    title: 'bib inputs'
+    order: 3
+    description: 'sets BIBINPUTS environment variable for latexmk'
+    type: 'string'
+    default: ''
   custom_toolchain:
     title: 'Custom toolchain commands'
     order: 3
