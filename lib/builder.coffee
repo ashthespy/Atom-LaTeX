@@ -58,7 +58,7 @@ class Builder extends Disposable
     # Split into array of cmd + arguments (un-escaping "" again)
     toolchain = cmd.match(/(?:[^\s"]+|"[^"]*")+/g).map((arg) -> arg.replace(/"/g,''))
     env = process.env
-    if atom.config.get('atom-latex.bibinputs')
+    if atom.config.get('atom-latex.bibinputs') != ''
       env['BIBINPUTS'] = atom.config.get('atom-latex.bibinputs')
     @currentProcess = cp.spawn(toolchain.shift(), toolchain, {cwd:path.dirname @latex.mainFile, env:process.env})
 
