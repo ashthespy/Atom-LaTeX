@@ -1,3 +1,13 @@
+## [0.8.6]  2019-07-01
+### Fixed
+* [(#176)](https://github.com/James-Yu/Atom-LaTeX/issues/176) Fix `latex-beamer` artefact
+
+### Changed
+* Update `pdfjs-dist`
+* PDF Viewer improvements
+  * SynTeX/Reverse SynTeX indicators
+* [(#159)](https://github.com/James-Yu/Atom-LaTeX/pull/171) Extended the log parser to catch more errors
+
 ## [0.8.5]  2018-08-31
 ### Fixed
 * [(#158)](https://github.com/James-Yu/Atom-LaTeX/issues/158) Fix filenames escaping with whitespace on Unix
