@@ -72,6 +72,10 @@ class Locator extends Disposable
           searchAllPanes: true
         )
         @latex.viewer.focusMain()
+        editor = atom.workspace.getActiveTextEditor()
+        marker = editor.markBufferRange(editor.getBuffer().rangeForRow(row))
+        decoration = editor.decorateMarker(marker,{type: 'highlight', class:'synctex-box'})
+        setTimeout(( => decoration.destroy()), 500)
       else
         @latex.logger.processError(
           """Failed SyncTeX. No file path is given.""", record
