@@ -1,3 +1,14 @@
+## [0.8.7]  2019-07-24
+### Fixed
+* [(##129)](https://github.com/James-Yu/Atom-LaTeX/issues/#129) Fix log parser attempting to parse non latex files as well
+
+### Changed
+* PDF Viewer improvements
+  * Add a 'dark mode' via `invert_viewer` option 
+    * Can be toggled with <kbd>ctrl</kbd><kbd>i</kbd>
+  * Auto hide toolbar for viewer 
+  * Style tweaks for viewer scrollbar
+
 ## [0.8.6]  2019-07-01
 ### Fixed
 * [(#176)](https://github.com/James-Yu/Atom-LaTeX/issues/176) Fix `latex-beamer` artefact
