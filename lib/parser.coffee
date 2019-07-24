@@ -92,7 +92,12 @@ class Parser extends Disposable
 
     items = []
     for file in files
-      @lastFile = path.resolve(path.dirname(@latex.mainFile), file.match(latexFile)[1])
+      res_latexfile = file.match(latexFile)
+      if res_latexfile?
+        @lastFile = path.resolve(path.dirname(@latex.mainFile), res_latexfile[1])
+      else 
+        console.log """Not parsing #{file} from logs - #{res_latexfile}"""
+        continue
 
       while result = latexBox.exec file
         items.push
