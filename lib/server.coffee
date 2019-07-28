@@ -17,7 +17,9 @@ class Server extends Disposable
           e(err)
         else if @latex.server.openTab
           @latex.viewer.openViewerNewWindow()
-
+    # Don't allow sockets to timeout (which closes the viewer)
+    @http.timeout = 0
+    
     @ws = new ws.Server server: @http
     @ws.on "connection", (ws) =>
       ws.on "message", (msg) => @latex.viewer.wsHandler(ws, msg)
