@@ -1,3 +1,7 @@
+## [0.8.8]  2019-07-30
+### Fixed
+* [(##206)](https://github.com/James-Yu/Atom-LaTeX/issues/#206) Fix viewer issues with Atom 1.39/Electron 3.x
+
 ## [0.8.7]  2019-07-24
 ### Fixed
 * [(##129)](https://github.com/James-Yu/Atom-LaTeX/issues/#129) Fix log parser attempting to parse non latex files as well
