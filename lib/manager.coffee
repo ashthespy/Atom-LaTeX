@@ -196,8 +196,8 @@ class Manager extends Disposable
         @rootWatcher.on('unlink',(fpath) =>
           @watchActions(fpath,'unlink')
           return)
+        console.timeEnd('RootWatcher Init')
       )
-      console.timeEnd('RootWatcher Init')
       return true
 
     return false
@@ -217,14 +217,18 @@ class Manager extends Disposable
   findAll: ->
     if !@findMain()
       return false
+    findFiles = () =>
+        @latex.texFiles = [ @latex.mainFile ]
+        @latex.bibFiles = []
+        @findDependentFiles(@latex.mainFile)    
     if @disable_watcher or @watchRoot()
-      @latex.texFiles = [ @latex.mainFile ]
-      @latex.bibFiles = []
-      @findDependentFiles(@latex.mainFile)
+      findFiles()
       if @disable_watcher
         @watchActions(file,'add') for file in @latex.texFiles
+    else if !@rootDir()?
+      findFiles()
     return true
-
+    
   findDependentFiles: (file) ->
     content = fs.readFileSync file, 'utf-8'
     baseDir = path.dirname(@latex.mainFile)
@@ -271,18 +275,12 @@ class Manager extends Disposable
     if !@bibWatcher? or @bibWatcher.closed
       @bibWatcher = chokidar.watch(bib)
       @watched.push(bib)
-      # @latex.logger.log.push {
-      #   type: status
-      #   text: "Watching bib file #{bib} for changes"
-      # }
+      @latex.logger.debuglog.info("Watching bib file #{bib} for changes")
       # Register watcher callbacks
       @bibWatcher.on('add', (fpath) =>
         # bib file added, parse
         @latex.provider.citation.getBibItems(fpath)
-        # @latex.logger.log.push {
-        #   type: status
-        #   text: "Added bib file #{fpath} to Watcher"
-        # }
+        @latex.logger.debuglog.info("Added bib file #{fpath} to Watcher")
         return)
       @bibWatcher.on('change', (fpath) =>
         # bib file changed, reparse
