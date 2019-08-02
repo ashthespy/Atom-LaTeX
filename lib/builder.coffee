@@ -189,7 +189,7 @@ class Builder extends Disposable
         # get basename and strip file extensions
         @escapeFileName(path.basename(@latex.mainFile).replace(/\.([^\/.]*)$/, ''))
       )
-      cmd = cmd.split('%EXT').join(path.basename(@latex.mainFile).match(/\.([^\/]*)$/)[1])
+      cmd = cmd.split('%EXT').join(path.basename(@latex.mainFile).match(/\.([^\/.]*)$/)[1])
       @cmds.push cmd
 
   escapeFileName: (file) ->
