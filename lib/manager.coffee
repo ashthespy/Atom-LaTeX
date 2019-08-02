@@ -145,7 +145,7 @@ class Manager extends Disposable
     if !@findMain()
       return false
     # //some.path/to/mainFile.blah.tex -> //some.path/to/mainFile/mainFile.pdf
-    pdfPath = @latex.mainFile.replace(/\.([^\\|\/]*)$/, '.pdf')
+    pdfPath = @latex.mainFile.replace(/\.([^\/.]*)$/, '.pdf')
     @latex.logger.debuglog.info("""PDF path: #{pdfPath}""")
     return pdfPath
 
