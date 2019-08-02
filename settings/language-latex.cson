@@ -5,7 +5,7 @@
     'softWrap': true
     'commentStart': '% '
   'autocomplete-plus':
-    'extraWordCharacters': ':_'
+    'extraWordCharacters': ':_/'
   'bracket-matcher':
     'autocompleteCharacters': [
       '$$',
