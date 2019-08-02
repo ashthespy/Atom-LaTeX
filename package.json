@@ -11,7 +11,7 @@
     "synctex",
     "highlight"
   ],
-  "repository": "https://github.com/James-Yu/Atom-LaTeX",
+  "repository": "https://github.com/ashthespy/Atom-LaTeX",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
