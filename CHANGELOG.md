@@ -1,3 +1,7 @@
+## [0.8.9]  2019-08-02
+### Fixed
+* [(##187)](https://github.com/James-Yu/Atom-LaTeX/issues/#187) Handle case of no rootDir
+
 ## [0.8.8]  2019-07-30
 ### Fixed
 * [(##206)](https://github.com/James-Yu/Atom-LaTeX/issues/#206) Fix viewer issues with Atom 1.39/Electron 3.x
