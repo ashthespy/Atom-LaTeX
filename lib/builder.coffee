@@ -187,7 +187,7 @@ class Builder extends Disposable
       cmd = cmd.split('%ARG').join(args)
       cmd = cmd.split('%DOC').join(
         # get basename and strip file extensions
-        @escapeFileName(path.basename(@latex.mainFile).replace(/\.([^\/]*)$/, ''))
+        @escapeFileName(path.basename(@latex.mainFile).replace(/\.([^\/.]*)$/, ''))
       )
       cmd = cmd.split('%EXT').join(path.basename(@latex.mainFile).match(/\.([^\/]*)$/)[1])
       @cmds.push cmd
