@@ -79,7 +79,7 @@ By default [`latexmk`](http://personal.psu.edu/jcc8/software/latexmk/) is used t
 If `latexmk` fails, the `custom toolchain` is utilised which by default sequentially runs the typical `pdflatex`>`bibtex`>`pdflatex`>`pdflatex` command chain:
 
 ```
-%TEX %ARG %DOC && %BIB %DOC && %TEX %ARG %DOC && %TEX %ARG %DOC
+%TEX %ARG %DOC.%EXT && %BIB %DOC && %TEX %ARG %DOC.%EXT && %TEX %ARG %DOC.%EXT
 ```
 Multiple commands should be separated by `&&`. Placeholders `%TEX`,`%ARG` and `%BIB` will be replaced by tools defined in the settings menu
 `%DOC` will be replaced by the [root LaTeX](root_file) filename (without extension), while `%EXT` gives the file extension

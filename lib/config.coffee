@@ -26,7 +26,7 @@ module.exports =
                   and `%DOC` will be replaced by the main LaTeX file which \
                   is either automatically detected or manually set'
     type: 'string'
-    default: '%TEX %ARG %DOC && %BIB %DOC && %TEX %ARG %DOC && %TEX %ARG %DOC'
+    default: '%TEX %ARG %DOC.%EXT && %BIB %DOC && %TEX %ARG %DOC.%EXT && %TEX %ARG %DOC.%EXT'
   compiler:
     title: 'LaTeX compiler to use'
     order: 4

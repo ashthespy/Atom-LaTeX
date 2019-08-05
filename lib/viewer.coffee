@@ -80,6 +80,7 @@ class Viewer extends Disposable
   openViewerNewWindow: ->
     pdfPath = @latex.manager.findPDF()
     if !fs.existsSync pdfPath
+      @latex.logger.debuglog.error("""#{pdfPath} Doesn't exist""")
       return
 
     if !@getUrl()

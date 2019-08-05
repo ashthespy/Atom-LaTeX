@@ -49,7 +49,17 @@ class Manager extends Disposable
         @latex.manager.config?.latex_ext?.indexOf(path.extname(name)) > -1
       return true
     return false
-
+    
+  getDocandExt: (fpath) ->
+    @latex.manager.loadLocalCfg()
+    extnames = ['.tex','.tikz']
+    # Check custom extensions first to handle stuff like `main.tex.tikz`
+    if @latex.manager.config?.latex_ext?
+      extnames = Array.from(new Set(@latex.manager.config.latex_ext.concat(extnames)));
+    for ext in extnames
+      if path.basename(fpath).endsWith(ext)
+        return [path.basename(fpath).replace(ext,''), ext.slice(1)]
+        
   findMain: (here) ->
     result = @findMainSequence(here)
     if result and !fs.existsSync(@latex.mainFile)
@@ -64,6 +74,7 @@ class Manager extends Disposable
         }])
       return false
     @latex.panel.view.update()
+    @latex.mainDoc = @getDocandExt(@latex.mainFile)
     return result
 
   refindMain: () ->
@@ -144,8 +155,8 @@ class Manager extends Disposable
   findPDF: ->
     if !@findMain()
       return false
-    # //some.path/to/mainFile.blah.tex -> //some.path/to/mainFile/mainFile.pdf
-    pdfPath = @latex.mainFile.replace(/\.([^\\|\/]*)$/, '.pdf')
+    # //some.path/tex/mainFile.rev1.tex -> /some.path/tex/mainFile.rev1.pdf
+    pdfPath = @latex.mainFile.replace(///#{@latex.mainDoc[1]}$///, 'pdf')
     @latex.logger.debuglog.info("""PDF path: #{pdfPath}""")
     return pdfPath
 
