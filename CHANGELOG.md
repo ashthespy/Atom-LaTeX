@@ -1,3 +1,8 @@
+## [0.8.10]  2019-08-05
+### Fixed
+* [(##186)](https://github.com/James-Yu/Atom-LaTeX/issues/#186) Fix reference autocomplete ':' issue
+* [(##205)](https://github.com/James-Yu/Atom-LaTeX/issues/#205) Fix for filenames with dots
+
 ## [0.8.9]  2019-08-02
 ### Fixed
 * [(##187)](https://github.com/James-Yu/Atom-LaTeX/issues/#187) Handle case of no rootDir
