@@ -133,5 +133,8 @@ class Logger extends Disposable
     command: (msg) ->
       @write("[#{new Date().toLocaleTimeString('en-US', {hour12: false})}| Command] #{msg}")
 
+    error: (msg) ->
+      @write("[#{new Date().toLocaleTimeString('en-US', {hour12: false})}| Error] #{msg}")
+      
     warn: (msg) ->
       @write("[#{new Date().toLocaleTimeString('en-US', {hour12: false})}| Warn] #{msg}")
