@@ -1,3 +1,14 @@
+## [0.8.11]  2019-10-02
+### Fixed
+* [(##216)](https://github.com/James-Yu/Atom-LaTeX/issues/#216) Add missing `error` entry type to debug log
+* [(##223)](https://github.com/James-Yu/Atom-LaTeX/issues/#223) Remember preview window position
+* [(##225)](https://github.com/James-Yu/Atom-LaTeX/issues/#225) Use editor's default `tabLength`
+* [(##217)](https://github.com/James-Yu/Atom-LaTeX/issues/#217) Escape `filename.aux` Regex
+
+### Changed
+* [(##141)](https://github.com/James-Yu/Atom-LaTeX/issues/#141) Wrap selection with environment
+* Update `chokidar` to v3
+
 ## [0.8.10]  2019-08-05
 ### Fixed
 * [(##186)](https://github.com/James-Yu/Atom-LaTeX/issues/#186) Fix reference autocomplete ':' issue
