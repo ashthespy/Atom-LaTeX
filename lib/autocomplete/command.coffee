@@ -9,6 +9,16 @@ class Command extends Disposable
     @latex = latex
     @additionalSuggestions = []
     @items = {}
+    
+  environment: ->
+    editor = atom.workspace.getActiveTextEditor()
+    selected = editor.getSelectedText()
+    if selected
+      atom.packages.activePackages.snippets?.mainModule?.insert """\\\\begin{$1}\n\t#{selected}$2\n\\\\end{$1}"""
+      return
+
+    atom.packages.activePackages.snippets?.mainModule?.insert """\\\\begin{$1}\n\t$2\n\\\\end{$1}"""
+  
   provide: (prefix) ->
     suggestions = @predefinedCommands(prefix)
     if prefix.length > 0

@@ -8,6 +8,7 @@
   'ctrl-l ctrl-s': 'atom-latex:synctex'
   'ctrl-l ctrl-l': 'atom-latex:toggle-panel'
   '"' : 'atom-latex:tools-doublequote'
+  'ctrl-e' : 'atom-latex:tools-environment'
 
 'body.platform-darwin atom-text-editor[data-grammar~="latex"]':
   'cmd-l cmd-b': 'atom-latex:build'
@@ -19,3 +20,4 @@
   'cmd-l cmd-s': 'atom-latex:synctex'
   'cmd-l cmd-l': 'atom-latex:show-log'
   '"' : 'atom-latex:tools-doublequote'
+  'cmd-e' : 'atom-latex:tools-environment'

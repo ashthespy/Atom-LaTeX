@@ -39,6 +39,7 @@ module.exports =
       'atom-latex:toggle-panel': () => @latex.panel.togglePanel()
       'atom-latex:synctex': () => @latex.locator.synctex()
       'atom-latex:tools-doublequote': () => @latex.provider.syntax.doublequote()
+      'atom-latex:tools-environment': () => @latex.provider.command.environment()
 
     path = require 'path'
     @disposables.add atom.workspace.observeTextEditors (editor) =>
