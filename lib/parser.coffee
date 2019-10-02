@@ -70,7 +70,9 @@ class Parser extends Disposable
     while i < log.length
       if log[i] == "("
         name = log.slice(i).match fileName
-        if name && log.match ///#{name[1]}\.aux///g
+        if name && \
+        # Escape evey non-alpha char when building up Regex 
+        log.match ///#{name[1].replace(/(?=\W)/g, '\\')}\.aux///g
           fileInds.push [files.length, 0]
           files.push "("
         else
