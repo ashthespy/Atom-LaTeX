@@ -51,6 +51,10 @@ class Manager extends Disposable
     return false
     
   getDocandExt: (fpath) ->
+    # If the LaTeX root file does not exist, no point in continuing
+    if fpath == undefined
+      return
+    
     @latex.manager.loadLocalCfg()
     extnames = ['.tex','.tikz']
     # Check custom extensions first to handle stuff like `main.tex.tikz`
