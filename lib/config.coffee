@@ -121,3 +121,11 @@ module.exports =
                   to take effect.'
     type: 'boolean'
     default: false
+  completion_suggestion_priority:
+    title: 'autocomplete-plus suggestion priority'
+    order: 16
+    description: 'Specify the sort order of autocompletion suggestions \
+                  privided by atom-latex.
+                  Note the default providers like snippets have priority of \ `1`. Reload Atom to take effect.'
+    type: 'integer'
+    default: 2
