@@ -5214,7 +5214,9 @@ var defaultOptions = {
     kind: OptionKind.API
   },
   cMapUrl: {
-    value: '../web/cmaps/',
+    // NOTE: monkey patching
+    // ref: https://github.com/ashthespy/Atom-LaTeX/issues/232
+    value: './cmaps/',
     kind: OptionKind.API
   },
   disableAutoFetch: {
