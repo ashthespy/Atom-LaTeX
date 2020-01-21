@@ -14,11 +14,14 @@ if (server === undefined) {
     server = `ws://${window.location.hostname}:${window.location.port}`;
 }
 
-//  Set up default prefreneces
+//  Set up default prefreneces without messing around in viewer.js 
+//  TODO: removePageBorders 
 PDFViewerApplicationOptions.set('sidebarViewOnLoad',0);
 PDFViewerApplicationOptions.set('enableWebGL',true);
 PDFViewerApplicationOptions.set('externalLinkTarget',4);
 PDFViewerApplicationOptions.set('eventBusDispatchToDOM',true);
+PDFViewerApplicationOptions.set('cMapUrl','./cmaps/');
+
 let socket = new WebSocket(server);
 let invert, state_invert;
 socket.addEventListener("open", () => socket.send(JSON.stringify({type:"open", path:file})));
@@ -53,8 +56,9 @@ socket.addEventListener("message", (event) => {
         case "params":
             if (data.invert > 0) {
               invert = data.invert;
-              document.querySelector('#viewer').style.filter = `invert(${data.invert * 100}%)`
-              document.querySelector('#viewer').style.background = 'white'
+              // https://stackoverflow.com/questions/51589185/css-filter-invert-rule-breaking-fixed-position-on-chrome-68
+              document.querySelector('html').style.filter = `invert(${data.invert * 100}%)`
+              document.querySelector('html').style.background = 'white'
               state_invert = true;
             }
             break;

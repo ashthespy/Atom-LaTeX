@@ -41,7 +41,7 @@
     "glob": "^7.1.4",
     "hasbin": "^1.2.3",
     "latex-symbols-list": "^0.1.2",
-    "pdfjs-dist": "2.1.266",
+    "pdfjs-dist": "2.2.228",
     "tmp": "^0.1.0",
     "ws": "^7.1.1"
   }
