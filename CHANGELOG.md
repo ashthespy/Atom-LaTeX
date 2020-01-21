@@ -1,3 +1,12 @@
+## [0.8.12]  2020-01-21
+### Fixed 
+* [(##173)](https://github.com/James-Yu/Atom-LaTeX/issues/#173) Fix undefined file paths
+* [(##232)](https://github.com/James-Yu/Atom-LaTeX/issues/#232) Set PDFViewer `cmaps` folder path  
+* [(##192)](https://github.com/ashthespy/Atom-LaTeX/issues/192#issuecomment-558835313) Fix zoom and link issues with `invert_viewer`
+
+### Changed
+* Update `pdfjs-dist`, `chokidar`, `glob` and `ws` dependencies
+
 ## [0.8.11]  2019-10-02
 ### Fixed
 * [(##216)](https://github.com/James-Yu/Atom-LaTeX/issues/#216) Add missing `error` entry type to debug log
