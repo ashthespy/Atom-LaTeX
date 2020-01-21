@@ -35,14 +35,14 @@
     }
   },
   "dependencies": {
-    "chokidar": "^3.2.1",
+    "chokidar": "^3.3.1",
     "etch": "^0.14.0",
     "fs-plus": "^3.1.1",
-    "glob": "^7.1.4",
+    "glob": "^7.1.6",
     "hasbin": "^1.2.3",
     "latex-symbols-list": "^0.1.2",
     "pdfjs-dist": "2.2.228",
     "tmp": "^0.1.0",
-    "ws": "^7.1.1"
+    "ws": "^7.2.1"
   }
 }
