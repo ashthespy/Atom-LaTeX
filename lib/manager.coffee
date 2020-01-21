@@ -51,6 +51,9 @@ class Manager extends Disposable
     return false
     
   getDocandExt: (fpath) ->
+    if !fpath
+      @latex.logger.debuglog.info("Invalid tex path")
+      return
     @latex.manager.loadLocalCfg()
     extnames = ['.tex','.tikz']
     # Check custom extensions first to handle stuff like `main.tex.tikz`
