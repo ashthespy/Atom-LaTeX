@@ -41,7 +41,8 @@ class Viewer extends Disposable
 
     if @tabView? and @tabView.title isnt newTitle and\
         atom.workspace.paneForItem(@tabView)?
-      atom.workspace.paneForItem(@tabView).activeItem.updateTitle(newTitle)
+      atom.workspace.paneForItem(@tabView).getItems().find((p) => 
+        p is @tabView)?.updateTitle(newTitle) 
     else if @window? and !@window.isDestroyed() and @window.getTitle() isnt newTitle
       @window.setTitle("""Atom-LaTeX PDF Viewer - [#{@latex.mainFile}]""")
     @client.ws?.send JSON.stringify type: "refresh"
