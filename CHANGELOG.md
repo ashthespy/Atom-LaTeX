@@ -1,4 +1,11 @@
-## [0.8.12]  2020-01-21
+## [0.9.1]  2020-01-30
+### Fixed 
+* [(##191)](https://github.com/James-Yu/Atom-LaTeX/issues/#191) Fix viewer `updateTitle` when pane has multiple items
+
+### Changed 
+* Allow users to specify completion suggestion priority
+
+## [0.9.0]  2020-01-21
 ### Fixed 
 * [(##173)](https://github.com/James-Yu/Atom-LaTeX/issues/#173) Fix undefined file paths
 * [(##232)](https://github.com/James-Yu/Atom-LaTeX/issues/#232) Set PDFViewer `cmaps` folder path  
