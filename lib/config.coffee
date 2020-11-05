@@ -95,9 +95,16 @@ module.exports =
                   hidden unless manually clicking the `Show build log` icon.'
     type: 'boolean'
     default: false
+  hide_panel:
+    title: 'Hide LaTeX panel'
+    order: 13
+    description: 'Enable this option to always hide the LaTeX panel at the  \
+                  bottom.'
+    type: 'boolean'
+    default: false
   file_ext_to_clean:
     title: 'Files to clean'
-    order: 13
+    order: 14
     description: 'All files under the LaTeX project root directory with the set\
                   extensions will be removed when cleaning LaTeX project. \
                   Multiple file extensions are joint with commas.'
@@ -107,14 +114,14 @@ module.exports =
               *.fdb_latexmk'
   clean_after_build:
     title: 'Clean LaTeX auxiliary files after building process'
-    order: 14
+    order: 15
     description: 'Clean all auxiliary files after building LaTeX project by \
                   the defined file extensions.'
     type: 'boolean'
     default: false
   delayed_minimap_refresh:
     title: 'Delay the refresh actions of atom-minimap'
-    order: 15
+    order: 16
     description: 'Delay the refresh actions of atom-minimap upon typing. This \
                   setting can reduce the keystroke stuttering in very long \
                   LaTeX source files caused by minimap extension. Reload Atom \
@@ -123,7 +130,7 @@ module.exports =
     default: false
   completion_suggestion_priority:
     title: 'autocomplete-plus suggestion priority'
-    order: 16
+    order: 17
     description: 'Specify the sort order of autocompletion suggestions \
                   provided by atom-latex.
                   Note the default providers like snippets have priority of \ `1`. Reload Atom to take effect.'
