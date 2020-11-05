@@ -7,13 +7,10 @@
     'extraWordCharacters': '-:_/'
   'bracket-matcher':
     'autocompleteCharacters': [
-      '$$',
-      '``',
-      '{}',
-      '()',
-      '[]',
-      '""',
-      '\'\''
+      "[]"
+      "{}"
+      "$$"
+      "`'"
     ]
 '.text.tex.tex':
   'editor':
