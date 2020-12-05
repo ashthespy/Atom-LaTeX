@@ -98,7 +98,7 @@ module.exports =
   file_ext_to_clean:
     title: 'Files to clean'
     order: 13
-    description: 'All files under the LaTeX project root directory with the set\
+    description: 'All files under the LaTeX project root directory with the set \
                   extensions will be removed when cleaning LaTeX project. \
                   Multiple file extensions are joint with commas.'
     type: 'string'
