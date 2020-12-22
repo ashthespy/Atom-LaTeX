@@ -23,7 +23,7 @@ class Viewer extends Disposable
       when 'loaded'
         if @client.position and @client.ws?
           @client.ws.send JSON.stringify @client.position
-        @client.ws.send JSON.stringify {
+          @client.ws.send JSON.stringify {
                             type: 'params',
                             invert: atom.config.get('atom-latex.invert_viewer'),
                             }
@@ -41,8 +41,8 @@ class Viewer extends Disposable
 
     if @tabView? and @tabView.title isnt newTitle and\
         atom.workspace.paneForItem(@tabView)?
-      atom.workspace.paneForItem(@tabView).getItems().find((p) => 
-        p is @tabView)?.updateTitle(newTitle) 
+      atom.workspace.paneForItem(@tabView).getItems().find((p) =>
+        p is @tabView)?.updateTitle(newTitle)
     else if @window? and !@window.isDestroyed() and @window.getTitle() isnt newTitle
       @window.setTitle("""Atom-LaTeX PDF Viewer - [#{@latex.mainFile}]""")
     @client.ws?.send JSON.stringify type: "refresh"
@@ -54,7 +54,7 @@ class Viewer extends Disposable
   focusViewer: ->
     if @window? and !@window.isDestroyed()
       @window.setBounds(@window.getBounds())
-      @window.focus() 
+      @window.focus()
 
   focusMain: ->
     @self.focus() if @self? and !@self.focused
