@@ -60,9 +60,9 @@ class Manager extends Disposable
         return true
       catch err
         console.log err
-    else
+    else # Create new File
       filePath = path.join rootDir, '.latexcfg'
-      @config = JSON.stringify {"root": rootpath}
+      @config = {"root": rootpath}
       fs.writeFileSync filePath, JSON.stringify @config
       return true
     return false
