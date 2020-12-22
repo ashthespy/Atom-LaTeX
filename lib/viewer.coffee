@@ -23,7 +23,7 @@ class Viewer extends Disposable
       when 'loaded'
         if @client.position and @client.ws?
           @client.ws.send JSON.stringify @client.position
-        @client.ws.send JSON.stringify {
+          @client.ws.send JSON.stringify {
                             type: 'params',
                             invert: atom.config.get('atom-latex.invert_viewer'),
                             }
