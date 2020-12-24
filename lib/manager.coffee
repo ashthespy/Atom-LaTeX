@@ -43,13 +43,37 @@ class Manager extends Disposable
         console.log err
     return false
 
+  writeLocalCfg: (rootpath) ->
+    if @lastCfgTime? and Date.now() - @lastCfgTime < 200 or\
+       !atom.workspace.getActiveTextEditor()?
+      return @config?
+    @lastCfgTime = Date.now()
+    rootDir = @rootDir()
+    return false if !rootDir?
+    if '.latexcfg' in fs.readdirSync rootDir
+      try
+        filePath = path.join rootDir, '.latexcfg'
+        fileContent = fs.readFileSync filePath, 'utf-8'
+        @config = JSON.parse fileContent
+        @config.root = rootpath
+        fs.writeFileSync filePath, JSON.stringify @config
+        return true
+      catch err
+        console.log err
+    else # Create new File
+      filePath = path.join rootDir, '.latexcfg'
+      @config = {"root": rootpath}
+      fs.writeFileSync filePath, JSON.stringify @config
+      return true
+    return false
+
   isTexFile: (name) ->
     @latex.manager.loadLocalCfg()
     if path.extname(name) in ['.tex','.tikz'] or \
         @latex.manager.config?.latex_ext?.indexOf(path.extname(name)) > -1
       return true
     return false
-    
+
   getDocandExt: (fpath) ->
     if !fpath
       @latex.logger.debuglog.info("Invalid tex path")
@@ -62,7 +86,7 @@ class Manager extends Disposable
     for ext in extnames
       if path.basename(fpath).endsWith(ext)
         return [path.basename(fpath).replace(ext,''), ext.slice(1)]
-        
+
   findMain: (here) ->
     result = @findMainSequence(here)
     if result and !fs.existsSync(@latex.mainFile)
@@ -85,6 +109,7 @@ class Manager extends Disposable
     input.onchange = (=>
       if input.files.length > 0
         @latex.mainFile = input.files[0].path
+        @writeLocalCfg input.files[0].path
       @latex.panel.view.update()
     )
     input.click()
@@ -234,7 +259,7 @@ class Manager extends Disposable
     findFiles = () =>
         @latex.texFiles = [ @latex.mainFile ]
         @latex.bibFiles = []
-        @findDependentFiles(@latex.mainFile)    
+        @findDependentFiles(@latex.mainFile)
     if @disable_watcher or @watchRoot()
       findFiles()
       if @disable_watcher
@@ -242,7 +267,7 @@ class Manager extends Disposable
     else if !@rootDir()?
       findFiles()
     return true
-    
+
   findDependentFiles: (file) ->
     content = fs.readFileSync file, 'utf-8'
     baseDir = path.dirname(@latex.mainFile)

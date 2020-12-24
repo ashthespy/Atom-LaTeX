@@ -28,6 +28,10 @@
   margin-right: 5px;
 }
 
+.atom-latex-control {
+  display: flex;
+}
+
 .atom-latex-control-icon {
   font-size: 18px !important;
   margin: 4px 10px;
@@ -44,7 +48,15 @@
 }
 
 #atom-latex-root-text {
+font-size: 12px;
   margin-left: -4px;
+  margin-right: 10px;
+  margin-top: auto;
+  margin-bottom: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: rtl;
 }
 
 #atom-latex-panel-resizer {

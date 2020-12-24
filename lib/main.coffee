@@ -68,6 +68,8 @@ module.exports =
     if atom.config.get('atom-latex.hide_panel')
       @latex.panel.hidePanel()
 
+    @latex.manager.findMain(false)
+
   deactivate: ->
     @latex?.dispose()
     @disposables.dispose()
